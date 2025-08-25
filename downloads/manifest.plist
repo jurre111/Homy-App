@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+  <dict>
+    <key>items</key>
+    <array>
+      <dict>
+        <key>assets</key>
+        <array>
+          <dict>
+            <key>kind</key>
+            <string>software-package</string>
+            <key>url</key>
+            <string>https://github.com/jurre111/dirtyZero/raw/refs/heads/main/downloads/dirtyZero-signed.ipa</string> <!-- Replace with the URL to your .ipa file -->
+          </dict>
+        </array>
+        <key>metadata</key>
+        <dict>
+          <key>bundle-identifier</key>
+          <string>com.jbdotparty.dirtyZero</string> <!-- Replace with your app's bundle identifier -->
+          <key>bundle-version</key>
+          <string>4</string> <!-- Replace with the new version -->
+          <key>kind</key>
+          <string>software</string>
+          <key>title</key>
+          <string>dirtyZero</string>
+        </dict>
+      </dict>
+    </array>
+  </dict>
+</plist>
