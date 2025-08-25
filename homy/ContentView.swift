@@ -3,7 +3,8 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
-            Text("Welcome to Homy")
+            Image(systemName: "globe")
+            Text("Hello World!")
                 .font(.title)
         }
         .padding()
