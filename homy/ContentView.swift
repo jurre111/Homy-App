@@ -11,13 +11,14 @@ struct ContentView: View {
             } else {
                 MainView(selection: $selectedTab)
             }
+        }
     }
 }
 
 struct MainView: View {
     @Binding var selection: Int
     var body: some View {
-        TabView {
+        TabView(selection: $selection) {
         NavigationView {
             VStack {
                 Image(systemName: "globe")
