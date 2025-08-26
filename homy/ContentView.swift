@@ -36,6 +36,8 @@ enum WelcomeTab {
 struct WelcomeView: View {
     @Binding var showingWelcome: Bool
     @State private var step: WelcomeTab = .first
+    @State private var secondPageStep = 1
+
 
     var body: some View {
         VStack {
@@ -48,6 +50,7 @@ struct WelcomeView: View {
 
             case .second:
                 SecondPage(
+                    step: $secondPageStep,
                     onContinue: {
                         withAnimation(.easeInOut) { step = .third }
                     },
@@ -59,7 +62,15 @@ struct WelcomeView: View {
 
             case .third:
                 ThirdPage {
-                    withAnimation(.easeInOut) { step = .fourth }
+                    onContinue: {
+                        withAnimation(.easeInOut) { step = .fourth }
+                    },
+                    onBack: {
+                        withAnimation(.easeInOut) {
+                            step = .second 
+                            secondPageStep = 2
+                        }
+                    }
                 }
                 .transition(.moveAndFade)
 
@@ -177,7 +188,7 @@ struct FirstPage: View {
 struct SecondPage: View {
     let onContinue: () -> Void
     let onSkip: () -> Void
-    @State private var step = 1
+    @Binding var step: Int
     @State private var deviceIP: String = ""
 
 
@@ -275,6 +286,7 @@ struct SecondPage: View {
 
 struct ThirdPage: View {
     let onContinue: () -> Void
+    let onBack: () -> Void
     @State private var animationIsActive = false
     @State private var connectionStatus = 1
     @State private var timer: Timer? = nil
@@ -287,7 +299,7 @@ struct ThirdPage: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 180)
-                    .foregroundColor(Color(UIColor.systemBlue))
+                    .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
                     .symbolEffect(
                         .bounce.byLayer,
                         value: animationIsActive
@@ -304,12 +316,12 @@ struct ThirdPage: View {
                 )
                     .fontWeight(.black)
                     .font(.system(size: 36))
-                    .foregroundColor(Color(UIColor.systemBlue))
+                    .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
             }
             Spacer(minLength: 30)
             if connectionStatus != 1 {
                 Button(action: {
-                    onContinue()
+                    connectionStatus == 2 ? onContinue() : onBack()
                 }) {
                     Text(connectionStatus == 2 ? "Continue" : "Back")
                         .foregroundColor(.white)
