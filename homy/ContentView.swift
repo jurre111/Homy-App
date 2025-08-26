@@ -56,11 +56,11 @@ struct WelcomeSheet: View {
                         .font(.system(size: 36))
                         .foregroundColor(Color(UIColor.systemBlue))
                 }
-                InformationDetailView(title: "Match", subTitle: "Match the gradients by moving the Red, Green and Blue sliders for the left and right colors.", imageName: "slider.horizontal.below.rectangle")
+                InformationDetailView(title: "Control", subTitle: "Easily control all your smart home devices in one app.", imageName: "slider.horizontal.3")
 
-                InformationDetailView(title: "Precise", subTitle: "More precision with the steppers to get that 100 score.", imageName: "minus.slash.plus")
+                InformationDetailView(title: "Automate", subTitle: "Create custom automations to make your home smarter.", imageName: "sparkles")
 
-                InformationDetailView(title: "Score", subTitle: "A detailed score and comparsion of your gradient and the target gradient.", imageName: "checkmark.square")
+                InformationDetailView(title: "Manage", subTitle: "Keep track of your devices and their status.", imageName: "list.bullet")
                 
                 Spacer(minLength: 30)
 
@@ -69,12 +69,13 @@ struct WelcomeSheet: View {
                     showWelcomeSheet = false
                 }) {
                     Text("Get Started")
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color(UIColor.systemBlue))
                         .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .font(.headline)
+                        .padding()
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .fill(Color.mainColor))
+                        .padding(.bottom)
                 }
 
 
