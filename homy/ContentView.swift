@@ -121,11 +121,11 @@ struct SecondPage: View {
                         .frame(width: 180, alignment: .center)
                         .accessibility(hidden: true)
                         .foregroundColor(Color(UIColor.systemBlue))
-                    Text("Welcome to")
+                    Text("Add Your First")
                         .fontWeight(.black)
                         .font(.system(size: 36))
 
-                    Text("Homy")
+                    Text("Smart Device")
                         .fontWeight(.black)
                         .font(.system(size: 36))
                         .foregroundColor(Color(UIColor.systemBlue))
@@ -134,17 +134,28 @@ struct SecondPage: View {
 
                 Spacer(minLength: 30)
 
-                Button(action: {
-                    onContinue()
-                }) {
-                    Text("Continue")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .padding()
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(Color(UIColor.systemBlue)))
-                        .padding(.bottom)
+                VStack(spacing: 12) {
+                    Button(action: {
+                        onContinue()
+                    }) {
+                        Text("Continue")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .padding()
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                            .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .fill(Color(UIColor.systemBlue)))
+                    }
+                    Button(action: {
+                        onContinue()
+                    }) {
+                        Text("Skip")
+                            .foregroundColor(.gray)
+                            .font(.headline)
+                            .padding()
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                            .padding(.bottom)
+                    }
                 }
             }
             .padding(.horizontal)
