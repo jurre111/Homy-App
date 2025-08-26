@@ -33,8 +33,8 @@ struct WelcomeView: View {
                     }
                 }
             } else if welcomeTab == 1 {
-                SecondPage(.easeInOut(duration: 0.4)) {
-                    withAnimation {
+                SecondPage {
+                    withAnimation(.easeInOut(duration: 0.4)) {
                         welcomeTab = 2
                     }
                 }
