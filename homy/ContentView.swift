@@ -134,31 +134,32 @@ struct SecondPage: View {
 
                 Spacer(minLength: 30)
 
-                VStack(spacing: 12) {
-                    Button(action: {
-                        onContinue()
-                    }) {
-                        Text("Continue")
-                            .foregroundColor(.white)
-                            .font(.headline)
-                            .padding()
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                            .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .fill(Color(UIColor.systemBlue)))
-                    }
-                    Button(action: {
-                        onContinue()
-                    }) {
-                        Text("Skip")
-                            .foregroundColor(.gray)
-                            .font(.headline)
-                            .padding()
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                            .padding(.bottom)
-                    }
+                Button(action: {
+                    onContinue()
+                }) {
+                    Text("Continue")
+                        .foregroundColor(.white)
+                        .font(.headline)
+                        .padding()
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .fill(Color(UIColor.systemBlue)))
+                        .padding(.bottom)
                 }
+                .padding(.horizontal)
+                Button(action: {
+                    onContinue()
+                }) {
+                    Text("Skip")
+                        .foregroundColor(.gray)
+                        .font(.headline)
+                        .padding()
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                }
+                
             }
             .padding(.horizontal)
+            .padding(.bottom, 16)
         }
     }
 }
