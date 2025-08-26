@@ -2,45 +2,45 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("WelcomeScreenShown") private var welcomeScreenShown = false
-    @State private var showWelcomeSheet = false
     @State private var selectedTab = 0
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            NavigationView {
-                VStack {
-                    Image(systemName: "globe")
-                    Text("Hello World!")
-                        .font(.title)
-                }
-                .padding()
-            }
-            .tabItem {
-                Image(systemName: "house.fill")
-                Text("Home")
-            }
-            .tag(0)
-        }
-        .sheet(isPresented: $showWelcomeSheet) {
-            WelcomeSheet(showWelcomeSheet: $showWelcomeSheet)
-        }
-        .onAppear {
-            // Show the sheet only if it hasn't been shown before
+        Group {
             if !welcomeScreenShown {
-                showWelcomeSheet = true
+                WelcomeView()
+            } else {
+                MainView(selection: $selectedTab)
             }
+    }
+}
+
+struct MainView: View {
+    @Binding var selection: Int
+    var body: some View {
+        TabView {
+        NavigationView {
+            VStack {
+                Image(systemName: "globe")
+                Text("Hello World!")
+                    .font(.title)
+            }
+            .padding()
+        }
+        .tabItem {
+            Image(systemName: "house.fill")
+            Text("Home")
+        }
+        .tag(0)
         }
     }
 }
 
-struct WelcomeSheet: View {
-    @Binding var showWelcomeSheet: Bool
+struct WelcomeView: View {
     @AppStorage("WelcomeScreenShown") private var welcomeScreenShown = false
 
     var body: some View {
         NavigationView {
             VStack() {
-                Spacer()
                 VStack(){
                     Image("gradientsIcon")
                         .resizable()
@@ -56,17 +56,18 @@ struct WelcomeSheet: View {
                         .font(.system(size: 36))
                         .foregroundColor(Color(UIColor.systemBlue))
                 }
-                InformationDetailView(title: "Control", subTitle: "Easily control all your smart home devices in one app.", imageName: "slider.horizontal.3")
+                VStack(alignment: .leading) { 
+                    InformationDetailView(title: "Control", subTitle: "Easily control all your smart home devices in one app.", imageName: "slider.horizontal.3")
 
-                InformationDetailView(title: "Automate", subTitle: "Create custom automations to make your home smarter.", imageName: "sparkles")
+                    InformationDetailView(title: "Automate", subTitle: "Create custom automations to make your home smarter.", imageName: "sparkles")
 
-                InformationDetailView(title: "Manage", subTitle: "Keep track of your devices and their status.", imageName: "list.bullet")
-                
+                    InformationDetailView(title: "Manage", subTitle: "Keep track of your devices and their status.", imageName: "list.bullet")
+                }
+
                 Spacer(minLength: 30)
 
                 Button(action: {
                     welcomeScreenShown = true
-                    showWelcomeSheet = false
                 }) {
                     Text("Get Started")
                         .foregroundColor(.white)
