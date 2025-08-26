@@ -180,6 +180,8 @@ struct SecondPage: View {
     @State private var step = 1
     @State private var deviceIP: String = ""
 
+
+
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
@@ -233,10 +235,10 @@ struct SecondPage: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(RoundedRectangle(cornerRadius: 15)
-                            .fill(step == 2 && (deviceIP.count < 7 || (deviceIP.contains(".") == false && deviceIP.contains(".local") == false)) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
-                            .animation(.easeInOut(duration: 0.3), value: step == 2 && (deviceIP.count < 7 || (deviceIP.contains(".") == false && deviceIP.contains(".local") == false)))
+                            .fill(isValidIP(deviceIP) == false ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
+                            .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP) == false)
                 }
-                .disabled(step == 2 && (deviceIP.count < 7 || (deviceIP.contains(".") == false && deviceIP.contains(".local") == false)))
+                .disabled(isValidIP(deviceIP) == false)
                 Button("Skip") {
                     onSkip()
                 }
@@ -248,6 +250,18 @@ struct SecondPage: View {
             .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    private func isValidIP(_ ip: String) -> Bool {
+        if step != 2 { return false }
+        if ip.count > 6 {
+            if ip.contains(".local") {
+                false
+            }
+            if ip.filter({ $0 == "." }).count == 3 {
+                return false
+            }
+        }
+        return true
     }
 }
 
