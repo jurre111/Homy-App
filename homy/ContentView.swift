@@ -20,7 +20,7 @@ struct MainView: View {
     @Binding var selection: Int
     var body: some View {
         TabView(selection: $selection) {
-        ScrollView {
+        NavigationView {
             VStack {
                 Image(systemName: "globe")
                 Text("Hello World!")
@@ -60,7 +60,7 @@ struct FirstPage: View {
     let onNext: () -> Void
 
     var body: some View {
-        ScrollView {
+        NavigationView {
             VStack(alignment: .center) {
                 Spacer()
                 VStack() {
@@ -111,7 +111,7 @@ struct SecondPage: View {
     let onContinue: () -> Void
 
     var body: some View {
-        ScrollView {
+        NavigationView {
             VStack(alignment: .center) {
                 Spacer()
                 VStack() {
