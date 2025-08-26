@@ -162,6 +162,7 @@ struct SecondPage: View {
 
 struct ThirdPage: View {
     let onContinue: () -> Void
+    @State private var deviceIP: String = ""
 
     var body: some View {
         VStack(alignment: .center) {
