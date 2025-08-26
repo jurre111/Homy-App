@@ -3,17 +3,19 @@ import SwiftUI
 struct ContentView: View {
     @AppStorage("WelcomeScreenShown") private var welcomeScreenShown = false
     @State private var selectedTab = 0
+    @State private var showNextPage = false // Step 1
 
     var body: some View {
-        Group {
+        NavigationStack {
             if !welcomeScreenShown {
-                WelcomeView()
+                WelcomeView(showNextPage: $showNextPage) // Step 2
             } else {
                 MainView(selection: $selectedTab)
             }
         }
     }
 }
+
 
 struct MainView: View {
     @Binding var selection: Int
@@ -38,16 +40,17 @@ struct MainView: View {
 
 struct WelcomeView: View {
     @AppStorage("WelcomeScreenShown") private var welcomeScreenShown = false
-
+    @Binding var showNextPage: Bool
     var body: some View {
         NavigationView {
             VStack() {
                 VStack(){
-                    Image("gradientsIcon")
+                    Image(systemName: "house.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 180, alignment: .center)
                         .accessibility(hidden: true)
+                        .foregroundColor(Color(UIColor.systemBlue))
                     Text("Welcome to")
                         .fontWeight(.black)
                         .font(.system(size: 36))
@@ -69,6 +72,7 @@ struct WelcomeView: View {
 
                 Button(action: {
                     welcomeScreenShown = true
+                    showNextPage = true
                 }) {
                     Text("Get Started")
                         .foregroundColor(.white)
@@ -79,6 +83,9 @@ struct WelcomeView: View {
                             .fill(Color(UIColor.systemBlue)))
                         .padding(.bottom)
                 }
+                NavigationLink(destination: NewPageView(), isActive: $showNextPage) {
+                    EmptyView()
+                }
 
 
             }
@@ -86,6 +93,26 @@ struct WelcomeView: View {
         }
     }
 }
+
+struct NewPageView: View {
+    var body: some View {
+        NavigationView {
+            VStack() {
+                VStack() {
+                    Text("Add Your First")
+                        .fontWeight(.black)
+                        .font(.system(size: 36))
+
+                    Text("Smart Device")
+                        .fontWeight(.black)
+                        .font(.system(size: 36))
+                        .foregroundColor(Color(UIColor.systemBlue))
+                }
+            }
+        }
+    }
+}
+
 
 #Preview {
     ContentView()
