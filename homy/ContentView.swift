@@ -153,17 +153,20 @@ struct FirstPage: View {
 
 struct SecondPage: View {
     let onContinue: () -> Void
+    @State private var step = 1
+    @State private var deviceIP: String = ""
 
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
-            VStack() {
+
+            VStack {
                 Image(systemName: "homepod.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 180, alignment: .center)
-                    .accessibility(hidden: true)
+                    .frame(width: 180)
                     .foregroundColor(Color(UIColor.systemBlue))
+
                 Text("Add Your First")
                     .fontWeight(.black)
                     .font(.system(size: 36))
@@ -172,32 +175,59 @@ struct SecondPage: View {
                     .font(.system(size: 36))
                     .foregroundColor(Color(UIColor.systemBlue))
             }
-            .frame(maxHeight: .infinity)
-            Button(action: {
-                onContinue()
-            }) {
-                Text("Continue")
-                    .foregroundColor(.white)
-                    .font(.headline)
-                    .padding()
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                    .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .fill(Color(UIColor.systemBlue)))
+
+            // 👇 Show form only after step advances
+            if step == 2 {
+                Form {
+                    Section("Device's IP Address or Hostname") {
+                        TextField("192.168.x.x or mydevice.local", text: $deviceIP)
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
+                            .keyboardType(.URL)
+                    }
+                }
+                .frame(maxHeight: 200)
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
+                .animation(.easeInOut, value: step)
             }
-            .padding(.horizontal)
-            Button(action: {
-                onContinue()
-            }) {
-                Text("Skip")
+
+            Spacer()
+
+            VStack(spacing: 12) {
+                Button(action: {
+                    withAnimation {
+                        if step == 1 {
+                            step = 2  // reveal the form
+                        } else {
+                            onFinish() // finish onboarding
+                        }
+                    }
+                }) {
+                    Text(step == 1 ? "Continue" : "Finish")
+                        .foregroundColor(.white)
+                        .font(.headline)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(RoundedRectangle(cornerRadius: 15)
+                            .fill(Color(UIColor.systemBlue)))
+                }
+
+                if step == 1 {
+                    Button("Skip") {
+                        onContinue()
+                    }
                     .foregroundColor(.gray)
                     .font(.headline)
                     .padding()
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-            } 
+                    .frame(maxWidth: .infinity)
+                }
+            }
+            .padding(.horizontal)
         }
-        .frame(maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+
 
 struct ThirdPage: View {
     let onContinue: () -> Void
