@@ -140,7 +140,7 @@ struct SecondPage: View {
                 }
                 .scrollDisabled(true)
                 
-                Spacer(minLength: 30)
+                Spacer()
 
                 Button(action: {
                     onContinue()
@@ -152,6 +152,7 @@ struct SecondPage: View {
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                         .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
                             .fill(Color(UIColor.systemBlue)))
+                        .padding(.bottom)
                 }
                 .padding(.horizontal)
                 Button(action: {
@@ -164,6 +165,7 @@ struct SecondPage: View {
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                         .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
                             .fill(Color(UIColor.systemBackground)))
+                        .padding(.bottom)
                 }
                 .padding(.horizontal)
             }
