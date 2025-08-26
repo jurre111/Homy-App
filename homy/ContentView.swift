@@ -27,33 +27,20 @@ struct ContentView: View {
 struct WelcomeView: View {
     @Binding var showingWelcome: Bool
     @State private var welcomeTab = 0
-    var noAnimationTransaction: Transaction {
-        var transaction = Transaction(animation: nil)
-        transaction.disablesAnimations = true
-        return transaction
-}
 
     var body: some View {
         VStack {
             if welcomeTab == 0 {
-                FirstPage {
-                    withAnimation(.easeInOut(duration: 0.4)) {
-                        welcomeTab = 1
-                    }
-                }
+                FirstPage { welcomeTab = 1 }
+                    .onboardingTransition()
             } else if welcomeTab == 1 {
-                SecondPage {
-                    withAnimation(.easeInOut(duration: 0.4)) {
-                        welcomeTab = 2
-                    }
-                }
+                SecondPage { welcomeTab = 2 }
+                    .onboardingTransition()
             } else if welcomeTab == 2 {
                 ThirdPage {
                     // Mark onboarding as complete
                     UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
-                    withTransaction(noAnimationTransaction) {
-                        showingWelcome = false
-                    }
+                    showingWelcome = false
                 }
             }
         }
@@ -263,7 +250,15 @@ struct ThirdPage: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
-    
+
+extension View {
+    func onboardingTransition() -> some View {
+        self.transition(.asymmetric(
+            insertion: .move(edge: .trailing),
+            removal: .move(edge: .leading)
+        ))
+    }
+}
 
 #Preview {
     ContentView()
