@@ -101,7 +101,7 @@ struct SettingsView: View {
                 Text("Home")
             }
             .tag(0)
-            SettingsView()
+            SettingsView(selection: $selection)
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")
