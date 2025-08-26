@@ -293,12 +293,12 @@ struct ThirdPage: View {
                     )
 
                 Text(
-                    step == 1 ? "Connecting to": "Connection")
+                    connectionStatus == 1 ? "Connecting to": "Connection")
                     .fontWeight(.black)
                     .font(.system(size: 36))
                 Text(
-                    step == 1 ? "Smart Device":
-                    step == 2 ? "Successful": 
+                    connectionStatus == 1 ? "Smart Device":
+                    connectionStatus == 2 ? "Successful": 
                     "Failed"
                 )
                     .fontWeight(.black)
@@ -306,11 +306,11 @@ struct ThirdPage: View {
                     .foregroundColor(Color(UIColor.systemBlue))
             }
             Spacer(minLength: 30)
-            if step == 3 {
+            if connectionStatus != 1 {
                 Button(action: {
                     onContinue()
                 }) {
-                    Text("Continue")
+                    Text(connectionStatus == 2 ? "Continue" : "Back")
                         .foregroundColor(.white)
                         .font(.headline)
                         .padding()
@@ -327,10 +327,10 @@ struct ThirdPage: View {
                 animationIsActive.toggle()
             }
             Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { _ in
-                if step == 1 {
+                if connectionStatus == 1 {
                     timer?.invalidate()
                     timer = nil
-                    step = 3
+                    connectionStatus = 3
                 }
             }
         }
