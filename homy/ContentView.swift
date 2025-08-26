@@ -61,8 +61,9 @@ struct FirstPage: View {
 
     var body: some View {
         ScrollView {
-            VStack() {
-                VStack(){
+            VStack(allignment: .center) {
+                Spacer()
+                VStack() {
                     Image(systemName: "house.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -111,7 +112,8 @@ struct SecondPage: View {
 
     var body: some View {
         ScrollView {
-            VStack() {
+            VStack(allignment: .center) {
+                Spacer()
                 VStack() {
                     Text("Add Your First")
                         .fontWeight(.black)
