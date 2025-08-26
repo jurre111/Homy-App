@@ -37,43 +37,55 @@ struct WelcomeView: View {
     @Binding var showingWelcome: Bool
     @State private var step: WelcomeTab = .first
     @State private var secondPageStep = 1
-
+    @State private var goingBack = false // track if we are going back
 
     var body: some View {
         VStack {
             switch step {
             case .first:
                 FirstPage {
-                    withAnimation(.easeInOut) { step = .second }
+                    withAnimation(.easeInOut) {
+                        goingBack = false
+                        step = .second
+                    }
                 }
-                .transition(.moveAndFade)
+                .transition(pageTransition)
 
             case .second:
                 SecondPage(
                     onContinue: {
-                        withAnimation(.easeInOut) { step = .third }
+                        withAnimation(.easeInOut) {
+                            goingBack = false
+                            step = .third
+                        }
                     },
                     onSkip: {
-                        withAnimation(.easeInOut) { step = .fourth }
+                        withAnimation(.easeInOut) {
+                            goingBack = false
+                            step = .fourth
+                        }
                     },
                     step: $secondPageStep
                 )
-
-                .transition(.moveAndFade)
+                .transition(pageTransition)
 
             case .third:
                 ThirdPage(
                     onContinue: {
-                        withAnimation(.easeInOut) { step = .fourth }
+                        withAnimation(.easeInOut) {
+                            goingBack = false
+                            step = .fourth
+                        }
                     },
                     onBack: {
                         withAnimation(.easeInOut) {
+                            goingBack = true
                             step = .second
                             secondPageStep = 2
                         }
                     }
                 )
-                .transition(.moveAndFade)
+                .transition(pageTransition)
 
             case .fourth:
                 FourthPage {
@@ -82,14 +94,22 @@ struct WelcomeView: View {
                         showingWelcome = false
                     }
                 }
-                .transition(.moveAndFade)
+                .transition(pageTransition)
 
             case .done:
-                EmptyView() // not used directly, you can remove if you want
+                EmptyView()
             }
         }
     }
+
+    // Custom asymmetric transition
+    var pageTransition: AnyTransition {
+        goingBack
+            ? .asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing))
+            : .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading))
+    }
 }
+
 
 
 struct MainView: View {
