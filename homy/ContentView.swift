@@ -5,7 +5,9 @@ struct ContentView: View {
     @State private var selectedTab = 0
     var body: some View {
         if !WelcomeScreenShown {
-            WelcomeView()
+            NavigationView {
+                WelcomeView()
+            }
         } else {
             TabView(selection: $selectedTab) {
             NavigationView {
