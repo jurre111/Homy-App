@@ -236,7 +236,7 @@ struct SecondPage: View {
                             .fill(step == 2 && deviceIP.count < 7 ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
                             .animation(.easeInOut(duration: 0.3), value: step == 2 && deviceIP.count < 7)
                 }
-                .disabled(step == 2 && deviceIP.isEmpty)
+                .disabled(step == 2 && deviceIP.count < 7 || (deviceIP.contains(".") == false && deviceIP.contains(".local") == false))
                 Button("Skip") {
                     onSkip()
                 }
@@ -323,13 +323,15 @@ struct FourthPage: View {
                 Image(systemName: "checkmark.circle.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 180, alignment: .center)
+                    .frame(width: 150, alignment: .center)
                     .accessibility(hidden: true)
                     .foregroundColor(Color(UIColor.systemBlue))
+                    .opacity(0.8)
                 Text("All")
                     .fontWeight(.black)
-                    .font(.system(size: 36)) +
-                Text("Done")
+                    .font(.system(size: 36))
+                    .padding(.top) +
+                Text(" Done")
                     .fontWeight(.black)
                     .font(.system(size: 36))
                     .foregroundColor(Color(UIColor.systemBlue))
