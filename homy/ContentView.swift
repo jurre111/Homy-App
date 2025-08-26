@@ -132,41 +132,42 @@ struct SecondPage: View {
                 }
                 Form {
                     Section("Device's IP Adress or Hostname") {
-                        TextField("192.168.x.x or mydevice.local", text: .constant(""))
+                        TextField("192.168.x.x or mydevice.local", text: $deviceIP)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
                             .keyboardType(.URL)
                     }
                 }
                 .scrollDisabled(true)
+                .frame(maxHeight: 200)
                 
                 Spacer()
 
-                Button(action: {
-                    onContinue()
-                }) {
-                    Text("Continue")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .padding()
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(Color(UIColor.systemBlue)))
+                VStack(spacing: 12) {
+                    Button(action: {
+                        onContinue()
+                    }) {
+                        Text("Continue")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .padding()
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                            .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .fill(Color(UIColor.systemBlue)))
+                    }
+                    Button(action: {
+                        onContinue()
+                    }) {
+                        Text("Skip")
+                            .foregroundColor(.gray)
+                            .font(.headline)
+                            .padding()
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                            .padding(.bottom)
+                    }
                 }
                 .padding(.horizontal)
-                Button(action: {
-                    onContinue()
-                }) {
-                    Text("Skip")
-                        .foregroundColor(.gray)
-                        .font(.headline)
-                        .padding()
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(Color(UIColor.systemBackground)))
-                        .padding(.bottom)
-                }
-                .padding(.bottom, 20)
+                .padding(.bottom, 16)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
