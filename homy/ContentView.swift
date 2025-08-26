@@ -61,7 +61,7 @@ struct FirstPage: View {
 
     var body: some View {
         ScrollView {
-            VStack(allignment: .center) {
+            VStack(alignment: .center) {
                 Spacer()
                 VStack() {
                     Image(systemName: "house.fill")
@@ -112,7 +112,7 @@ struct SecondPage: View {
 
     var body: some View {
         ScrollView {
-            VStack(allignment: .center) {
+            VStack(alignment: .center) {
                 Spacer()
                 VStack() {
                     Text("Add Your First")
