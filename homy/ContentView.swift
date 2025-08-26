@@ -278,6 +278,8 @@ struct ThirdPage: View {
 
     var body: some View {
         VStack(alignment: .center) {
+            Spacer()
+            VStack {
                 Image(systemName: "wifi")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -288,9 +290,14 @@ struct ThirdPage: View {
                         isActive: animationIsActive
                     )
 
-            
-            Text("Connecting...")
-                .font(.headline)
+                Text("Connecting to")
+                    .fontWeight(.black)
+                    .font(.system(size: 36))
+                Text("Smart Device")
+                    .fontWeight(.black)
+                    .font(.system(size: 36))
+                    .foregroundColor(Color(UIColor.systemBlue))
+            }
         }
         .onAppear {
             animationIsActive = true
