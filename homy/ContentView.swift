@@ -39,26 +39,41 @@ struct MainView: View {
 
 struct WelcomeView: View {
     @State private var welcomeTab = 0
-    @AppStorage("WelcomeScreenShown") private var welcomeScreenShown = false
 
     var body: some View {
-        TabView(selection: $welcomeTab) {
-            FirstPage(onNext: {
-                welcomeTab = 1
-            })
-            .tag(0)
+        ZStack {
+            if welcomeTab == 0 {
+                FirstPage {
+                    withAnimation(.easeInOut) {
+                        welcomeTab = 1
+                    }
+                }
+                .transition(.move(edge: .trailing))
+            }
 
-            SecondPage(onContinue: {
-                welcomeScreenShown = true
-            })
-            .tag(1)
+            if welcomeTab == 1 {
+                SecondPage {
+                    withAnimation(.easeInOut) {
+                        welcomeTab = 2
+                    }
+                }
+                .transition(.move(edge: .trailing))
+            }
+
+            if welcomeTab == 2 {
+                ThirdPage {
+                    withAnimation(.easeInOut) {
+                        welcomeTab = 3
+                    }
+                }
+                .transition(.move(edge: .trailing))
+            }
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
     }
 }
 
 struct FirstPage: View {
-    let onNext: () -> Void
+    let onContinue: () -> Void
 
     var body: some View {
         NavigationView {
@@ -91,7 +106,7 @@ struct FirstPage: View {
                 Spacer(minLength: 30)
 
                 Button(action: {
-                    onNext()
+                    onContinue()
                 }) {
                     Text("Get Started")
                         .foregroundColor(.white)
@@ -160,73 +175,73 @@ struct SecondPage: View {
     }
 }
 
-//struct ThirdPage: View {
-//    let onContinue: () -> Void
-//    @State private var deviceIP = ""
-//    
-//    var body: some View {
-//        NavigationView {
-//            VStack(alignment: .center) {
-//                Spacer()
-//                VStack() {
-//                    Image(systemName: "homepod.fill")
-//                        .resizable()
-//                        .aspectRatio(contentMode: .fit)
-//                        .frame(width: 180, alignment: .center)
-//                        .accessibility(hidden: true)
-//                        .foregroundColor(Color(UIColor.systemBlue))
-//                    Text("Add Your First")
-//                        .fontWeight(.black)
-//                        .font(.system(size: 36))
-//
-//                    Text("Smart Device")
-//                        .fontWeight(.black)
-//                        .font(.system(size: 36))
-//                        .foregroundColor(Color(UIColor.systemBlue))
-//                }
-//                Form {
-//                    Section("Device's IP Adress or Hostname") {
-//                        TextField("192.168.x.x or mydevice.local", text: $deviceIP)
-//                            .textInputAutocapitalization(.never)
-//                            .disableAutocorrection(true)
-//                            .keyboardType(.URL)
-//                    }
-//                }
-//                .scrollDisabled(true)
-//                .frame(maxHeight: 200)
-//                
-//                Spacer()
-//
-//                VStack(spacing: 12) {
-//                    Button(action: {
-//                        onContinue()
-//                    }) {
-//                        Text("Continue")
-//                            .foregroundColor(.white)
-//                            .font(.headline)
-//                            .padding()
-//                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-//                            .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-//                                .fill(Color(UIColor.systemBlue)))
-//                    }
-//                    Button(action: {
-//                        onContinue()
-//                    }) {
-//                        Text("Skip")
-//                            .foregroundColor(.gray)
-//                            .font(.headline)
-//                            .padding()
-//                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-//                            .padding(.bottom)
-//                    }
-//                }
-//                .padding(.horizontal)
-//                .padding(.bottom, 0)
-//            }
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        }
-//    }
-//}
+struct ThirdPage: View {
+    let onContinue: () -> Void
+    @State private var deviceIP = ""
+    
+    var body: some View {
+        NavigationView {
+            VStack(alignment: .center) {
+                Spacer()
+                VStack() {
+                    Image(systemName: "homepod.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 180, alignment: .center)
+                        .accessibility(hidden: true)
+                        .foregroundColor(Color(UIColor.systemBlue))
+                    Text("Add Your First")
+                        .fontWeight(.black)
+                        .font(.system(size: 36))
+
+                    Text("Smart Device")
+                        .fontWeight(.black)
+                        .font(.system(size: 36))
+                        .foregroundColor(Color(UIColor.systemBlue))
+                }
+                Form {
+                    Section("Device's IP Adress or Hostname") {
+                        TextField("192.168.x.x or mydevice.local", text: $deviceIP)
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
+                            .keyboardType(.URL)
+                    }
+                }
+                .scrollDisabled(true)
+                .frame(maxHeight: 200)
+                
+                Spacer()
+
+                VStack(spacing: 12) {
+                    Button(action: {
+                        onContinue()
+                    }) {
+                        Text("Continue")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .padding()
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                            .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .fill(Color(UIColor.systemBlue)))
+                    }
+                    Button(action: {
+                        onContinue()
+                    }) {
+                        Text("Skip")
+                            .foregroundColor(.gray)
+                            .font(.headline)
+                            .padding()
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                            .padding(.bottom)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 0)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+}
 
 
 
