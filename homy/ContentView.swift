@@ -6,14 +6,15 @@ struct ContentView: View {
         if !WelcomeScreenShown {
             WelcomeView()
         } else {
-            MainView()
+            MainView() {
+                VStack {
+                    Image(systemName: "globe")
+                    Text("Hello World!")
+                        .font(.title)
+                }
+                .padding()
+            }
         }
-        VStack {
-            Image(systemName: "globe")
-            Text("Hello World!")
-                .font(.title)
-        }
-        .padding()
     }
 }
 
