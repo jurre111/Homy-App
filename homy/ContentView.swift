@@ -274,59 +274,25 @@ struct SecondPage: View {
 
 struct ThirdPage: View {
     let onContinue: () -> Void
-    @State private var deviceIP: String = ""
+    @State private var isAnimating = false
 
     var body: some View {
         VStack(alignment: .center) {
-            Spacer()
-            VStack() {
-                Image(systemName: "homepod.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 180, alignment: .center)
-                    .accessibility(hidden: true)
-                    .foregroundColor(Color(UIColor.systemBlue))
-                Text("Add Your First")
-                    .fontWeight(.black)
-                    .font(.system(size: 36))
-                Text("Smart Device")
-                    .fontWeight(.black)
-                    .font(.system(size: 36))
-                    .foregroundColor(Color(UIColor.systemBlue))
-            }
-            Form {
-                Section("Device's IP Adress or Hostname") {
-                    TextField("192.168.x.x or mydevice.local", text: $deviceIP)
-                        .textInputAutocapitalization(.never)
-                        .disableAutocorrection(true)
-                        .keyboardType(.URL)
-                }
-            }
-            .scrollDisabled(true)
-            .frame(maxHeight: 200)
+            Image(systemName: "antenna.radiowaves.left.and.right")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 60, height: 60)
+                .scaleEffect(isAnimating ? 1.2 : 0.8)
+                .opacity(isAnimating ? 0.6 : 1)
+                .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: isAnimating)
+                .onAppear { isAnimating = true }
+
             
-            Spacer()
-            Button(action: {
-                onContinue()
-            }) {
-                Text("Continue")
-                    .foregroundColor(.white)
-                    .font(.headline)
-                    .padding()
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                    .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .fill(Color(UIColor.systemBlue)))
-            }
-            .padding(.horizontal)
-            Button(action: {
-                onContinue()
-            }) {
-                Text("Skip")
-                    .foregroundColor(.gray)
-                    .font(.headline)
-                    .padding()
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-            }
+            Text("Connecting...")
+                .font(.headline)
+        }
+        .onAppear {
+            isAnimating = true
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -346,7 +312,6 @@ struct FourthPage: View {
                     .frame(width: 150, alignment: .center)
                     .accessibility(hidden: true)
                     .foregroundColor(Color(UIColor.systemBlue))
-                    .opacity(0.8)
                     .padding(.bottom)
                 Text("All")
                     .fontWeight(.black)
