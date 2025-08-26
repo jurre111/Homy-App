@@ -74,7 +74,7 @@ struct WelcomeSheet: View {
                         .padding()
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                         .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(Color.mainColor))
+                            .fill(Color(UIColor.systemBlue)))
                         .padding(.bottom)
                 }
 
