@@ -105,7 +105,7 @@ struct WelcomeView: View {
     // Custom asymmetric transition
     var pageTransition: AnyTransition {
         goingBack
-            ? .asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing))
+            ? .asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading))
             : .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading))
     }
 }
