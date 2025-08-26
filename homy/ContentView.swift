@@ -105,7 +105,7 @@ struct WelcomeView: View {
     // Custom asymmetric transition
     var pageTransition: AnyTransition {
         goingBack
-            ? .asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading))
+            ? .asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing))
             : .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading))
     }
 }
@@ -244,9 +244,11 @@ struct SecondPage: View {
                             .keyboardType(.URL)
                     }
                 }
+                .scrollDisabled(true)
                 .frame(maxHeight: 200)
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
                 .animation(.easeInOut, value: step)
+                .background(Color(UIColor.systemBackground))
             }
 
             Spacer()
