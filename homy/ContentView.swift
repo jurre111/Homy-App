@@ -193,7 +193,7 @@ struct SecondPage: View {
 
             Spacer()
 
-            VStack(spacing: 12) {
+            VStack() {
                 Button(action: {
                     withAnimation {
                         if step == 1 {
