@@ -11,7 +11,9 @@ struct ContentView: View {
         }
         .onAppear {
             if !welcomeScreenShown {
-                DispatchQueue.main.async {
+                var transaction = Transaction()
+                transaction.disablesAnimations = true
+                withTransaction(transaction) {
                     showingWelcome = true
                 }
             }
