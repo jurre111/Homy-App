@@ -68,6 +68,39 @@ struct MainView: View {
                 Text("Home")
             }
             .tag(0)
+            SettingsView(selection: $selection)
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+                }
+                .tag(1)
+            .tag(1)
+        }
+    }
+}
+
+struct SettingsView: View {
+    @Binding var selection: Int
+
+    var body: some View {
+        TabView(selection: $selection) {
+            VStack {
+                Image(systemName: "gear")
+                Text("Settings")
+                    .font(.title)
+            }
+            .tabItem {
+                Image(systemName: "house.fill")
+                Text("Home")
+            }
+            .tag(0)
+            SettingsView()
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+                }
+                .tag(1)
+            .tag(1)
         }
     }
 }
