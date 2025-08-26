@@ -53,6 +53,7 @@ struct WelcomeView: View {
             })
             .tag(1)
         }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
     }
 }
 
