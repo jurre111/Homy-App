@@ -109,7 +109,8 @@ struct FirstPage: View {
 
 struct SecondPage: View {
     let onContinue: () -> Void
-
+    @State private var deviceIP = ""
+    
     var body: some View {
         NavigationView {
             VStack(alignment: .center) {
