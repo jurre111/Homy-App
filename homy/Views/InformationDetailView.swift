@@ -4,13 +4,12 @@ struct InformationDetailView: View {
     var title: String = "title"
     var subTitle: String = "subTitle"
     var imageName: String = "car"
-    static var mainColor = Color(UIColor.systemIndigo)
 
     var body: some View {
         HStack(alignment: .center) {
             Image(systemName: imageName)
                 .font(.largeTitle)
-                .foregroundColor(.mainColor)
+                .foregroundColor(Color(UIColor.systemIndigo))
                 .padding()
                 .accessibility(hidden: true)
 

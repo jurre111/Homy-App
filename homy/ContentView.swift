@@ -54,7 +54,7 @@ struct WelcomeSheet: View {
                     Text("Gradients Game")
                         .fontWeight(.black)
                         .font(.system(size: 36))
-                        .foregroundColor(.mainColor)
+                        .foregroundColor(Color(UIColor.systemIndigo))
                 }
                 InformationDetailView(title: "Match", subTitle: "Match the gradients by moving the Red, Green and Blue sliders for the left and right colors.", imageName: "slider.horizontal.below.rectangle")
 
