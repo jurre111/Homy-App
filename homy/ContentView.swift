@@ -168,7 +168,6 @@ struct SecondPage: View {
                     }
                 }
                 .padding(.horizontal)
-                .padding(.bottom, 16)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
