@@ -115,6 +115,12 @@ struct SecondPage: View {
             VStack(alignment: .center) {
                 Spacer()
                 VStack() {
+                    Image(systemName: "homepod.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 180, alignment: .center)
+                        .accessibility(hidden: true)
+                        .foregroundColor(Color(UIColor.systemBlue))
                     Text("Add Your First")
                         .fontWeight(.black)
                         .font(.system(size: 36))
@@ -123,11 +129,19 @@ struct SecondPage: View {
                         .fontWeight(.black)
                         .font(.system(size: 36))
                         .foregroundColor(Color(UIColor.systemBlue))
-                Spacer(minLength: 20)
+                Form {
+                    Section("Device's IP Adress or Hostname") {
+                        TextField("192.168.x.x or mydevice.local", text: .constant(""))
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
+                            .keyboardType(.URL)
+                    }
+                }
+                Spacer(minLength: 30)
                 Button(action: {
                     onContinue()
                 }) {
-                    Text("Get Started")
+                    Text("Continue")
                         .foregroundColor(.white)
                         .font(.headline)
                         .padding()
