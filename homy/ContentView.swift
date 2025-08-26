@@ -129,6 +129,7 @@ struct SecondPage: View {
                         .fontWeight(.black)
                         .font(.system(size: 36))
                         .foregroundColor(Color(UIColor.systemBlue))
+                }
                 Form {
                     Section("Device's IP Adress or Hostname") {
                         TextField("192.168.x.x or mydevice.local", text: .constant(""))
@@ -137,7 +138,10 @@ struct SecondPage: View {
                             .keyboardType(.URL)
                     }
                 }
+                .scrollDisabled(true)
+                
                 Spacer(minLength: 30)
+
                 Button(action: {
                     onContinue()
                 }) {
@@ -150,11 +154,11 @@ struct SecondPage: View {
                             .fill(Color(UIColor.systemBlue)))
                         .padding(.bottom)
                 }
-                }
             }
         }
     }
 }
+
 
 
 #Preview {
