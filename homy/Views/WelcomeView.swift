@@ -1,22 +1,21 @@
 import SwiftUI
 
-struct ContentView: View {
+struct WelcomeView: View {
     @AppStorage("WelcomeScreenShown") private var WelcomeScreenShown = false
     var body: some View {
-        if !WelcomeScreenShown {
-            WelcomeView()
-        } else {
-            MainView()
-        }
         VStack {
             Image(systemName: "globe")
             Text("Hello World!")
                 .font(.title)
         }
         .padding()
+        .navigationTitle("Welcome")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Continue") {
+                    WelcomeScreenShown = true
+                }
+            }
+        }
     }
-}
-
-#Preview {
-    ContentView()
 }
