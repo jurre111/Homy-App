@@ -211,17 +211,14 @@ struct SecondPage: View {
                         .background(RoundedRectangle(cornerRadius: 15)
                             .fill(Color(UIColor.systemBlue)))
                 }
-                .padding(.bottom)
-
-                if step == 1 {
-                    Button("Skip") {
-                        onContinue()
-                    }
-                    .foregroundColor(.gray)
-                    .font(.headline)
-                    .padding()
-                    .frame(maxWidth: .infinity)
+                .disabled(step == 2 && deviceIP.isEmpty)
+                Button("Skip") {
+                    onContinue()
                 }
+                .foregroundColor(.gray)
+                .font(.headline)
+                .padding()
+                .frame(maxWidth: .infinity)
             }
             .padding(.horizontal)
         }
