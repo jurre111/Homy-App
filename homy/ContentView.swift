@@ -277,6 +277,7 @@ struct ThirdPage: View {
     let onContinue: () -> Void
     @State private var animationIsActive = false
     @State private var connectionStatus = 1
+    @State private var timer: Timer? = nil
 
     var body: some View {
         VStack(alignment: .center) {
