@@ -209,7 +209,7 @@ struct SecondPage: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(RoundedRectangle(cornerRadius: 15)
-                            .fill(Color(UIColor.systemBlue)))
+                            .fill(step == 2 && deviceIP.isEmpty ? Color.gray : Color(UIColor.systemBlue)))
                 }
                 .disabled(step == 2 && deviceIP.isEmpty)
                 Button("Skip") {
