@@ -154,6 +154,20 @@ struct SecondPage: View {
                             .fill(Color(UIColor.systemBlue)))
                         .padding(.bottom)
                 }
+                .padding(.horizontal)
+                Button(action: {
+                    onContinue()
+                }) {
+                    Text("Skip")
+                        .foregroundColor(.gray)
+                        .font(.headline)
+                        .padding()
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .fill(Color(systemBackground)))
+                        .padding(.bottom)
+                }
+                .padding(.horizontal)
             }
         }
     }
