@@ -51,10 +51,10 @@ struct WelcomeSheet: View {
                         .fontWeight(.black)
                         .font(.system(size: 36))
 
-                    Text("Gradients Game")
+                    Text("Homy")
                         .fontWeight(.black)
                         .font(.system(size: 36))
-                        .foregroundColor(Color(UIColor.systemIndigo))
+                        .foregroundColor(Color(UIColor.systemBlue))
                 }
                 InformationDetailView(title: "Match", subTitle: "Match the gradients by moving the Red, Green and Blue sliders for the left and right colors.", imageName: "slider.horizontal.below.rectangle")
 
@@ -64,10 +64,22 @@ struct WelcomeSheet: View {
                 
                 Spacer(minLength: 30)
 
+                Button(action: {
+                    welcomeScreenShown = true
+                    showWelcomeSheet = false
+                }) {
+                    Text("Get Started")
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color(UIColor.systemBlue))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+
 
             }
             .padding(.horizontal)
-            .navigationTitle("Welcome")
         }
     }
 }

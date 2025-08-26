@@ -9,7 +9,7 @@ struct InformationDetailView: View {
         HStack(alignment: .center) {
             Image(systemName: imageName)
                 .font(.largeTitle)
-                .foregroundColor(Color(UIColor.systemIndigo))
+                .foregroundColor(Color(UIColor.systemBlue))
                 .padding()
                 .accessibility(hidden: true)
 
