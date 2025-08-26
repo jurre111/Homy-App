@@ -233,8 +233,8 @@ struct SecondPage: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(RoundedRectangle(cornerRadius: 15)
-                            .fill(step == 2 && deviceIP.count < 7 ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
-                            .animation(.easeInOut(duration: 0.3), value: step == 2 && deviceIP.count < 7)
+                            .fill(step == 2 && (deviceIP.count < 7 || (deviceIP.contains(".") == false && deviceIP.contains(".local") == false)) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
+                            .animation(.easeInOut(duration: 0.3), value: step == 2 && (deviceIP.count < 7 || (deviceIP.contains(".") == false && deviceIP.contains(".local") == false)))
                 }
                 .disabled(step == 2 && (deviceIP.count < 7 || (deviceIP.contains(".") == false && deviceIP.contains(".local") == false)))
                 Button("Skip") {
