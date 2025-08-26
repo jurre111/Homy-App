@@ -36,7 +36,7 @@ struct WelcomeView: View {
                         welcomeTab = 1 
                     }
                 }
-                .transition(.moveAndFade)
+                .transition(.scale.combined(with: .slide))
             } else if welcomeTab == 1 {
                 SecondPage { 
                     withAnimation(.easeInOut) {
@@ -76,7 +76,6 @@ struct MainView: View {
                     Text("Settings")
                 }
                 .tag(1)
-            .tag(1)
         }
     }
 }
@@ -102,7 +101,6 @@ struct SettingsView: View {
                     Text("Settings")
                 }
                 .tag(1)
-            .tag(1)
         }
     }
 }
