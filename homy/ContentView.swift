@@ -24,38 +24,61 @@ struct ContentView: View {
     }
 }
 
+enum WelcomeTab {
+    case first
+    case second
+    case third
+    case fourth
+    case done
+}
+
+
 struct WelcomeView: View {
     @Binding var showingWelcome: Bool
-    @State private var welcomeTab = 0
+    @State private var step: WelcomeTab = .first
 
     var body: some View {
         VStack {
-            if welcomeTab == 0 {
+            switch step {
+            case .first:
                 FirstPage {
-                    withAnimation(.easeInOut) { 
-                        welcomeTab = 1 
-                    }
+                    withAnimation(.easeInOut) { step = .second }
                 }
                 .transition(.moveAndFade)
-            } else if welcomeTab == 1 {
-                SecondPage { 
-                    withAnimation(.easeInOut) {
-                        welcomeTab = 2
+
+            case .second:
+                SecondPage(
+                    onContinue: {
+                        withAnimation(.easeInOut) { step = .third }
+                    },
+                    onSkip: {
+                        withAnimation(.easeInOut) { step = .fourth }
                     }
-                }
+                )
                 .transition(.moveAndFade)
-            } else if welcomeTab == 2 {
+
+            case .third:
                 ThirdPage {
+                    withAnimation(.easeInOut) { step = .fourth }
+                }
+                .transition(.moveAndFade)
+
+            case .fourth:
+                FourthPage {
                     withAnimation(.easeInOut) {
                         UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
                         showingWelcome = false
-                    } 
+                    }
                 }
                 .transition(.moveAndFade)
+
+            case .done:
+                EmptyView() // not used directly, you can remove if you want
             }
         }
     }
 }
+
 
 struct MainView: View {
     @Binding var selection: Int
@@ -146,13 +169,14 @@ struct FirstPage: View {
                         .fill(Color(UIColor.systemBlue)))
                     .padding(.bottom)
             }
-        }
-        .padding(.horizontal)
+            .padding(.horizontal)
+        } 
     }
 }
 
 struct SecondPage: View {
     let onContinue: () -> Void
+    let onSkip: () -> Void
     @State private var step = 1
     @State private var deviceIP: String = ""
 
@@ -214,7 +238,7 @@ struct SecondPage: View {
                 }
                 .disabled(step == 2 && deviceIP.isEmpty)
                 Button("Skip") {
-                    onContinue()
+                    onSkip()
                 }
                 .foregroundColor(.gray)
                 .font(.headline)
@@ -283,6 +307,47 @@ struct ThirdPage: View {
                     .padding()
                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
             }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+struct FourthPage: View {
+    let onContinue: () -> Void
+    
+
+    var body: some View {
+        VStack(alignment: .center) {
+            Spacer()
+            VStack() {
+                Image(systemName: "checkmark.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 180, alignment: .center)
+                    .accessibility(hidden: true)
+                    .foregroundColor(Color(UIColor.systemBlue))
+                Text("All")
+                    .fontWeight(.black)
+                    .font(.system(size: 36)) +
+                Text("Done")
+                    .fontWeight(.black)
+                    .font(.system(size: 36))
+                    .foregroundColor(Color(UIColor.systemBlue))
+            }
+            Spacer()
+            Button(action: {
+                onContinue()
+            }) {
+                Text("Finish")
+                    .foregroundColor(.white)
+                    .font(.headline)
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                    .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill(Color(UIColor.systemBlue)))
+                    .padding(.bottom)
+            }
+            .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
