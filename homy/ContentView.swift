@@ -256,12 +256,13 @@ struct SecondPage: View {
         if ip.count > 6 {
             if ip.contains(".local") {
                 return false
-            }
-            if ip.filter({ $0 == "." }).count == 3 {
+            } else if ip.filter({ $0 == "." }).count == 3 {
                 let parts = ip.components(separatedBy: ".")
                 for part in parts {
                     if part.count > 0 {
-                        return false
+                        continue
+                    } else {
+                        return true
                     }
                 }
                 return false
@@ -287,7 +288,6 @@ struct ThirdPage: View {
                     .foregroundColor(Color(UIColor.systemBlue))
                     .symbolEffect(
                         .bounce.byLayer,
-                        options: .byLayer
                         isActive: animationIsActive
                     )
 
