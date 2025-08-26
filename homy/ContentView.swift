@@ -53,6 +53,7 @@ struct WelcomeView: View {
             })
             .tag(1)
         }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
     }
 }
 
@@ -131,9 +132,6 @@ struct SecondPage: View {
                         .foregroundColor(Color(UIColor.systemBlue))
                 }
                 .frame(maxHeight: .infinity)
-
-
-                Spacer(minLength: 30)
 
                 Button(action: {
                     onContinue()
