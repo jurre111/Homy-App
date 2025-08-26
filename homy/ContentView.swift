@@ -302,7 +302,9 @@ struct ThirdPage: View {
             Spacer(minLength: 30)
         }
         .onAppear {
-            animationIsActive = true
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                animationIsActive.toggle()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
