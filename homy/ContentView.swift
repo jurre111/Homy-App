@@ -108,7 +108,7 @@ struct FirstPage: View {
 }
 
 struct SecondPage: View {
-    let onNext: () -> Void
+    let onContinue: () -> Void
 
     var body: some View {
         NavigationView {
