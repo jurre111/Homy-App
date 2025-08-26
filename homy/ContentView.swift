@@ -288,7 +288,7 @@ struct ThirdPage: View {
                     .foregroundColor(Color(UIColor.systemBlue))
                     .symbolEffect(
                         .bounce.byLayer,
-                        isActive: animationIsActive
+                        value: animationIsActive
                     )
 
                 Text("Connecting to")
