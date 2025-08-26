@@ -157,11 +157,12 @@ struct SecondPage: View {
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                 } 
             }
+            .frame(maxHeight: .infinity)
         }
     }
 }
 
-//struct SecondPage: View {
+//struct ThirdPage: View {
 //    let onContinue: () -> Void
 //    @State private var deviceIP = ""
 //    
