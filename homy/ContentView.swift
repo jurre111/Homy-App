@@ -110,66 +110,67 @@ struct FirstPage: View {
 struct SecondPage: View {
     let onContinue: () -> Void
     @State private var deviceIP = ""
-    
+
     var body: some View {
         NavigationView {
-            VStack(alignment: .center) {
-                Spacer()
-                VStack() {
-                    Image(systemName: "homepod.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 180, alignment: .center)
-                        .accessibility(hidden: true)
-                        .foregroundColor(Color(UIColor.systemBlue))
-                    Text("Add Your First")
-                        .fontWeight(.black)
-                        .font(.system(size: 36))
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        Image(systemName: "homepod.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 180)
+                            .foregroundColor(Color(UIColor.systemBlue))
+                            .accessibility(hidden: true)
 
-                    Text("Smart Device")
-                        .fontWeight(.black)
-                        .font(.system(size: 36))
-                        .foregroundColor(Color(UIColor.systemBlue))
-                }
-                Form {
-                    Section("Device's IP Adress or Hostname") {
-                        TextField("192.168.x.x or mydevice.local", text: $deviceIP)
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                            .keyboardType(.URL)
+                        Text("Add Your First")
+                            .font(.system(size: 36, weight: .black))
+
+                        Text("Smart Device")
+                            .font(.system(size: 36, weight: .black))
+                            .foregroundColor(Color(UIColor.systemBlue))
+
+                        Form {
+                            Section("Device's IP Address or Hostname") {
+                                TextField("192.168.x.x or mydevice.local", text: $deviceIP)
+                                    .textInputAutocapitalization(.never)
+                                    .disableAutocorrection(true)
+                                    .keyboardType(.URL)
+                            }
+                        }
+                        .frame(maxHeight: 200)
+                        .scrollDisabled(true)
                     }
+                    .padding()
                 }
-                .scrollDisabled(true)
-                .frame(maxHeight: 200)
-                
-                Spacer()
 
+                // Bottom buttons pinned outside the scroll view
                 VStack(spacing: 12) {
-                    Button(action: {
-                        onContinue()
-                    }) {
+                    Button(action: { onContinue() }) {
                         Text("Continue")
                             .foregroundColor(.white)
                             .font(.headline)
                             .padding()
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                            .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .fill(Color(UIColor.systemBlue)))
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .fill(Color(UIColor.systemBlue))
+                            )
                     }
-                    Button(action: {
-                        onContinue()
-                    }) {
+
+                    Button(action: { onContinue() }) {
                         Text("Skip")
                             .foregroundColor(.gray)
                             .font(.headline)
                             .padding()
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                            .padding(.bottom)
+                            .frame(maxWidth: .infinity)
                     }
                 }
-                .padding(.horizontal)
+                .padding()
+                .background(Color(UIColor.systemBackground))
+                .safeAreaInset(edge: .bottom) {} // ensures buttons respect safe area
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .navigationBarHidden(true)
         }
     }
 }
