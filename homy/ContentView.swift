@@ -1,5 +1,12 @@
 import SwiftUI
 
+enum AppScreen {
+    case welcome
+    case onboarding
+    case main
+}
+
+
 struct ContentView: View {
     @AppStorage("WelcomeScreenShown") private var welcomeScreenShown = false
     @State private var selectedTab = 0
