@@ -199,7 +199,7 @@ struct SecondPage: View {
                         if step == 1 {
                             step = 2  // reveal the form
                         } else {
-                            onFinish() // finish onboarding
+                            onContinue() // finish onboarding
                         }
                     }
                 }) {
