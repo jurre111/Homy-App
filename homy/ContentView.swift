@@ -235,10 +235,10 @@ struct SecondPage: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(RoundedRectangle(cornerRadius: 15)
-                            .fill(isValidIP(deviceIP) == false ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
-                            .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP) == false)
+                            .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
+                            .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
                 }
-                .disabled(isValidIP(deviceIP) == false)
+                .disabled(isValidIP(deviceIP))
                 Button("Skip") {
                     onSkip()
                 }
