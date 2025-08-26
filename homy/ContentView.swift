@@ -258,6 +258,12 @@ struct SecondPage: View {
                 false
             }
             if ip.filter({ $0 == "." }).count == 3 {
+                let parts = ip.components(separatedBy: ".")
+                for part in parts {
+                    if part.count > 0 {
+                        return false
+                    }
+                }
                 return false
             }
         }
