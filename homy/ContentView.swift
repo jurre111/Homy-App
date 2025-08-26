@@ -32,10 +32,10 @@ struct WelcomeView: View {
         VStack {
             if welcomeTab == 0 {
                 FirstPage { welcomeTab = 1 }
-                    .onboardingTransition()
+                    ..transition(.move(edge: .trailing))
             } else if welcomeTab == 1 {
                 SecondPage { welcomeTab = 2 }
-                    .onboardingTransition()
+                    .transition(.move(edge: .trailing))
             } else if welcomeTab == 2 {
                 ThirdPage {
                     // Mark onboarding as complete
