@@ -327,10 +327,10 @@ struct FourthPage: View {
                     .accessibility(hidden: true)
                     .foregroundColor(Color(UIColor.systemBlue))
                     .opacity(0.8)
+                    .padding(.bottom)
                 Text("All")
                     .fontWeight(.black)
-                    .font(.system(size: 36))
-                    .padding(.top) +
+                    .font(.system(size: 36)) +
                 Text(" Done")
                     .fontWeight(.black)
                     .font(.system(size: 36))
