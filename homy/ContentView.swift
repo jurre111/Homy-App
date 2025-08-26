@@ -36,7 +36,7 @@ struct WelcomeView: View {
                         welcomeTab = 1 
                     }
                 }
-                .transition(.scale.combined(with: .slide))
+                .transition(.moveAndFade)
             } else if welcomeTab == 1 {
                 SecondPage { 
                     withAnimation(.easeInOut) {
@@ -260,8 +260,8 @@ struct ThirdPage: View {
 extension AnyTransition {
     static var moveAndFade: AnyTransition {
         .asymmetric(
-            insertion: .move(edge: .trailing).combined(with: .opacity),
-            removal: .scale.combined(with: .opacity)
+            insertion: .move(edge: .trailing),
+            removal: .move(edge: .leading)
         )
     }
 }
