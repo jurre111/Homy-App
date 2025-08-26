@@ -27,6 +27,11 @@ struct ContentView: View {
 struct WelcomeView: View {
     @Binding var showingWelcome: Bool
     @State private var welcomeTab = 0
+    var noAnimationTransaction: Transaction {
+        var transaction = Transaction(animation: nil)
+        transaction.disablesAnimations = true
+        return transaction
+}
 
     var body: some View {
         VStack {
@@ -46,7 +51,9 @@ struct WelcomeView: View {
                 ThirdPage {
                     // Mark onboarding as complete
                     UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
-                    showingWelcome = false
+                    withTransaction(noAnimationTransaction) {
+                        isPresented = true
+                    }
                 }
             }
         }
