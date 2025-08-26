@@ -255,7 +255,7 @@ struct SecondPage: View {
         if step != 2 { return false }
         if ip.count > 6 {
             if ip.contains(".local") {
-                false
+                return false
             }
             if ip.filter({ $0 == "." }).count == 3 {
                 let parts = ip.components(separatedBy: ".")
@@ -286,7 +286,8 @@ struct ThirdPage: View {
                     .frame(width: 180)
                     .foregroundColor(Color(UIColor.systemBlue))
                     .symbolEffect(
-                        .bounce,
+                        .bounce.byLayer,
+                        options: .byLayer
                         isActive: animationIsActive
                     )
 
@@ -298,6 +299,7 @@ struct ThirdPage: View {
                     .font(.system(size: 36))
                     .foregroundColor(Color(UIColor.systemBlue))
             }
+            Spacer(minLength: 30)
         }
         .onAppear {
             animationIsActive = true
