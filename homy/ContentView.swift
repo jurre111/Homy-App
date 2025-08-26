@@ -274,25 +274,26 @@ struct SecondPage: View {
 
 struct ThirdPage: View {
     let onContinue: () -> Void
-    @State private var isAnimating = false
+    @State private var animationIsActive = false
 
     var body: some View {
         VStack(alignment: .center) {
-            Image(systemName: "antenna.radiowaves.left.and.right")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 60, height: 60)
-                .scaleEffect(isAnimating ? 1.2 : 0.8)
-                .opacity(isAnimating ? 0.6 : 1)
-                .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: isAnimating)
-                .onAppear { isAnimating = true }
+                Image(systemName: "wifi")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 180)
+                    .foregroundColor(Color(UIColor.systemBlue))
+                    .symbolEffect(
+                        .bounce,
+                        isActive: animationIsActive
+                    )
 
             
             Text("Connecting...")
                 .font(.headline)
         }
         .onAppear {
-            isAnimating = true
+            animationIsActive = true
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
