@@ -50,28 +50,29 @@ struct WelcomeView: View {
 
             case .second:
                 SecondPage(
-                    step: $secondPageStep,
                     onContinue: {
                         withAnimation(.easeInOut) { step = .third }
                     },
                     onSkip: {
                         withAnimation(.easeInOut) { step = .fourth }
-                    }
+                    },
+                    step: $secondPageStep
                 )
+
                 .transition(.moveAndFade)
 
             case .third:
-                ThirdPage {
+                ThirdPage(
                     onContinue: {
                         withAnimation(.easeInOut) { step = .fourth }
                     },
                     onBack: {
                         withAnimation(.easeInOut) {
-                            step = .second 
+                            step = .second
                             secondPageStep = 2
                         }
                     }
-                }
+                )
                 .transition(.moveAndFade)
 
             case .fourth:
