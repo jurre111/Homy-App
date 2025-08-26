@@ -46,10 +46,12 @@ struct WelcomeView: View {
                 .transition(.moveAndFade)
             } else if welcomeTab == 2 {
                 ThirdPage {
-                    // Mark onboarding as complete
-                    UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
-                    showingWelcome = false
+                    withAnimation(.easeInOut) {
+                        UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
+                        showingWelcome = false
+                    } 
                 }
+                .transition(.moveAndFade)
             }
         }
     }
