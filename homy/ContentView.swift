@@ -52,7 +52,7 @@ struct WelcomeView: View {
                     // Mark onboarding as complete
                     UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
                     withTransaction(noAnimationTransaction) {
-                        isPresented = true
+                        showingWelcome = true
                     }
                 }
             }
