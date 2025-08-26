@@ -28,12 +28,12 @@ struct WelcomeView: View {
         VStack {
             if welcomeTab == 0 {
                 FirstPage {
-                    withAnimation {
+                    withAnimation(.easeInOut(duration: 0.4)) {
                         welcomeTab = 1
                     }
                 }
             } else if welcomeTab == 1 {
-                SecondPage {
+                SecondPage(.easeInOut(duration: 0.4)) {
                     withAnimation {
                         welcomeTab = 2
                     }
