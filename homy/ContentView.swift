@@ -209,7 +209,7 @@ struct SecondPage: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(RoundedRectangle(cornerRadius: 15)
-                            .fill(step == 2 && deviceIP.count < 7 ? Color(UIColor.systemGray3) : Color(UIColor.systemBlue)))
+                            .fill(step == 2 && deviceIP.count < 7 ? Color(UIColor.systemGray1) : Color(UIColor.systemBlue)))
                             .animation(.easeInOut(duration: 0.3), value: step == 2 && deviceIP.count < 7)
                 }
                 .disabled(step == 2 && deviceIP.isEmpty)
