@@ -11,7 +11,9 @@ struct ContentView: View {
         }
         .onAppear {
             if !welcomeScreenShown {
-                showingWelcome = true
+                DispatchQueue.main.async {
+                    showingWelcome = true
+                }
             }
         }
         .fullScreenCover(isPresented: $showingWelcome) {
