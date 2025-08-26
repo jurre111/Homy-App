@@ -211,6 +211,7 @@ struct SecondPage: View {
                         .background(RoundedRectangle(cornerRadius: 15)
                             .fill(Color(UIColor.systemBlue)))
                 }
+                .padding(bottom)
 
                 if step == 1 {
                     Button("Skip") {
