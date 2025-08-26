@@ -130,10 +130,11 @@ struct SecondPage: View {
                         .font(.system(size: 36))
                         .foregroundColor(Color(UIColor.systemBlue))
                 }
-            }
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
+                .frame(maxHeight: .infinity)
+
+
+                Spacer(minLength: 30)
+
                 Button(action: {
                     onContinue()
                 }) {
@@ -150,13 +151,11 @@ struct SecondPage: View {
                     onContinue()
                 }) {
                     Text("Skip")
-                        .foregroundColor(.white)
+                        .foregroundColor(.gray)
                         .font(.headline)
                         .padding()
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                        .padding(.bottom)
-                }
-                
+                } 
             }
         }
     }
