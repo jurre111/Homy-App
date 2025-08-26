@@ -276,6 +276,7 @@ struct SecondPage: View {
 struct ThirdPage: View {
     let onContinue: () -> Void
     @State private var animationIsActive = false
+    @State private var connectionStatus = 1
 
     var body: some View {
         VStack(alignment: .center) {
@@ -291,19 +292,46 @@ struct ThirdPage: View {
                         value: animationIsActive
                     )
 
-                Text("Connecting to")
+                Text(
+                    step == 1 ? "Connecting to": "Connection")
                     .fontWeight(.black)
                     .font(.system(size: 36))
-                Text("Smart Device")
+                Text(
+                    step == 1 ? "Smart Device":
+                    step == 2 ? "Successful": 
+                    "Failed"
+                )
                     .fontWeight(.black)
                     .font(.system(size: 36))
                     .foregroundColor(Color(UIColor.systemBlue))
             }
             Spacer(minLength: 30)
+            if step == 3 {
+                Button(action: {
+                    onContinue()
+                }) {
+                    Text("Continue")
+                        .foregroundColor(.white)
+                        .font(.headline)
+                        .padding()
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .fill(Color(UIColor.systemBlue)))
+                        .padding(.bottom)
+                }
+                .padding(.horizontal)
+            }
         }
         .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
                 animationIsActive.toggle()
+            }
+            Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { _ in
+                if step == 1 {
+                    timer?.invalidate()
+                    timer = nil
+                    step = 3
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
