@@ -164,7 +164,7 @@ struct SecondPage: View {
                         .padding()
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                         .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(Color(systemBackground)))
+                            .fill(Color(UIColor.systemBackground)))
                         .padding(.bottom)
                 }
                 .padding(.horizontal)
