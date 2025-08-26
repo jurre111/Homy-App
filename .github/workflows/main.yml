@@ -112,18 +112,18 @@ jobs:
         with:
           name: ${{ env.scheme }}.ipa
           path: ${{ env.scheme }}.ipa
-      - name: Move IPA to root of repository
-        run: |
-          mkdir -p downloads
-          mv "$scheme.ipa" "$GITHUB_WORKSPACE/downloads/"
-      - name: Commit and push IPA to repository
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git pull
-          git add "$GITHUB_WORKSPACE/downloads/$scheme.ipa"
-          git commit -m "Add IPA build artifact"
-          git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref_name }}
+#     - name: Move IPA to root of repository
+#       run: |
+#         mkdir -p downloads
+#         mv "$scheme.ipa" "$GITHUB_WORKSPACE/downloads/"
+#     - name: Commit and push IPA to repository
+#       run: |
+#         git config --global user.name "github-actions[bot]"
+#         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#         git pull
+#         git add "$GITHUB_WORKSPACE/downloads/$scheme.ipa"
+#         git commit -m "Add IPA build artifact"
+#         git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref_name }}
 
 
   release__nightly:
