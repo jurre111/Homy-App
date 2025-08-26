@@ -32,10 +32,16 @@ struct WelcomeView: View {
         VStack {
             if welcomeTab == 0 {
                 FirstPage { welcomeTab = 1 }
-                    .transition(.moveAndFade)
+                    .transition(
+                        .scale
+                        .combined(with: .slide)
+                    )
             } else if welcomeTab == 1 {
                 SecondPage { welcomeTab = 2 }
-                    .transition(.moveAndFade)
+                    .transition(
+                        .scale
+                        .combined(with: .slide)
+                    )
             } else if welcomeTab == 2 {
                 ThirdPage {
                     // Mark onboarding as complete
@@ -248,15 +254,6 @@ struct ThirdPage: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-extension AnyTransition {
-    static var moveAndFade: AnyTransition {
-        .asymmetric(
-            insertion: .move(edge: .trailing).combined(with: .opacity),
-            removal: .scale.combined(with: .opacity)
-        )
     }
 }
 
