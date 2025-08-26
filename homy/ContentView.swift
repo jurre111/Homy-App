@@ -194,31 +194,27 @@ struct ThirdPage: View {
             .frame(maxHeight: 200)
             
             Spacer()
-            VStack(spacing: 12) {
-                Button(action: {
-                    onContinue()
-                }) {
-                    Text("Continue")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .padding()
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(Color(UIColor.systemBlue)))
-                }
-                Button(action: {
-                    onContinue()
-                }) {
-                    Text("Skip")
-                        .foregroundColor(.gray)
-                        .font(.headline)
-                        .padding()
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                        .padding(.bottom)
-                }
+            Button(action: {
+                onContinue()
+            }) {
+                Text("Continue")
+                    .foregroundColor(.white)
+                    .font(.headline)
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                    .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill(Color(UIColor.systemBlue)))
             }
             .padding(.horizontal)
-            .padding(.bottom, 0)
+            Button(action: {
+                onContinue()
+            }) {
+                Text("Skip")
+                    .foregroundColor(.gray)
+                    .font(.headline)
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
