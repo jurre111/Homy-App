@@ -133,7 +133,7 @@ struct SecondPage: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .principal) {
+            ToolbarItemGroup(placement: .bottomBar) {
                 Button(action: {
                     onContinue()
                 }) {
@@ -145,8 +145,7 @@ struct SecondPage: View {
                         .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
                             .fill(Color(UIColor.systemBlue)))
                 }
-            }
-            ToolbarItem(placement: .principal) {
+                .padding(.horizontal)
                 Button(action: {
                     onContinue()
                 }) {
@@ -155,7 +154,9 @@ struct SecondPage: View {
                         .font(.headline)
                         .padding()
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                        .padding(.bottom)
                 }
+                
             }
         }
     }
