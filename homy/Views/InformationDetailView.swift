@@ -4,6 +4,7 @@ struct InformationDetailView: View {
     var title: String = "title"
     var subTitle: String = "subTitle"
     var imageName: String = "car"
+    var stepOpacity: Double = 1.0
 
     var body: some View {
         HStack(alignment: .center) {
@@ -25,6 +26,7 @@ struct InformationDetailView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
+        .opacity(stepOpacity)
         .padding(.top)
     }
 }
