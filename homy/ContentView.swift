@@ -334,8 +334,8 @@ struct ThirdPage: View {
                     "Failed"
                 )
                     .fontWeight(.black)
-                    .font(.system(size: 36))
-                    .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 3 ? Color(UIColor.systemRed) : Color(UIColor.systemBlue))
+                    .font(.system(size: connectionStatus == 1 || connectionStatus == 3 ? 36 : 18))
+                    .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 3 ? Color(UIColor.systemRed) : Color(UIColor.systemGreen))
                     .opacity(connectionStatus == 1 ? 1 : 0.8)
             }
             if connectionStatus == 2 {
@@ -347,7 +347,6 @@ struct ThirdPage: View {
                         .frame(width: 180)
                         .opacity(connectionStatus == 1 ? 1 : 0.8)
                         .foregroundColor(Color(UIColor.systemBlue))
-                        .animation(.easeInOut(duration: 0.5), value: connectionStatus)
                         .symbolEffect(
                             .bounce.byLayer,
                             value: animationIsActive
