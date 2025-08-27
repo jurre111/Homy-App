@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 struct ContentView: View {
     @AppStorage("WelcomeScreenShown") private var welcomeScreenShown = false
@@ -313,7 +314,7 @@ struct ThirdPage: View {
                     .frame(width: 180)
                     .opacity(connectionStatus == 1 ? 1 : 0.8)
                     .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
-                    .animation(.easeInOut(duration: 0.3), value: connectionStatus)
+                    .animation(.easeInOut(duration: 0.5), value: connectionStatus)
                     .symbolEffect(
                         .bounce.byLayer,
                         value: animationIsActive
@@ -378,15 +379,27 @@ struct ThirdPage: View {
             timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
                 animationIsActive.toggle()
             }
-            Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { _ in
-                if connectionStatus == 1 {
+            if canConnect(to: deviceIP) {
+                timer?.invalidate()
+                timer = nil
+                withAnimation {
+                    connectionStatus = 2
+                }
+            } else {
+                if canConnect(to: deviceIP) {
                     timer?.invalidate()
                     timer = nil
                     withAnimation {
                         connectionStatus = 2
                     }
+                } else {
+                    timer?.invalidate()
+                    timer = nil
+                    withAnimation {
+                        connectionStatus = 3
+                    }
                 }
-            }
+            }    
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -442,6 +455,32 @@ extension AnyTransition {
         )
     }
 }
+
+
+/// Tries to connect to a URL/IP and returns true if reachable, false otherwise
+func canConnect(to urlString: String) async -> Bool {
+    // Make sure the string is a valid URL
+    guard let url = URL(string: urlString.hasPrefix("http") ? urlString : "http://\(urlString)") else {
+        return false
+    }
+    
+    var request = URLRequest(url: url)
+    request.timeoutInterval = 5 // seconds
+    
+    do {
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse, 200..<400 ~= httpResponse.statusCode {
+            return true
+        }
+    } catch {
+        // Could not connect
+        return false
+    }
+    
+    return false
+}
+
 
 #Preview {
     ContentView()
