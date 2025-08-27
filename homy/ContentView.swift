@@ -343,10 +343,9 @@ struct ThirdPage: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 180)
-                        .opacity(connectionStatus == 1 ? 1 : 0.8)
                         .foregroundColor(Color(UIColor.systemBlue))
                         .symbolEffect(
-                            .bounce.byLayer,
+                            .pulse,
                             value: animationIsActive
                         )
 
@@ -419,13 +418,14 @@ struct ThirdPage: View {
                         connectionStatus = reachable ? 2 : 3
                     }
                 }
-            }
-            if connectionStatus == 2 {
-                Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { _ in
-                    connectionStatus = 4
-                    timer?.invalidate()
-                    timer = nil
-                }
+                if connectionStatus == 2 {
+                    Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { _ in
+                        connectionStatus = 4
+                        timer?.invalidate()
+                        timer = nil
+                    }
+                }                
+
             } 
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
