@@ -176,7 +176,7 @@ struct FirstPage: View {
                     .foregroundColor(Color(UIColor.systemBlue))
             }
             VStack(alignment: .leading) { 
-                InformationDetailView(title: "Control", subTitle: "Easily control all your smart home devices in one app.", imageName: "apps.ipad.landscape")
+                InformationDetailView(title: "Control", subTitle: "Easily control all your smart home devices in one app.", imageName: "wrench.and.screwdriver")
                 InformationDetailView(title: "Automate", subTitle: "Create custom automations to make your home smarter.", imageName: "memorychip")
                 InformationDetailView(title: "Manage", subTitle: "Keep track of your devices and their status.", imageName: "mail.stack")
             }
