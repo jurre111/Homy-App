@@ -311,6 +311,7 @@ struct ThirdPage: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 180)
+                    .opacity(connectionStatus == 1 ? 1 : 0.8)
                     .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
                     .symbolEffect(
                         .bounce.byLayer,
@@ -323,12 +324,13 @@ struct ThirdPage: View {
                     .font(.system(size: 36))
                 Text(
                     connectionStatus == 1 ? "Smart Device":
-                    connectionStatus == 2 ? "Successful": 
+                    connectionStatus == 2 ? "Succeeded": 
                     "Failed"
                 )
                     .fontWeight(.black)
                     .font(.system(size: 36))
                     .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
+                    .opacity(connectionStatus == 1 ? 1 : 0.8)
             }
             Spacer(minLength: 30)
             if connectionStatus == 2 {
