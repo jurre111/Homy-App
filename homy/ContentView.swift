@@ -84,8 +84,14 @@ struct WelcomeView: View {
                             secondPageStep = 2
                         }
                     }
+                    onSkip: {
+                        withAnimation(.easeInOut) {
+                            goingBack = false
+                            step = .fourth
+                        }
+                    }
                 )
-                .transition(.asymmetric(insertion: .move(edge: goingBack ? .leading : .trailing), removal: .move(edge: goingBack ? .trailing : .leading)))
+                .transition(.goForth)
 
             case .fourth:
                 FourthPage {
@@ -303,6 +309,7 @@ struct SecondPage: View {
 struct ThirdPage: View {
     let onContinue: () -> Void
     let onBack: () -> Void
+    let onSkip: () -> Void
     @State private var animationIsActive = false
     @State private var connectionStatus = 1
     @State private var timer: Timer? = nil
@@ -335,20 +342,44 @@ struct ThirdPage: View {
                     .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
             }
             Spacer(minLength: 30)
-            if connectionStatus != 1 {
+            if connectionStatus == 2 {
                 Button(action: {
-                    connectionStatus == 2 ? onContinue() : onBack()
+                    onContinue()
                 }) {
-                    Text(connectionStatus == 2 ? "Continue" : "Retry")
+                    Text("Continue")
                         .foregroundColor(.white)
                         .font(.headline)
                         .padding()
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                         .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
                             .fill(Color(UIColor.systemBlue)))
-                        .padding(.bottom)
+                        .padding(.botom)
                 }
                 .padding(.horizontal)
+                .animation(.easeInOut, value: step)
+            } else if connectionStatus == 3 {
+                VStack() {
+                    Button(action: {
+                        onBack()
+                    }) {
+                        Text("Retry")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .padding()
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                            .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .fill(Color(UIColor.systemBlue)))
+                    }
+                    Button("Skip") {
+                        onSkip()
+                    }
+                    .foregroundColor(.gray)
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                }
+                .padding(.horizontal)
+                .animation(.easeInOut, value: step)
             }
         }
         .onAppear {
