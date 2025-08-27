@@ -5,13 +5,15 @@ struct InformationDetailView: View {
     var subTitle: String = "subTitle"
     var imageName: String = "car"
     var stepOpacity: Double = 1.0
+    var imageWidth: CGFloat = 50 // fixed width for all images
 
     var body: some View {
-        HStack(alignment: .center) {
+        HStack(alignment: .center, spacing: 16) {
             Image(systemName: imageName)
-                .font(.largeTitle)
+                .resizable()               // allows scaling
+                .scaledToFit()             // keeps aspect ratio
+                .frame(width: imageWidth)  // fixed width
                 .foregroundColor(Color(UIColor.systemBlue))
-                .padding()
                 .accessibility(hidden: true)
 
             VStack(alignment: .leading) {
