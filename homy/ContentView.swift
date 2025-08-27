@@ -346,7 +346,7 @@ struct ThirdPage: View {
                         .foregroundColor(Color(UIColor.systemBlue))
                         .symbolEffect(
                             .pulse,
-                            value: animationIsActive
+                            value: connectionStatus == 2 ? animationIsActive : true
                         )
 
                     Text(
@@ -418,14 +418,6 @@ struct ThirdPage: View {
                         connectionStatus = reachable ? 2 : 3
                     }
                 }
-                if connectionStatus == 2 {
-                    Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { _ in
-                        connectionStatus = 4
-                        timer?.invalidate()
-                        timer = nil
-                    }
-                }                
-
             } 
         }
         .onChange(of: connectionStatus) { newStatus in
