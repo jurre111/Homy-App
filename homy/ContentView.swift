@@ -41,65 +41,66 @@ struct WelcomeView: View {
 
     var body: some View {
         ZStack {
-            Group {
-                switch step {
-                case .first:
-                    FirstPage {
+            switch step {
+            case .first:
+                FirstPage {
+                    withAnimation(.easeInOut) {
+                        goingBack = false
+                        step = .second
+                    }
+                }
+                .transition(goingBack ? .goBack : .goForth)
+
+            case .second:
+                SecondPage(
+                    onContinue: {
                         withAnimation(.easeInOut) {
                             goingBack = false
-                            step = .second
+                            step = .third
                         }
-                    }
-
-                case .second:
-                    SecondPage(
-                        onContinue: {
-                            withAnimation(.easeInOut) {
-                                goingBack = false
-                                step = .third
-                            }
-                        },
-                        onSkip: {
-                            withAnimation(.easeInOut) {
-                                goingBack = false
-                                step = .fourth
-                            }
-                        },
-                        step: $secondPageStep
-                    )
-
-                case .third:
-                    ThirdPage(
-                        onContinue: {
-                            withAnimation(.easeInOut) {
-                                goingBack = false
-                                step = .fourth
-                            }
-                        },
-                        onBack: {
-                            withAnimation(.easeInOut) {
-                                goingBack = true
-                                step = .second
-                                secondPageStep = 2
-                            }
-                        }
-                    )
-
-                case .fourth:
-                    FourthPage {
+                    },
+                    onSkip: {
                         withAnimation(.easeInOut) {
-                            UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
-                            showingWelcome = false
+                            goingBack = false
+                            step = .fourth
+                        }
+                    },
+                    step: $secondPageStep
+                )
+                .transition(goingBack ? .goBack : .goForth)
+
+            case .third:
+                ThirdPage(
+                    onContinue: {
+                        withAnimation(.easeInOut) {
+                            goingBack = false
+                            step = .fourth
+                        }
+                    },
+                    onBack: {
+                        withAnimation(.easeInOut) {
+                            goingBack = true
+                            step = .second
+                            secondPageStep = 2
                         }
                     }
+                )
+                .transition(goingBack ? .goBack : .goForth)
 
-                case .done:
-                    EmptyView()
+            case .fourth:
+                FourthPage {
+                    withAnimation(.easeInOut) {
+                        UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
+                        showingWelcome = false
+                    }
                 }
+                .transition(goingBack ? .goBack : .goForth)
+
+            case .done:
+                EmptyView()
             }
-            .transition(goingBack ? .goBack : .goForth)
-            .id(step) // 👈 forces SwiftUI to see it as a new view
         }
+        .id(step) // 👈 still needed to force new identity
     }
 }
 
