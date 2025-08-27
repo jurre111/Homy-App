@@ -9,12 +9,10 @@ struct InformationDetailView: View {
     var body: some View {
         HStack(alignment: .center) {
             Image(systemName: imageName)
-                .font(.largeTitle)
-                .foregroundColor(Color(UIColor.systemBlue))
-                .padding()
                 .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 50, alignment: .center)
+                .scaledToFit() // scales symbol while maintaining aspect ratio
+                .frame(width: 40, height: 40) // flexible, smaller than before
+                .foregroundColor(Color(UIColor.systemBlue))
                 .accessibility(hidden: true)
 
             VStack(alignment: .leading) {
