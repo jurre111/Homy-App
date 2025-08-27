@@ -49,7 +49,7 @@ struct WelcomeView: View {
                         step = .second
                     }
                 }
-                .transition(pageTransition)
+                .transition(.goForth)
 
             case .second:
                 SecondPage(
@@ -67,7 +67,7 @@ struct WelcomeView: View {
                     },
                     step: $secondPageStep
                 )
-                .transition(pageTransition)
+                .transition(onContinue ? .goForth : .goBack)
 
             case .third:
                 ThirdPage(
@@ -85,7 +85,7 @@ struct WelcomeView: View {
                         }
                     }
                 )
-                .transition(pageTransition)
+                .transition(.goForth)
 
             case .fourth:
                 FourthPage {
@@ -94,19 +94,12 @@ struct WelcomeView: View {
                         showingWelcome = false
                     }
                 }
-                .transition(pageTransition)
+                .transition(.goForth)
 
             case .done:
                 EmptyView()
             }
         }
-    }
-
-    // Custom asymmetric transition
-    var pageTransition: AnyTransition {
-        goingBack
-            ? .asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing))
-            : .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading))
     }
 }
 
@@ -417,10 +410,16 @@ struct FourthPage: View {
 }
 
 extension AnyTransition {
-    static var moveAndFade: AnyTransition {
+    static var goForth: AnyTransition {
         .asymmetric(
             insertion: .move(edge: .trailing),
             removal: .move(edge: .leading)
+        )
+    }
+    static var goBack: AnyTransition {
+        .asymmetric(
+            insertion: .move(edge: .leading),
+            removal: .move(edge: .trailing)
         )
     }
 }
