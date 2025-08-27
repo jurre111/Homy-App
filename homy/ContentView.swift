@@ -39,6 +39,7 @@ struct WelcomeView: View {
     @State private var step: WelcomeTab = .first
     @State private var secondPageStep = 1
     @State private var goingBack = false // track if we are going back
+    @State private var deviceIP: String = ""
 
     var body: some View {
         VStack {
@@ -66,7 +67,8 @@ struct WelcomeView: View {
                             step = .fourth
                         }
                     },
-                    step: $secondPageStep
+                    step: $secondPageStep,
+                    deviceIP: $deviceIP
                 )
                 .transition(.goForth)
 
@@ -199,7 +201,7 @@ struct SecondPage: View {
     let onContinue: () -> Void
     let onSkip: () -> Void
     @Binding var step: Int
-    @State private var deviceIP: String = ""
+    @Binding var deviceIP: String
 
 
 
@@ -303,6 +305,7 @@ struct ThirdPage: View {
     @State private var animationIsActive = false
     @State private var connectionStatus = 1
     @State private var timer: Timer? = nil
+    @Binding var deviceIP: String
 
     var body: some View {
         VStack(alignment: .center) {
