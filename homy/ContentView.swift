@@ -146,17 +146,6 @@ struct SettingsView: View {
                 Text("Settings")
                     .font(.title)
             }
-            .tabItem {
-                Image(systemName: "gear")
-                Text("Settings")
-            }
-            .tag(0)
-            MainView(selection: $selection)
-                .tabItem {
-                    Image(systemName: "house.fill")
-                    Text("Home")
-                }
-                .tag(1)
         }
     }
 }
