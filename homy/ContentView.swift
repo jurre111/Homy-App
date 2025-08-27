@@ -312,16 +312,16 @@ struct ThirdPage: View {
         VStack(alignment: .center) {
             Spacer()
             VStack {
-                Image(systemName: "wifi")
+                Image(systemName: connectionStatus == 2 ? "checkmark.circle.fill" : "wifi")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 180)
+                    .frame(width: connectionStatus == 2 ? 100 : 180)
                     .opacity(connectionStatus == 1 ? 1 : 0.8)
                     .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
                     .animation(.easeInOut(duration: 0.5), value: connectionStatus)
                     .symbolEffect(
                         .bounce.byLayer,
-                        value: animationIsActive
+                        value: connectionStatus == 1 ? true : animationIsActive
                     )
 
                 Text(
@@ -335,8 +335,38 @@ struct ThirdPage: View {
                 )
                     .fontWeight(.black)
                     .font(.system(size: 36))
-                    .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
+                    .foregroundColor(Color(UIColor.systemBlue))
                     .opacity(connectionStatus == 1 ? 1 : 0.8)
+            }
+            if connectionStatus == 2 {
+                VStack {
+                    Image(systemName: connectionStatus == 4 ? "checkmark.circle.fill" : "doc.plaintext.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 180)
+                        .opacity(connectionStatus == 1 ? 1 : 0.8)
+                        .foregroundColor(Color(UIColor.systemBlue))
+                        .animation(.easeInOut(duration: 0.5), value: connectionStatus)
+                        .symbolEffect(
+                            .bounce.byLayer,
+                            value: animationIsActive
+                        )
+
+                    Text(
+                        connectionStatus == 2 ? "Checking": "Correct")
+                        .fontWeight(.black)
+                        .font(.system(size: 36))
+                    Text(
+                        connectionStatus == 2 ? "Data Format":
+                        connectionStatus == 4 ? "Format": 
+                        "Failed"
+                    )
+                        .fontWeight(.black)
+                        .font(.system(size: 36))
+                        .foregroundColor(connectionStatus == 2 ? Color(UIColor.systemBlue) : connectionStatus == 4 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
+                        .opacity(connectionStatus == 1 ? 1 : 0.8)
+                }
+                .animation(.easeInOut, value: connectionStatus)
             }
             Spacer(minLength: 30)
             if connectionStatus == 2 {
@@ -386,15 +416,19 @@ struct ThirdPage: View {
             Task {
                 let reachable = await canConnect(to: deviceIP)
                 Timer.scheduledTimer(withTimeInterval: reachable ? 4.0 : 0.0, repeats: false) { _ in
-                    animationIsActive.toggle()
-                    timer?.invalidate()
-                    timer = nil
+
                     withAnimation(.easeInOut) {
                         connectionStatus = reachable ? 2 : 3
                     }
                 }
             }
-            
+            if connectionStatus == 2 {
+                Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { _ in
+                    connectionStatus = 4
+                    timer?.invalidate()
+                    timer = nil
+                }
+            } 
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -460,7 +494,7 @@ func canConnect(to urlString: String) async -> Bool {
     }
     
     var request = URLRequest(url: url)
-    request.timeoutInterval = 8 // seconds
+    request.timeoutInterval = 7 // seconds
     
     do {
         let (_, response) = try await URLSession.shared.data(for: request)
