@@ -356,7 +356,7 @@ struct ThirdPage: View {
                         .padding(.botom)
                 }
                 .padding(.horizontal)
-                .animation(.easeInOut, value: step)
+                .animation(.easeInOut, value: connectionStatus)
             } else if connectionStatus == 3 {
                 VStack() {
                     Button(action: {
@@ -379,7 +379,7 @@ struct ThirdPage: View {
                     .frame(maxWidth: .infinity)
                 }
                 .padding(.horizontal)
-                .animation(.easeInOut, value: step)
+                .animation(.easeInOut, value: connectionStatus)
             }
         }
         .onAppear {
