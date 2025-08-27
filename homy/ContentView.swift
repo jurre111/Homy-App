@@ -37,10 +37,10 @@ struct WelcomeView: View {
     @Binding var showingWelcome: Bool
     @State private var step: WelcomeTab = .first
     @State private var secondPageStep = 1
-    @State private var goingBack = false
+    @State private var goingBack = false // track if we are going back
 
     var body: some View {
-        ZStack {
+        VStack {
             switch step {
             case .first:
                 FirstPage {
@@ -49,7 +49,7 @@ struct WelcomeView: View {
                         step = .second
                     }
                 }
-                .transition(goingBack ? .goBack : .goForth)
+                .transition(.goForth)
 
             case .second:
                 SecondPage(
@@ -67,7 +67,7 @@ struct WelcomeView: View {
                     },
                     step: $secondPageStep
                 )
-                .transition(goingBack ? .goBack : .goForth)
+                .transition(.goForth)
 
             case .third:
                 ThirdPage(
@@ -85,7 +85,7 @@ struct WelcomeView: View {
                         }
                     }
                 )
-                .transition(goingBack ? .goBack : .goForth)
+                .transition(.asymmetric(insertion: .move(edge: goingBack ? .leading : .trailing), removal: .move(edge: goingBack ? .trailing : .leading)))
 
             case .fourth:
                 FourthPage {
@@ -94,16 +94,14 @@ struct WelcomeView: View {
                         showingWelcome = false
                     }
                 }
-                .transition(goingBack ? .goBack : .goForth)
+                .transition(.goForth)
 
             case .done:
                 EmptyView()
             }
         }
-        .id(step) // 👈 still needed to force new identity
     }
 }
-
 
 
 
@@ -341,7 +339,7 @@ struct ThirdPage: View {
                 Button(action: {
                     connectionStatus == 2 ? onContinue() : onBack()
                 }) {
-                    Text(connectionStatus == 2 ? "Continue" : "Back")
+                    Text(connectionStatus == 2 ? "Continue" : "Retry")
                         .foregroundColor(.white)
                         .font(.headline)
                         .padding()
@@ -416,12 +414,6 @@ extension AnyTransition {
         .asymmetric(
             insertion: .move(edge: .trailing),
             removal: .move(edge: .leading)
-        )
-    }
-    static var goBack: AnyTransition {
-        .asymmetric(
-            insertion: .move(edge: .leading),
-            removal: .move(edge: .trailing)
         )
     }
 }
