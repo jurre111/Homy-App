@@ -92,7 +92,8 @@ struct WelcomeView: View {
                             goingBack = false
                             step = .fourth
                         }
-                    }
+                    },
+                    deviceIP: $deviceIP
                 )
                 .transition(.goForth)
 
@@ -382,27 +383,15 @@ struct ThirdPage: View {
             timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
                 animationIsActive.toggle()
             }
-            if canConnect(to: deviceIP) {
+            Task {
+                let reachable = await canConnect(to: deviceIP)
                 timer?.invalidate()
                 timer = nil
-                withAnimation {
-                    connectionStatus = 2
+                withAnimation(.easeInOut) {
+                    connectionStatus = reachable ? 2 : 3
                 }
-            } else {
-                if canConnect(to: deviceIP) {
-                    timer?.invalidate()
-                    timer = nil
-                    withAnimation {
-                        connectionStatus = 2
-                    }
-                } else {
-                    timer?.invalidate()
-                    timer = nil
-                    withAnimation {
-                        connectionStatus = 3
-                    }
-                }
-            }    
+            }
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -468,7 +457,7 @@ func canConnect(to urlString: String) async -> Bool {
     }
     
     var request = URLRequest(url: url)
-    request.timeoutInterval = 5 // seconds
+    request.timeoutInterval = 8 // seconds
     
     do {
         let (_, response) = try await URLSession.shared.data(for: request)
