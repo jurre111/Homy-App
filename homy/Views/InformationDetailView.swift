@@ -13,6 +13,9 @@ struct InformationDetailView: View {
                 .foregroundColor(Color(UIColor.systemBlue))
                 .padding()
                 .accessibility(hidden: true)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, alignment: .center)
 
             VStack(alignment: .leading) {
                 Text(title)
