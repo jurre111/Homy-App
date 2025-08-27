@@ -353,7 +353,7 @@ struct ThirdPage: View {
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                         .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
                             .fill(Color(UIColor.systemBlue)))
-                        .padding(.botom)
+                        .padding(.bottom)
                 }
                 .padding(.horizontal)
                 .animation(.easeInOut, value: connectionStatus)
