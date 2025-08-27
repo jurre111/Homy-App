@@ -83,7 +83,7 @@ struct WelcomeView: View {
                             step = .second
                             secondPageStep = 2
                         }
-                    }
+                    },
                     onSkip: {
                         withAnimation(.easeInOut) {
                             goingBack = false
