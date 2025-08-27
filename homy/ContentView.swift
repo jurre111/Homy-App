@@ -379,7 +379,9 @@ struct ThirdPage: View {
                 if connectionStatus == 1 {
                     timer?.invalidate()
                     timer = nil
-                    connectionStatus = 3
+                    withAnimation {
+                        connectionStatus = 3
+                    }
                 }
             }
         }
