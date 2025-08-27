@@ -315,19 +315,19 @@ struct ThirdPage: View {
                 Image(systemName: connectionStatus == 2 ? "checkmark.circle.fill" : "wifi")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: connectionStatus == 2 ? 100 : 180)
+                    .frame(width: connectionStatus == 2 ? 70 : 180)
                     .opacity(connectionStatus == 1 ? 1 : 0.8)
-                    .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
+                    .foregroundColor(Color(UIColor.systemBlue))
                     .animation(.easeInOut(duration: 0.5), value: connectionStatus)
                     .symbolEffect(
                         .bounce.byLayer,
-                        value: connectionStatus == 1 ? true : animationIsActive
+                        value: connectionStatus == 1 ? animationIsActive : true
                     )
 
                 Text(
                     connectionStatus == 1 ? "Connecting to": "Connection")
                     .fontWeight(.black)
-                    .font(.system(size: 36))
+                    .font(.system(size: connectionStatus == 1 || connectionStatus == 3 ? 36 : 18))
                 Text(
                     connectionStatus == 1 ? "Smart Device":
                     connectionStatus == 2 ? "Succeeded": 
@@ -335,10 +335,11 @@ struct ThirdPage: View {
                 )
                     .fontWeight(.black)
                     .font(.system(size: 36))
-                    .foregroundColor(Color(UIColor.systemBlue))
+                    .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 3 ? Color(UIColor.systemRed) : Color(UIColor.systemBlue))
                     .opacity(connectionStatus == 1 ? 1 : 0.8)
             }
             if connectionStatus == 2 {
+                Spacer()
                 VStack {
                     Image(systemName: connectionStatus == 4 ? "checkmark.circle.fill" : "doc.plaintext.fill")
                         .resizable()
