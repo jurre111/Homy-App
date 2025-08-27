@@ -313,6 +313,7 @@ struct ThirdPage: View {
                     .frame(width: 180)
                     .opacity(connectionStatus == 1 ? 1 : 0.8)
                     .foregroundColor(connectionStatus == 1 ? Color(UIColor.systemBlue) : connectionStatus == 2 ? Color(UIColor.systemGreen) : Color(UIColor.systemRed))
+                    .animation(.easeInOut(duration: 0.3), value: connectionStatus)
                     .symbolEffect(
                         .bounce.byLayer,
                         value: animationIsActive
