@@ -345,6 +345,7 @@ struct ThirdPage: View {
                     imageName: "list.bullet", 
                     stepOpacity: connectionStatus < 6 && connectionStatus != 3 ? 0.5 : 1.0)
             }
+            .padding(.horizontal)
             Spacer(minLength: 30)
             if connectionStatus == 7 {
                 Button(action: {
