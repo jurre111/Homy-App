@@ -147,14 +147,14 @@ struct SettingsView: View {
                     .font(.title)
             }
             .tabItem {
-                Image(systemName: "house.fill")
-                Text("Home")
+                Image(systemName: "gear")
+                Text("Settings")
             }
             .tag(0)
-            SettingsView(selection: $selection)
+            MainView(selection: $selection)
                 .tabItem {
-                    Image(systemName: "gear")
-                    Text("Settings")
+                    Image(systemName: "house.fill")
+                    Text("Home")
                 }
                 .tag(1)
         }
