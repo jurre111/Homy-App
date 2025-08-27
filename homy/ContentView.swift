@@ -49,7 +49,7 @@ struct WelcomeView: View {
                         step = .second
                     }
                 }
-                .transition(.goForth)
+                .transition(goingBack ? .goBack : .goForth)
 
             case .second:
                 SecondPage(
@@ -67,7 +67,7 @@ struct WelcomeView: View {
                     },
                     step: $secondPageStep
                 )
-                .transition(goForth)
+                .transition(goingBack ? .goBack : .goForth)
 
             case .third:
                 ThirdPage(
@@ -94,7 +94,7 @@ struct WelcomeView: View {
                         showingWelcome = false
                     }
                 }
-                .transition(.goForth)
+                .transition(goingBack ? .goBack : .goForth)
 
             case .done:
                 EmptyView()
