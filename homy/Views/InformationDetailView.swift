@@ -12,10 +12,10 @@ struct InformationDetailView: View {
                 .font(.largeTitle)
                 .foregroundColor(Color(UIColor.systemBlue))
                 .padding()
-                .accessibility(hidden: true)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 50, alignment: .center)
+                .accessibility(hidden: true)
 
             VStack(alignment: .leading) {
                 Text(title)
