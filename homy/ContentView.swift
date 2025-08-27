@@ -316,9 +316,7 @@ struct ThirdPage: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: connectionStatus == 2 ? 70 : 180)
-                    .opacity(connectionStatus == 1 ? 1 : 0.8)
                     .foregroundColor(Color(UIColor.systemBlue))
-                    .animation(.easeInOut(duration: 0.5), value: connectionStatus)
                     .symbolEffect(
                         .bounce.byLayer,
                         value: connectionStatus == 1 ? animationIsActive : true
