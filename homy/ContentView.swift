@@ -387,6 +387,7 @@ struct ThirdPage: View {
                 let reachable = await canConnect(to: deviceIP)
                 Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { _ in
                     animationIsActive.toggle()
+                }
                 timer?.invalidate()
                 timer = nil
                 withAnimation(.easeInOut) {
