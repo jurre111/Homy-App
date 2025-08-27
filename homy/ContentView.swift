@@ -335,8 +335,8 @@ struct ThirdPage: View {
                     subTitle: connectionStatus == 1 ? "Trying to connect to your device" : connectionStatus == 4 ? "Connecting to your device failed. Please refer to our documentation for more information" : "Connecting to your device succeeded", 
                     imageName: connectionStatus == 1 ? "wifi" : connectionStatus == 4 ? "wifi.slash" : "checkmark.circle.fill")
                 InformationDetailView(
-                    title: connectionStatus == < 3 ? "Checking Data Format..." : connectionStatus == 5 ? "Incorrect Data Format" : "Correct Data Format", 
-                    subTitle: connectionStatus == < 3 ? "Verifying that the data is formatted correctly." : connectionStatus == 5 ? "The data from your device is not formatted correctly. Please refer to our documentation for more information." : "The data from your device is formatted correctly.", 
+                    title: connectionStatus < 3 ? "Checking Data Format..." : connectionStatus == 5 ? "Incorrect Data Format" : "Correct Data Format", 
+                    subTitle: connectionStatus < 3 ? "Verifying that the data is formatted correctly." : connectionStatus == 5 ? "The data from your device is not formatted correctly. Please refer to our documentation for more information." : "The data from your device is formatted correctly.", 
                     imageName: "sparkles", 
                     stepOpacity: connectionStatus == 1 || connectionStatus == 4 ? 0.5 : 1.0)
                 InformationDetailView(
