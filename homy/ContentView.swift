@@ -37,71 +37,72 @@ struct WelcomeView: View {
     @Binding var showingWelcome: Bool
     @State private var step: WelcomeTab = .first
     @State private var secondPageStep = 1
-    @State private var goingBack = false // track if we are going back
+    @State private var goingBack = false
 
     var body: some View {
-        VStack {
-            switch step {
-            case .first:
-                FirstPage {
-                    withAnimation(.easeInOut) {
-                        goingBack = false
-                        step = .second
-                    }
-                }
-                .transition(goingBack ? .goBack : .goForth)
-
-            case .second:
-                SecondPage(
-                    onContinue: {
+        ZStack {
+            Group {
+                switch step {
+                case .first:
+                    FirstPage {
                         withAnimation(.easeInOut) {
                             goingBack = false
-                            step = .third
-                        }
-                    },
-                    onSkip: {
-                        withAnimation(.easeInOut) {
-                            goingBack = false
-                            step = .fourth
-                        }
-                    },
-                    step: $secondPageStep
-                )
-                .transition(goingBack ? .goBack : .goForth)
-
-            case .third:
-                ThirdPage(
-                    onContinue: {
-                        withAnimation(.easeInOut) {
-                            goingBack = false
-                            step = .fourth
-                        }
-                    },
-                    onBack: {
-                        withAnimation(.easeInOut) {
-                            goingBack = true
                             step = .second
-                            secondPageStep = 2
                         }
                     }
-                )
-                .transition(goingBack ?.goBack : .goForth)
 
-            case .fourth:
-                FourthPage {
-                    withAnimation(.easeInOut) {
-                        UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
-                        showingWelcome = false
+                case .second:
+                    SecondPage(
+                        onContinue: {
+                            withAnimation(.easeInOut) {
+                                goingBack = false
+                                step = .third
+                            }
+                        },
+                        onSkip: {
+                            withAnimation(.easeInOut) {
+                                goingBack = false
+                                step = .fourth
+                            }
+                        },
+                        step: $secondPageStep
+                    )
+
+                case .third:
+                    ThirdPage(
+                        onContinue: {
+                            withAnimation(.easeInOut) {
+                                goingBack = false
+                                step = .fourth
+                            }
+                        },
+                        onBack: {
+                            withAnimation(.easeInOut) {
+                                goingBack = true
+                                step = .second
+                                secondPageStep = 2
+                            }
+                        }
+                    )
+
+                case .fourth:
+                    FourthPage {
+                        withAnimation(.easeInOut) {
+                            UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
+                            showingWelcome = false
+                        }
                     }
-                }
-                .transition(goingBack ? .goBack : .goForth)
 
-            case .done:
-                EmptyView()
+                case .done:
+                    EmptyView()
+                }
             }
+            .transition(goingBack ? .goBack : .goForth)
+            .id(step) // 👈 forces SwiftUI to see it as a new view
         }
     }
 }
+
 
 
 
