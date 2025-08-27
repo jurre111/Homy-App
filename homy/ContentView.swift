@@ -176,9 +176,9 @@ struct FirstPage: View {
                     .foregroundColor(Color(UIColor.systemBlue))
             }
             VStack(alignment: .leading) { 
-                InformationDetailView(title: "Control", subTitle: "Easily control all your smart home devices in one app.", imageName: "slider.horizontal.3")
-                InformationDetailView(title: "Automate", subTitle: "Create custom automations to make your home smarter.", imageName: "sparkles")
-                InformationDetailView(title: "Manage", subTitle: "Keep track of your devices and their status.", imageName: "list.bullet")
+                InformationDetailView(title: "Control", subTitle: "Easily control all your smart home devices in one app.", imageName: "slider.horizontal.below.rectangle")
+                InformationDetailView(title: "Automate", subTitle: "Create custom automations to make your home smarter.", imageName: "memorychip")
+                InformationDetailView(title: "Manage", subTitle: "Keep track of your devices and their status.", imageName: "mail.stack")
             }
             Spacer(minLength: 30)
             Button(action: {

@@ -8,14 +8,12 @@ struct InformationDetailView: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            VStack() {
-                Image(systemName: imageName)
-                    .font(.largeTitle)
-                    .foregroundColor(Color(UIColor.systemBlue))
-                    .padding()
-                    .accessibility(hidden: true)
-            }
-            .frame(width: 40, height: 40, alignment: .center)
+            Image(systemName: imageName)
+                .font(.largeTitle)
+                .foregroundColor(Color(UIColor.systemBlue))
+                .padding()
+                .accessibility(hidden: true)
+
             VStack(alignment: .leading) {
                 Text(title)
                     .font(.headline)
