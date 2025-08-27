@@ -375,7 +375,6 @@ struct ThirdPage: View {
                     }
                     .foregroundColor(.gray)
                     .font(.headline)
-                    .padding()
                     .frame(maxWidth: .infinity)
                 }
                 .padding(.horizontal)
