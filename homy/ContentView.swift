@@ -321,14 +321,14 @@ struct ThirdPage: View {
                         .bounce.byLayer,
                         value: connectionStatus == 1 ? animationIsActive : true
                     )
-
-                Text(
-                    connectionStatus == 1 ? "Connecting to": "Connection")
-                    .fontWeight(.black)
-                    .font(.system(size: connectionStatus == 1 || connectionStatus == 3 ? 36 : 18))
+                if connectionStatus == 1 {
+                    Text("Connecting to")
+                        .fontWeight(.black)
+                        .font(.system(size: connectionStatus == 1 || connectionStatus == 3 ? 36 : 18))
+                }
                 Text(
                     connectionStatus == 1 ? "Smart Device":
-                    connectionStatus == 2 ? "Succeeded": 
+                    connectionStatus == 2 || connectionStatus == 4 ? "Connected": 
                     "Failed"
                 )
                     .fontWeight(.black)
@@ -413,7 +413,7 @@ struct ThirdPage: View {
             }
             Task {
                 let reachable = await canConnect(to: deviceIP)
-                Timer.scheduledTimer(withTimeInterval: reachable ? 4.0 : 0.0, repeats: false) { _ in
+                Timer.scheduledTimer(withTimeInterval: reachable ? 3.0 : 0.0, repeats: false) { _ in
 
                     withAnimation(.easeInOut) {
                         connectionStatus = reachable ? 2 : 3
