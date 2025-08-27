@@ -67,7 +67,7 @@ struct WelcomeView: View {
                     },
                     step: $secondPageStep
                 )
-                .transition(onContinue ? .goForth : .goBack)
+                .transition(goForth)
 
             case .third:
                 ThirdPage(
@@ -85,7 +85,7 @@ struct WelcomeView: View {
                         }
                     }
                 )
-                .transition(.goForth)
+                .transition(goingBack ?.goBack : .goForth)
 
             case .fourth:
                 FourthPage {
