@@ -428,6 +428,16 @@ struct ThirdPage: View {
 
             } 
         }
+        .onChange(of: connectionStatus) { newStatus in
+            if newStatus == 2 {
+                Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { _ in
+                    connectionStatus = 4
+                    timer?.invalidate()
+                    timer = nil
+                }
+            }
+            
+        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
