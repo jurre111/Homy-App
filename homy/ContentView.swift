@@ -346,7 +346,7 @@ struct ThirdPage: View {
                     stepOpacity: [1, 4].contains(connectionStatus) ? 0.1 : 1.0)
                 InformationDetailView(
                     title: [1, 2, 3, 4, 5].contains(connectionStatus) ? "Getting Entities..." : connectionStatus == 6 ? "No Entities Found" : "Entities Found", 
-                    subTitle: connectionStatus < 4 ? "Getting entities from your device." : connectionStatus == 6 ? "No entities were found in your device. Please refer to our documentation for more information." : " \(entityAmount) entities were found in your device.", 
+                    subTitle: connectionStatus < 4 ? "Getting entities from your device." : connectionStatus == 6 ? "No entities were found in your device. Please refer to our documentation for more information." : "\(entityAmount) entities were found in your device.", 
                     imageName: [1, 2, 3, 4, 5].contains(connectionStatus) ? "lightbulb" : connectionStatus == 6 ? "text.badge.xmark" : "checkmark.circle.fill", 
                     stepOpacity: [1, 2, 4, 5].contains(connectionStatus) ? 0.1 : 1.0)
             }
