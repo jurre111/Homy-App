@@ -339,7 +339,7 @@ struct ThirdPage: View {
                     subTitle: connectionStatus < 3 ? "Verifying that the data is formatted correctly." : connectionStatus == 5 ? "The data from your device is not formatted correctly. Please refer to our documentation for more information." : "The data from your device is formatted correctly.", 
                     imageName: "sparkles", 
                     stepOpacity: [1, 4].contains(connectionStatus) ? 0.2 : 1.0)
-                InformationDetailView(2
+                InformationDetailView(
                     title: [1, 2, 3, 4, 5].contains(connectionStatus) ? "Getting Entities..." : connectionStatus == 6 ? "No Entities Found" : "Entities Found", 
                     subTitle: connectionStatus < 4 ? "Getting entities from your device." : connectionStatus == 6 ? "No entities were found in your device. Please refer to our documentation for more information." : "There are entities in your device.", 
                     imageName: "list.bullet", 
