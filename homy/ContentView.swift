@@ -336,13 +336,13 @@ struct ThirdPage: View {
                     imageName: connectionStatus == 1 ? "wifi" : connectionStatus == 4 ? "wifi.slash" : "checkmark.circle.fill")
                 InformationDetailView(
                     title: [1, 2, 4].contains(connectionStatus) ? "Verifying Data Format..." : connectionStatus == 5 ? "Incorrect Data Format" : "Correct Data Format", 
-                    subTitle: connectionStatus < 3 ? "Verifying that the data is formatted correctly." : connectionStatus == 5 ? "The data from your device is not formatted correctly. Please refer to our documentation for more information." : "The data from your device is formatted correctly.", 
-                    imageName: "sparkles", 
+                    subTitle: [1, 2, 4].contains(connectionStatus) ? "Verifying that the data is formatted correctly." : connectionStatus == 5 ? "The data from your device is not formatted correctly. Please refer to our documentation for more information." : "The data from your device is formatted correctly.", 
+                    imageName: [1, 2, 4].contains(connectionStatus) ? "doc.text.magnifyingglass" : connectionStatus == 5 ? "doc.text.magnifyingglass" : "checkmark.circle.fill", 
                     stepOpacity: [1, 4].contains(connectionStatus) ? 0.1 : 1.0)
                 InformationDetailView(
                     title: [1, 2, 3, 4, 5].contains(connectionStatus) ? "Getting Entities..." : connectionStatus == 6 ? "No Entities Found" : "Entities Found", 
                     subTitle: connectionStatus < 4 ? "Getting entities from your device." : connectionStatus == 6 ? "No entities were found in your device. Please refer to our documentation for more information." : "There are entities in your device.", 
-                    imageName: "list.bullet", 
+                    imageName: [1, 2, 3, 4, 5].contains(connectionStatus) ? "lightbulb" : connectionStatus == 6 ? "text.badge.xmark" : "checkmark.circle.fill", 
                     stepOpacity: [1, 2, 4, 5].contains(connectionStatus) ? 0.1 : 1.0)
             }
             .padding(.horizontal)
