@@ -318,7 +318,7 @@ struct ThirdPage: View {
                     .frame(width: 140)
                     .foregroundColor(Color(UIColor.systemBlue))
                     .symbolEffect(
-                        .bounce.byLayer,
+                        .pulse,
                         value: connectionStatus == 1 ? animationIsActive : true
                     )
                 Text("Configuring Your")
@@ -362,7 +362,7 @@ struct ThirdPage: View {
                 }
                 .padding(.horizontal)
                 .animation(.easeInOut, value: connectionStatus)
-            } else if connectionStatus > 3 && connectionStatus < 7 {
+            } else if [4, 5, 6].contains(connectionStatus) {
                 VStack() {
                     Button(action: {
                         onBack()
@@ -393,23 +393,28 @@ struct ThirdPage: View {
             }
             Task {
                 let reachable = await canConnect(to: deviceIP)
-                Timer.scheduledTimer(withTimeInterval: reachable ? 3.0 : 0.0, repeats: false) { _ in
+                Timer.scheduledTimer(withTimeInterval: reachable ? 2.0 : 0.0, repeats: false) { _ in
 
                     withAnimation(.easeInOut) {
-                        connectionStatus = reachable ? 3 : 4
+                        connectionStatus = reachable ? 2 : 4
                     }
                 }
-            } 
-        }
-        .onChange(of: connectionStatus) { newStatus in
-            if newStatus == 2 {
-                Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { _ in
-                    connectionStatus = 4
-                    timer?.invalidate()
-                    timer = nil
+                if reachable {
+                    Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { _ in
+
+                        withAnimation(.easeInOut) {
+                            connectionStatus = 3
+                        }
+                    }
+                    Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { _ in
+
+                        withAnimation(.easeInOut) {
+                            connectionStatus = 7
+                        }
+                    }  
                 }
-            }
-            
+                
+            } 
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
