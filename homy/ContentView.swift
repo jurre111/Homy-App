@@ -33,11 +33,6 @@ enum WelcomeTab {
     case done
 }
 
-struct Device: Codable {
-    let ip: String
-    let entities: [String]
-}
-
 
 struct WelcomeView: View {
     @Binding var showingWelcome: Bool
@@ -45,6 +40,7 @@ struct WelcomeView: View {
     @State private var secondPageStep = 1
     @State private var goingBack = false // track if we are going back
     @State private var deviceIP: String = ""
+    @State private var deviceName: String = ""
 
     var body: some View {
         VStack {
@@ -69,11 +65,12 @@ struct WelcomeView: View {
                     onSkip: {
                         withAnimation(.easeInOut) {
                             goingBack = false
-                            step = .fourth
+                            step = .done
                         }
                     },
                     step: $secondPageStep,
-                    deviceIP: $deviceIP
+                    deviceIP: $deviceIP,
+                    deviceName: $deviceName
                 )
                 .transition(.goForth)
 
@@ -95,24 +92,31 @@ struct WelcomeView: View {
                     onSkip: {
                         withAnimation(.easeInOut) {
                             goingBack = false
-                            step = .fourth
+                            step = .done
                         }
                     },
-                    deviceIP: $deviceIP
+                    deviceIP: $deviceIP,
+                    deviceName: $deviceName
                 )
                 .transition(.goForth)
 
             case .fourth:
                 FourthPage {
                     withAnimation(.easeInOut) {
-                        UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
-                        showingWelcome = false
+                        goingBack = false
+                        step = .done
                     }
                 }
                 .transition(.goForth)
 
             case .done:
-                EmptyView()
+                Done {
+                    withAnimation(.easeInOut) {
+                        UserDefaults.standard.set(true, forKey: "WelcomeScreenShown")
+                        showingWelcome = false
+                    }
+                }
+                .transition(.goForth)
             }
         }
     }
@@ -208,8 +212,7 @@ struct SecondPage: View {
     let onSkip: () -> Void
     @Binding var step: Int
     @Binding var deviceIP: String
-
-
+    @Binding var deviceName: String
 
     var body: some View {
         VStack(alignment: .center) {
@@ -234,6 +237,12 @@ struct SecondPage: View {
             // 👇 Show form only after step advances
             if step == 2 {
                 Form {
+                    Section("Device Name") {
+                        TextField("My Smart Device", text: $deviceName)
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
+                            .keyboardType(.URL)
+                    }
                     Section("Device's IP Address or Hostname") {
                         TextField("192.168.x.x or mydevice.local", text: $deviceIP)
                             .textInputAutocapitalization(.never)
@@ -313,6 +322,9 @@ struct ThirdPage: View {
     @State private var timer: Timer? = nil
     @State private var entityAmount: Int = 0
     @Binding var deviceIP: String
+    @Binding var deviceName: String
+    private var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
+
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
@@ -415,15 +427,19 @@ struct ThirdPage: View {
 
                 if  entities != nil {
                     entityAmount = (entities?["amount"] as? Int) ?? 0
-                    let devices = [Device(ip: deviceIP, entities: entities?["entities"] as? [String] ?? [])]
-                    let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
+                    let devices = [
+                        deviceName: [
+                            "ip": deviceIP,
+                            "entities": entities["entities"]
+                        ]
+                    ]
 
                     // Save
-                    let data = try JSONEncoder().encode(devices)
-                    try data.write(to: url)
+                    let data = try JSONSerialization.data(withJSONObject: devices, options: [.prettyPrinted])
+                    try data.write(to: devicesJsonUrl)
 
                     // Load
-                    let loaded = try JSONDecoder().decode([Device].self, from: Data(contentsOf: url))
+                    let loaded = try JSONDecoder().decode([Device].self, from: Data(contentsOf: devicesJsonUrl))
                 }
 
                 withAnimation(.easeInOut) {
@@ -436,6 +452,54 @@ struct ThirdPage: View {
 }
 
 struct FourthPage: View {
+    let onContinue: () -> Void
+    @Binding var deviceName: String
+    private var entityNames: [String]
+    private var entityList: [
+        String:[String:String]
+    ]
+    private var devices: [String: [String: Any]]
+    private var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
+
+    var body: some View {
+        VStack(alignment: .center) {
+            Form(entityNames, id: \.self) { entity in
+                Section(entity) {
+                    TextField("Name", text: $entityList[entity]["name"] ?? entity)
+                        .keyboardType(.Name)
+                    TextField("Unit", text: $entityList[entity]["unit"] ?? "")
+                        .keyboardType(.Name)
+
+                }
+            }
+            Button(action: {
+                devices[deviceName]["entities"] = entityList
+                let data = try JSONSerialization.data(withJSONObject: devices, options: [.prettyPrinted])
+                try data.write(to: devicesJsonUrl)
+                onContinue()
+            }) {
+                Text("Continue")
+                    .foregroundColor(.white)
+                    .font(.headline)
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                    .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill(Color(UIColor.systemBlue)))
+                    .padding(.bottom)
+            }            
+        }
+        .onAppear {
+            let loadedData = try Data(contentsOf: url)
+            if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData, options: []) as? [String: [String: Any]] {
+                entityNames = loadedDevices[deviceName]["entities"] as! [String]
+                devices = loadedDevices
+            }
+
+        }
+    }
+}
+
+struct Done: View {
     let onContinue: () -> Void
     
 
