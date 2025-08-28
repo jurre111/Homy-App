@@ -410,7 +410,7 @@ struct ThirdPage: View {
 
                 guard jsonFormat else { return }
 
-                if let entities = await parseEntities(from: deviceIP), {
+                if let entities = await parseEntities(from: deviceIP) {
                     entityAmount = entities["amount"]
                     devices[deviceIP] = entities
                 }
@@ -420,7 +420,7 @@ struct ThirdPage: View {
                 }
             } 
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)s
     }
 }
 
