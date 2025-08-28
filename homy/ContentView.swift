@@ -350,7 +350,6 @@ struct ThirdPage: View {
                     imageName: [1, 2, 3, 4, 5].contains(connectionStatus) ? "lightbulb" : connectionStatus == 6 ? "text.badge.xmark" : "checkmark.circle.fill", 
                     stepOpacity: [1, 2, 4, 5].contains(connectionStatus) ? 0.1 : 1.0)
             }
-            .padding(.horizontal)
             Spacer(minLength: 30)
             if connectionStatus == 7 {
                 Button(action: {
@@ -365,7 +364,6 @@ struct ThirdPage: View {
                             .fill(Color(UIColor.systemBlue)))
                         .padding(.bottom)
                 }
-                .padding(.horizontal)
                 .animation(.easeInOut, value: connectionStatus)
             } else if [4, 5, 6].contains(connectionStatus) {
                 VStack() {
@@ -388,10 +386,10 @@ struct ThirdPage: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                 }
-                .padding(.horizontal)
                 .animation(.easeInOut, value: connectionStatus)
             }
         }
+        .padding(.horizontal)
         .onAppear {
             timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
                 animationIsActive.toggle()
