@@ -429,10 +429,13 @@ struct ThirdPage: View {
 
                 if  entities != nil {
                     entityAmount = (entities?["amount"] as? Int) ?? 0
+                    if let entityNames = entities?["entities"] as? [String] {
+                        self.entityNames = entityNames
+                    }
                     let devices = [
                         deviceName: [
                             "ip": deviceIP,
-                            "entities": let entityNames = entities["entities"] ? entityNames : []
+                            "entities": entityNames
                         ]
                     ]
 
