@@ -101,12 +101,13 @@ struct WelcomeView: View {
                 .transition(.goForth)
 
             case .fourth:
-                FourthPage {
+                FourthPage(
                     withAnimation(.easeInOut) {
                         goingBack = false
                         step = .done
-                    }
-                }
+                    },
+                    deviceName: $deviceName
+                )
                 .transition(.goForth)
 
             case .done:
@@ -451,12 +452,12 @@ struct ThirdPage: View {
 struct FourthPage: View {
     let onContinue: () -> Void
     @Binding var deviceName: String
-    @State private var entityNames: [String]
+    @State private var entityNames: [String] = []
     @State private var entityList: [
         String:[String:String]
-    ]
-    @State private var devices: [String: [String: Any]]
-    @State private var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
+    ] = [:]
+    @State private var devices: [String: [String: Any]] = [:]
+    private var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
 
     var body: some View {
         VStack(alignment: .center) {
