@@ -33,6 +33,11 @@ enum WelcomeTab {
     case done
 }
 
+struct Device: Codable {
+    let ip: String
+    let entities: [String]
+}
+
 
 struct WelcomeView: View {
     @Binding var showingWelcome: Bool
@@ -308,8 +313,6 @@ struct ThirdPage: View {
     @State private var timer: Timer? = nil
     @State private var entityAmount: Int = 0
     @Binding var deviceIP: String
-    @AppStorage("devices") private var devices: [String:Any] = [:]
-
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
@@ -410,9 +413,19 @@ struct ThirdPage: View {
 
                 guard jsonFormat else { return }
 
-                if let entities = await parseEntities(from: deviceIP) {
+                let entities = await parseEntities(from: deviceIP)
+
+                if  entities {
                     entityAmount = entities["amount"] as? Int ?? 0
-                    devices[deviceIP] = entities
+                    let devices = [Device(ip: deviceIP, entities: entities["entities"] as? [String] ?? [])]
+                    let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
+
+                    // Save
+                    let data = try JSONEncoder().encode(devices)
+                    try data.write(to: url)
+                    
+                    // Load
+                    let loaded = try JSONDecoder().decode([Device].self, from: Data(contentsOf: url))
                 }
 
                 withAnimation(.easeInOut) {
@@ -420,7 +433,7 @@ struct ThirdPage: View {
                 }
             } 
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)s
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -560,6 +573,9 @@ func parseEntities(from urlString: String) async -> [String: Any]? {
         return nil
     }
 }
+
+
+
 
 
 #Preview {
