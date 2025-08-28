@@ -548,7 +548,7 @@ func isJSONFormat(urlString: String) async -> Bool {
 }
 
 func parseEntities(from urlString: String) async -> [String: Any]? {
-    guard let url = URL(string: urlString) else { return nil }
+    guard let url = URL(string: urlString.hasPrefix("http") ? urlString : "http://\(urlString)") else { return nil }
 
     do {
         let (data, _) = try await URLSession.shared.data(from: url)
