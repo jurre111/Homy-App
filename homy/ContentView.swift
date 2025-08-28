@@ -53,7 +53,6 @@ struct WelcomeView: View {
                     }
                 }
                 .transition(.goForth)
-
             case .second:
                 SecondPage(
                     onContinue: {
@@ -102,9 +101,11 @@ struct WelcomeView: View {
 
             case .fourth:
                 FourthPage(
-                    withAnimation(.easeInOut) {
-                        goingBack = false
-                        step = .done
+                    onContinue: {
+                        withAnimation(.easeInOut) {
+                            goingBack = false
+                            step = .done
+                        }
                     },
                     deviceName: $deviceName
                 )
