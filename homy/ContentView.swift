@@ -411,7 +411,7 @@ struct ThirdPage: View {
                 guard jsonFormat else { return }
 
                 if let entities = await parseEntities(from: deviceIP) {
-                    entityAmount = entities["amount"]
+                    entityAmount = entities["amount"] as? Int ?? 0
                     devices[deviceIP] = entities
                 }
 
