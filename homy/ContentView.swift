@@ -306,7 +306,9 @@ struct ThirdPage: View {
     @State private var animationIsActive = false
     @State private var connectionStatus = 1
     @State private var timer: Timer? = nil
+    @State private var entityAmount: Int = nil
     @Binding var deviceIP: String
+    @AppStorage("devices") private var devices: [String:Any] = [:]
 
     var body: some View {
         VStack(alignment: .center) {
@@ -341,7 +343,7 @@ struct ThirdPage: View {
                     stepOpacity: [1, 4].contains(connectionStatus) ? 0.1 : 1.0)
                 InformationDetailView(
                     title: [1, 2, 3, 4, 5].contains(connectionStatus) ? "Getting Entities..." : connectionStatus == 6 ? "No Entities Found" : "Entities Found", 
-                    subTitle: connectionStatus < 4 ? "Getting entities from your device." : connectionStatus == 6 ? "No entities were found in your device. Please refer to our documentation for more information." : "There are entities in your device.", 
+                    subTitle: connectionStatus < 4 ? "Getting entities from your device." : connectionStatus == 6 ? "No entities were found in your device. Please refer to our documentation for more information." : " \(entityAmount) entities were found in your device.", 
                     imageName: [1, 2, 3, 4, 5].contains(connectionStatus) ? "lightbulb" : connectionStatus == 6 ? "text.badge.xmark" : "checkmark.circle.fill", 
                     stepOpacity: [1, 2, 4, 5].contains(connectionStatus) ? 0.1 : 1.0)
             }
@@ -406,14 +408,16 @@ struct ThirdPage: View {
                     connectionStatus = jsonFormat ? 3 : 5
                 }
 
-                guard reachable else { return }
+                guard jsonFormat else { return }
 
-                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                if let entities = await parseEntities(urlString: deviceIP) {
+                    entityAmount = entities["amount"]
+                    devices[deviceIP] = entities
+                }
 
                 withAnimation(.easeInOut) {
                     connectionStatus = 7
                 }
-                
             } 
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -527,6 +531,33 @@ func isJSONFormat(urlString: String) async -> Bool {
     } catch {
         // Request failed
         return false
+    }
+}
+
+func parseEntities(from urlString: String) async -> [String: Any]? {
+    guard let url = URL(string: urlString) else { return nil }
+
+    do {
+        let (data, _) = try await URLSession.shared.data(from: url)
+
+        // Try decoding JSON into a [String: Any]
+        let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+
+        guard let dict = jsonObject as? [String: Any] else {
+            return nil
+        }
+
+        // Extract entity keys
+        let entities = Array(dict.keys)
+        try? await Task.sleep(nanoseconds: 2_000_000_000)
+
+        return [
+            "amount": entities.count,
+            "entities": entities
+        ]
+    } catch {
+        print("❌ Failed to parse JSON: \(error)")
+        return nil
     }
 }
 
