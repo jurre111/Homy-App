@@ -10,6 +10,7 @@ struct InformationDetailView: View {
         HStack(alignment: .center) {
             Image(systemName: imageName)
                 .font(.largeTitle)
+                .frame(width: 50, alignment: .center)
                 .foregroundColor(Color(UIColor.systemBlue))
                 .padding()
                 .accessibility(hidden: true)
