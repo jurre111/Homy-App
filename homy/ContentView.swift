@@ -319,7 +319,7 @@ struct ThirdPage: View {
                     .foregroundColor(Color(UIColor.systemBlue))
                     .symbolEffect(
                         .pulse,
-                        value: connectionStatus == 1 ? animationIsActive : true
+                        value: [1, 2, 3].contains(connectionStatus) ? animationIsActive : true
                     )
                 Text("Configuring Your")
                     .fontWeight(.black)
