@@ -451,24 +451,33 @@ struct ThirdPage: View {
 struct FourthPage: View {
     let onContinue: () -> Void
     @Binding var deviceName: String
-    private var entityNames: [String]
+    @State private var entityNames: [String]
     @State private var entityList: [
         String:[String:String]
     ]
-    private var devices: [String: [String: Any]]
-    private var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
+    @State private var devices: [String: [String: Any]]
+    @State private var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
 
     var body: some View {
         VStack(alignment: .center) {
-            Form(entityNames, id: \.self) { entity in
-                Section(entity) {
-                    TextField("Name", text: $entityList[entity]["name"] ?? entity)
-                        .keyboardType(.Name)
-                    TextField("Unit", text: $entityList[entity]["unit"] ?? "")
-                        .keyboardType(.Name)
+            Form {
+                ForEach(entityNames, id: \.self) { entity in
+                    Section(entity) {
+                        TextField("Name", text: Binding(
+                            get: { entityList[entity]?["name"] ?? "" },
+                            set: { entityList[entity]?["name"] = $0 }
+                        ))
+                        .keyboardType(.default)
 
+                        TextField("Unit", text: Binding(
+                            get: { entityList[entity]?["unit"] ?? "" },
+                            set: { entityList[entity]?["unit"] = $0 }
+                        ))
+                        .keyboardType(.default)
+                    }
                 }
             }
+
             Button(action: {
                 devices[deviceName]["entities"] = entityList
                 let data = try JSONSerialization.data(withJSONObject: devices, options: [.prettyPrinted])
@@ -486,12 +495,16 @@ struct FourthPage: View {
             }            
         }
         .onAppear {
-            let loadedData = try Data(contentsOf: devicesJsonUrl)
-            if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData, options: []) as? [String: [String: Any]] {
-                entityNames = loadedDevices[deviceName]["entities"] as! [String]
-                devices = loadedDevices
+            do {
+                let loadedData = try Data(contentsOf: devicesJsonUrl)
+                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: Any]],
+                let entities = loadedDevices[deviceName]?["entities"] as? [String] {
+                    entityNames = entities
+                    devices = loadedDevices
+                }
+            } catch {
+                print("❌ Failed to load devices.json: \(error)")
             }
-
         }
     }
 }
