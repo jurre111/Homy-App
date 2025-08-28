@@ -338,12 +338,12 @@ struct ThirdPage: View {
                     title: [1, 2, 4].contains(connectionStatus) ? "Verifying Data Format..." : connectionStatus == 5 ? "Incorrect Data Format" : "Correct Data Format", 
                     subTitle: connectionStatus < 3 ? "Verifying that the data is formatted correctly." : connectionStatus == 5 ? "The data from your device is not formatted correctly. Please refer to our documentation for more information." : "The data from your device is formatted correctly.", 
                     imageName: "sparkles", 
-                    stepOpacity: [1, 4].contains(connectionStatus) ? 0.2 : 1.0)
+                    stepOpacity: [1, 4].contains(connectionStatus) ? 0.1 : 1.0)
                 InformationDetailView(
                     title: [1, 2, 3, 4, 5].contains(connectionStatus) ? "Getting Entities..." : connectionStatus == 6 ? "No Entities Found" : "Entities Found", 
                     subTitle: connectionStatus < 4 ? "Getting entities from your device." : connectionStatus == 6 ? "No entities were found in your device. Please refer to our documentation for more information." : "There are entities in your device.", 
                     imageName: "list.bullet", 
-                    stepOpacity: [1, 2, 4, 5].contains(connectionStatus) ? 0.2 : 1.0)
+                    stepOpacity: [1, 2, 4, 5].contains(connectionStatus) ? 0.1 : 1.0)
             }
             .padding(.horizontal)
             Spacer(minLength: 30)
@@ -400,16 +400,19 @@ struct ThirdPage: View {
                     }
                 }
                 if reachable {
-                    Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { _ in
+                    let jsonFormat = await isJSONFormat(urlString: deviceIP)
+                    Timer.scheduledTimer(withTimeInterval: jsonFormat ? 2.0 : 0.0, repeats: false) { _ in
 
                         withAnimation(.easeInOut) {
-                            connectionStatus = 3
+                            connectionStatus = jsonFormat ? 3 : 5
                         }
                     }
-                    Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { _ in
+                    if jsonFormat {
+                        Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { _ in
 
-                        withAnimation(.easeInOut) {
-                            connectionStatus = 7
+                            withAnimation(.easeInOut) {
+                                connectionStatus = 7
+                            }
                         }
                     }  
                 }
@@ -494,6 +497,38 @@ func canConnect(to urlString: String) async -> Bool {
     }
     
     return false
+}
+
+func isJSONFormat(urlString: String) async -> Bool {
+    // Ensure the string is a valid URL (prepend http:// if missing)
+    guard let url = URL(string: urlString.hasPrefix("http") ? urlString : "http://\(urlString)") else {
+        return false
+    }
+
+    var request = URLRequest(url: url)
+    request.timeoutInterval = 7 // seconds
+
+    do {
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        // Must be an HTTP response with success status
+        guard let httpResponse = response as? HTTPURLResponse,
+              200..<400 ~= httpResponse.statusCode else {
+            return false
+        }
+
+        // Try to parse JSON
+        do {
+            _ = try JSONSerialization.jsonObject(with: data, options: [])
+            return true
+        } catch {
+            return false
+        }
+
+    } catch {
+        // Request failed
+        return false
+    }
 }
 
 
