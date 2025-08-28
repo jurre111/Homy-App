@@ -323,7 +323,7 @@ struct ThirdPage: View {
     @State private var entityAmount: Int = 0
     @Binding var deviceIP: String
     @Binding var deviceName: String
-    private var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
+    let devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
 
     var body: some View {
         VStack(alignment: .center) {
@@ -437,9 +437,6 @@ struct ThirdPage: View {
                     // Save
                     let data = try JSONSerialization.data(withJSONObject: devices, options: [.prettyPrinted])
                     try data.write(to: devicesJsonUrl)
-
-                    // Load
-                    let loaded = try JSONDecoder().decode([Device].self, from: Data(contentsOf: devicesJsonUrl))
                 }
 
                 withAnimation(.easeInOut) {
@@ -455,7 +452,7 @@ struct FourthPage: View {
     let onContinue: () -> Void
     @Binding var deviceName: String
     private var entityNames: [String]
-    private var entityList: [
+    @State private var entityList: [
         String:[String:String]
     ]
     private var devices: [String: [String: Any]]
@@ -489,7 +486,7 @@ struct FourthPage: View {
             }            
         }
         .onAppear {
-            let loadedData = try Data(contentsOf: url)
+            let loadedData = try Data(contentsOf: devicesJsonUrl)
             if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData, options: []) as? [String: [String: Any]] {
                 entityNames = loadedDevices[deviceName]["entities"] as! [String]
                 devices = loadedDevices
