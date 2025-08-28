@@ -306,7 +306,7 @@ struct ThirdPage: View {
     @State private var animationIsActive = false
     @State private var connectionStatus = 1
     @State private var timer: Timer? = nil
-    @State private var entityAmount: Int = nil
+    @State private var entityAmount: Int = 0
     @Binding var deviceIP: String
     @AppStorage("devices") private var devices: [String:Any] = [:]
 
@@ -410,7 +410,7 @@ struct ThirdPage: View {
 
                 guard jsonFormat else { return }
 
-                if let entities = await parseEntities(urlString: deviceIP) {
+                if let entities = await parseEntities(from: deviceIP), {
                     entityAmount = entities["amount"]
                     devices[deviceIP] = entities
                 }
