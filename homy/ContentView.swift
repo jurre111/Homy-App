@@ -393,28 +393,25 @@ struct ThirdPage: View {
             }
             Task {
                 let reachable = await canConnect(to: deviceIP)
-                Timer.scheduledTimer(withTimeInterval: reachable ? 2.0 : 0.0, repeats: false) { _ in
 
-                    withAnimation(.easeInOut) {
-                        connectionStatus = reachable ? 2 : 4
-                    }
+                withAnimation(.easeInOut) {
+                    connectionStatus = reachable ? 2 : 4
                 }
-                if reachable {
-                    let jsonFormat = await isJSONFormat(urlString: deviceIP)
-                    Timer.scheduledTimer(withTimeInterval: jsonFormat ? 2.0 : 0.0, repeats: false) { _ in
 
-                        withAnimation(.easeInOut) {
-                            connectionStatus = jsonFormat ? 3 : 5
-                        }
-                    }
-                    if jsonFormat {
-                        Timer.scheduledTimer(withTimeInterval: 4.0, repeats: false) { _ in
+                guard reachable else { return }
 
-                            withAnimation(.easeInOut) {
-                                connectionStatus = 7
-                            }
-                        }
-                    }  
+                let jsonFormat = await isJSONFormat(urlString: deviceIP)
+
+                withAnimation(.easeInOut) {
+                    connectionStatus = jsonFormat ? 3 : 5
+                }
+
+                guard reachable else { return }
+
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+
+                withAnimation(.easeInOut) {
+                    connectionStatus = 7
                 }
                 
             } 
@@ -489,6 +486,7 @@ func canConnect(to urlString: String) async -> Bool {
         let (_, response) = try await URLSession.shared.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse, 200..<400 ~= httpResponse.statusCode {
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
             return true
         }
     } catch {
@@ -520,6 +518,7 @@ func isJSONFormat(urlString: String) async -> Bool {
         // Try to parse JSON
         do {
             _ = try JSONSerialization.jsonObject(with: data, options: [])
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
             return true
         } catch {
             return false
