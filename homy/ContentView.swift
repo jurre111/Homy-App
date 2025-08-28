@@ -335,15 +335,15 @@ struct ThirdPage: View {
                     subTitle: connectionStatus == 1 ? "Trying to connect to your device" : connectionStatus == 4 ? "Connecting to your device failed. Please refer to our documentation for more information" : "Connecting to your device succeeded", 
                     imageName: connectionStatus == 1 ? "wifi" : connectionStatus == 4 ? "wifi.slash" : "checkmark.circle.fill")
                 InformationDetailView(
-                    title: connectionStatus < 3 ? "Checking Data Format..." : connectionStatus == 5 ? "Incorrect Data Format" : "Correct Data Format", 
+                    title: [1, 2, 4].contains(connectionStatus) ? "Verifying Data Format..." : connectionStatus == 5 ? "Incorrect Data Format" : "Correct Data Format", 
                     subTitle: connectionStatus < 3 ? "Verifying that the data is formatted correctly." : connectionStatus == 5 ? "The data from your device is not formatted correctly. Please refer to our documentation for more information." : "The data from your device is formatted correctly.", 
                     imageName: "sparkles", 
-                    stepOpacity: connectionStatus == 1 || connectionStatus == 4 ? 0.5 : 1.0)
-                InformationDetailView(
-                    title: connectionStatus < 4 ? "Getting Entities..." : connectionStatus == 6 ? "No Entities Found" : "Entities Found", 
+                    stepOpacity: [1, 4].contains(connectionStatus) ? 0.2 : 1.0)
+                InformationDetailView(2
+                    title: [1, 2, 3, 4, 5].contains(connectionStatus) ? "Getting Entities..." : connectionStatus == 6 ? "No Entities Found" : "Entities Found", 
                     subTitle: connectionStatus < 4 ? "Getting entities from your device." : connectionStatus == 6 ? "No entities were found in your device. Please refer to our documentation for more information." : "There are entities in your device.", 
                     imageName: "list.bullet", 
-                    stepOpacity: connectionStatus < 6 && connectionStatus != 3 ? 0.5 : 1.0)
+                    stepOpacity: [1, 2, 4, 5].contains(connectionStatus) ? 0.2 : 1.0)
             }
             .padding(.horizontal)
             Spacer(minLength: 30)
