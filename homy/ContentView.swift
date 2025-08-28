@@ -417,7 +417,7 @@ struct ThirdPage: View {
 
                 if  entities != nil {
                     entityAmount = (entities?["amount"] as? Int) ?? 0
-                    let devices = [Device(ip: deviceIP, entities: (entities["entities"] as? [String]) ?? [])]
+                    let devices = [Device(ip: deviceIP, entities: entities?["entities"] as? [String] ?? [])]
                     let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
 
                     // Save
