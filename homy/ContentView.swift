@@ -432,7 +432,7 @@ struct ThirdPage: View {
                     let devices = [
                         deviceName: [
                             "ip": deviceIP,
-                            "entities": entities["entities"]
+                            "entities": let entityNames = entities["entities"] ? entityNames : []
                         ]
                     ]
 
@@ -459,7 +459,7 @@ struct FourthPage: View {
     ] = [:]
     @State var devices: [String: [String: Any]] = [:]
     var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
-    
+
     var body: some View {
         VStack(alignment: .center) {
             Form {
