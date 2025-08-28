@@ -415,7 +415,7 @@ struct ThirdPage: View {
 
                 let entities = await parseEntities(from: deviceIP)
 
-                if  entities {
+                if  entities != nil {
                     entityAmount = entities["amount"] as? Int ?? 0
                     let devices = [Device(ip: deviceIP, entities: entities["entities"] as? [String] ?? [])]
                     let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
@@ -423,7 +423,7 @@ struct ThirdPage: View {
                     // Save
                     let data = try JSONEncoder().encode(devices)
                     try data.write(to: url)
-                    
+
                     // Load
                     let loaded = try JSONDecoder().decode([Device].self, from: Data(contentsOf: url))
                 }
