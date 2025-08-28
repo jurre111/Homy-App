@@ -416,7 +416,7 @@ struct ThirdPage: View {
                 }
 
                 withAnimation(.easeInOut) {
-                    connectionStatus = 7
+                    connectionStatus = entities == nil ? 6 : 7
                 }
             } 
         }
