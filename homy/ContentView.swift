@@ -181,34 +181,42 @@ struct MainView: View {
                         TileView(title: "Temperature", image: "thermometer")
                         TileView(title: "Humidity", image: "drop.fill")
                     }
+                    .padding()
                     HStack() {
                         TileView(title: "Temperature", image: "thermometer")
                         TileView(title: "Humidity", image: "drop.fill")
                     }
+                    .padding()
                     HStack() {
                         TileView(title: "Temperature", image: "thermometer")
                         TileView(title: "Humidity", image: "drop.fill")
                     }
+                    .padding()
                     HStack() {
                         TileView(title: "Temperature", image: "thermometer")
                         TileView(title: "Humidity", image: "drop.fill")
                     }
+                    .padding()
                     HStack() {
                         TileView(title: "Temperature", image: "thermometer")
                         TileView(title: "Humidity", image: "drop.fill")
                     }
+                    .padding()
                     HStack() {
                         TileView(title: "Temperature", image: "thermometer")
                         TileView(title: "Humidity", image: "drop.fill")
                     }
+                    .padding()
                     HStack() {
                         TileView(title: "Temperature", image: "thermometer")
                         TileView(title: "Humidity", image: "drop.fill")
                     }
+                    .padding()
                     HStack() {
                         TileView(title: "Temperature", image: "thermometer")
                         TileView(title: "Humidity", image: "drop.fill")
                     }
+                    .padding()
                 }
             }
             .tabItem {
