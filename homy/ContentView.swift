@@ -134,8 +134,9 @@ struct TileView: View {
                 Image(systemName: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 25, height: 25)
+                    .frame(width: 30, height: 30)
                     .foregroundColor(.white)
+                    .padding()
                 Spacer()
                 Button(action: {
                     // action
@@ -144,24 +145,25 @@ struct TileView: View {
                         Circle()
                             .fill(.white)
                             .opacity(0.2)
-                            .frame(width: 35, height: 35)
+                            .frame(width: 25, height: 25)
                         Image(systemName: "ellipsis")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 21, height: 21)
+                            .frame(width: 15, height: 15)
                             .foregroundColor(.white)
                     }
                 }
+                .padding()
             }
             Spacer()
             Text(title)
                 .foregroundColor(.white)
                 .fontWeight(.bold)
                 .font(.system(size: 16))
+                .padding()
         }
-        .background(RoundedRectangle(cornerRadius: 25, style: .continuous)
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
             .fill(Color(UIColor.systemBlue)))
-        .padding(.bottom)
         .frame(height: 110)
 
     }
