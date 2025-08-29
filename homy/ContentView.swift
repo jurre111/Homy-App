@@ -426,6 +426,7 @@ struct ThirdPage: View {
                 guard jsonFormat else { return }
 
                 if let entities = await parseEntities(from: deviceIP) {
+                    entitiesFound = true
                     entityAmount = (entities?["amount"] as? Int) ?? 0
                     let entityNames = entities?["entities"]
                     let devices = [
@@ -441,7 +442,7 @@ struct ThirdPage: View {
                 }
 
                 withAnimation(.easeInOut) {
-                    connectionStatus = entities == nil ? 6 : 7
+                    connectionStatus = entitiesFound ? 7 : 6
                 }
             } 
         }
