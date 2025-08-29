@@ -261,36 +261,37 @@ struct SecondPage: View {
 
             Spacer()
 
-            VStack() {
-                Button(action: {
-                    withAnimation {
-                        if step == 1 {
-                            step = 2  // reveal the form
-                        } else {
-                            onContinue() // finish onboarding
+            .safeAreaInset(edge: .bottom) {
+                VStack() {
+                    Button(action: {
+                        withAnimation {
+                            if step == 1 {
+                                step = 2  // reveal the form
+                            } else {
+                                onContinue() // finish onboarding
+                            }
                         }
+                    }) {
+                        Text(step == 1 ? "Continue" : "Finish")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(RoundedRectangle(cornerRadius: 15)
+                                .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
+                                .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
                     }
-                }) {
-                    Text(step == 1 ? "Continue" : "Finish")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(RoundedRectangle(cornerRadius: 15)
-                            .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
-                            .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
+                    .disabled(isValidIP(deviceIP))
+                    Button("Skip") {
+                        onSkip()
+                    }
+                    .foregroundColor(.gray)
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity)
                 }
-                .disabled(isValidIP(deviceIP))
-                Button("Skip") {
-                    onSkip()
-                }
-                .foregroundColor(.gray)
-                .font(.headline)
-                .padding()
-                .frame(maxWidth: .infinity)
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
-            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
