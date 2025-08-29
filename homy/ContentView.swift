@@ -186,10 +186,13 @@ struct MainView: View {
                                     .frame(width: 30, height: 30)
                                     .foregroundColor(.white)
                             }
+                            .padding()
                         }
                     }
                     Spacer()
                     Text("Home")
+                        .foregroundColor(.white)
+                        .padding()
                 }
                 .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
                     .fill(Color(UIColor.systemBlue)))
