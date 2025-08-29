@@ -134,7 +134,7 @@ struct TileView: View {
                 Image(systemName: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 30, height: 30)
+                    .frame(width: 27, height: 27)
                     .foregroundColor(.white)
                     .padding(10)
                 Spacer()
