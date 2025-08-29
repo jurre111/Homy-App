@@ -138,7 +138,7 @@ struct MainView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 180)
-                            .foregroundColor(Color(UIColor.systemWhite))
+                            .foregroundColor(.white)
                             .padding()
                         Spacer()
                         Button(action: {
@@ -169,7 +169,7 @@ struct MainView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 180)
-                            .foregroundColor(Color(UIColor.systemWhite))
+                            .foregroundColor(.white)
                             .padding()
                         Spacer()
                         Button(action: {
