@@ -425,13 +425,9 @@ struct ThirdPage: View {
 
                 guard jsonFormat else { return }
 
-                let entities = await parseEntities(from: deviceIP)
-
-                if  entities != nil {
+                if let entities = await parseEntities(from: deviceIP) {
                     entityAmount = (entities?["amount"] as? Int) ?? 0
-                    if let entityNames = entities?["entities"] as? [String] {
-                        self.entityNames = entityNames
-                    }
+                    let entityNames = entities?["entities"]
                     let devices = [
                         deviceName: [
                             "ip": deviceIP,
