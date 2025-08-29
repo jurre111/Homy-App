@@ -136,7 +136,7 @@ struct TileView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 30, height: 30)
                     .foregroundColor(.white)
-                    .padding()
+                    .padding(10)
                 Spacer()
                 Button(action: {
                     // action
@@ -153,14 +153,14 @@ struct TileView: View {
                             .foregroundColor(.white)
                     }
                 }
-                .padding()
+                .padding(15)
             }
             Spacer()
             Text(title)
                 .foregroundColor(.white)
                 .fontWeight(.bold)
                 .font(.system(size: 16))
-                .padding()
+                .padding(5)
         }
         .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
             .fill(Color(UIColor.systemBlue)))
