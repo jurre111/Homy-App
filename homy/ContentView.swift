@@ -428,12 +428,11 @@ struct ThirdPage: View {
 
                 if let entities = await parseEntities(from: deviceIP) {
                     entitiesFound = true
-                    entityAmount = (entities?["amount"] as? Int) ?? 0
-                    let entityNames = (entities?["entities"]) as? [String]) ?? []
+                    entityAmount = entities.count
                     let devices = [
                         deviceName: [
-                            "ip": deviceIP,
-                            "entities": entityNames
+                            "ip": [deviceIP],
+                            "entities": entities
                         ]
                     ]
 
@@ -505,7 +504,7 @@ struct FourthPage: View {
         .onAppear {
             do {
                 let loadedData = try Data(contentsOf: devicesJsonUrl)
-                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: Any]],
+                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: [String]],
                 let entities = loadedDevices[deviceName]?["entities"] as? [String] {
                     entityNames = entities
                     devices = loadedDevices
@@ -627,7 +626,7 @@ func isJSONFormat(urlString: String) async -> Bool {
     }
 }
 
-func parseEntities(from urlString: String) async -> [String: Any]? {
+func parseEntities(from urlString: String) async -> [String]? {
     guard let url = URL(string: urlString.hasPrefix("http") ? urlString : "http://\(urlString)") else { return nil }
 
     do {
@@ -644,10 +643,7 @@ func parseEntities(from urlString: String) async -> [String: Any]? {
         let entities = Array(dict.keys)
         try? await Task.sleep(nanoseconds: 2_000_000_000)
 
-        return [
-            "amount": entities.count,
-            "entities": entities
-        ]
+        return entities
     } catch {
         print("❌ Failed to parse JSON: \(error)")
         return nil
