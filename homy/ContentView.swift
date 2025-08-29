@@ -465,10 +465,10 @@ struct FourthPage: View {
             Form {
                 ForEach(entityNames, id: \.self) { entity in
                     Section(entity) {
-                        TextField("Name", text: Binding(
-                            get: { entityList[entity]?["name"] ?? "" },
-                            set: { entityList[entity]?["name"] = $0 }
-                        ))
+                        TextField("Name", text: $entityList[entity]["name"])
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
+                            .keyboardType(.URL)
                         .keyboardType(.default)
                         TextField("Unit", text: Binding(
                             get: { entityList[entity]?["unit"] ?? "" },
