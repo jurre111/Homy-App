@@ -292,8 +292,8 @@ struct SecondPage: View {
                 .frame(maxWidth: .infinity)
             }
             .padding(.horizontal)
+            .ignoresSafeArea(.keyboard)
         }
-        .ignoresSafeArea(.keyboard)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     private func isValidIP(_ ip: String) -> Bool {
