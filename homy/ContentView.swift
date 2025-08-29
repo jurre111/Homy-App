@@ -439,7 +439,7 @@ struct ThirdPage: View {
                     // Save
                     let data = try JSONSerialization.data(withJSONObject: devices, options: [.prettyPrinted])
                     try data.write(to: devicesJsonUrl)
-                }
+                } else { let entitiesFound = false }
 
                 withAnimation(.easeInOut) {
                     connectionStatus = entitiesFound ? 7 : 6
