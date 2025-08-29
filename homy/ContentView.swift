@@ -217,84 +217,88 @@ struct SecondPage: View {
     @Binding var deviceName: String
 
     var body: some View {
-        VStack(alignment: .center) {
-            Spacer()
-
-            VStack {
-                Image(systemName: "homepod.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 180)
-                    .foregroundColor(Color(UIColor.systemBlue))
-
-                Text("Add Your First")
-                    .fontWeight(.black)
-                    .font(.system(size: 36))
-                Text("Smart Device")
-                    .fontWeight(.black)
-                    .font(.system(size: 36))
-                    .foregroundColor(Color(UIColor.systemBlue))
-            }
-
-            // 👇 Show form only after step advances
-            if step == 2 {
-                Form {
-                    Section("Device Name") {
-                        TextField("My Smart Device", text: $deviceName)
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                            .keyboardType(.default)
-                    }
-                    Section("Device's IP Address or Hostname") {
-                        TextField("192.168.x.x or mydevice.local", text: $deviceIP)
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                            .keyboardType(.URL)
-                    }
-                }
-                .scrollDisabled(true)
-                .frame(maxHeight: 200)
-                .transition(.opacity.combined(with: .move(edge: .bottom)))
-                .animation(.easeInOut, value: step)
-                .background(Color(UIColor.systemBackground))
-            }
-
-            Spacer()
-
+        ZStack(alignment: .center) {
             
+            VStack(alignment: .center) {
+                Spacer()
 
-            VStack() {
-                Button(action: {
-                    withAnimation {
-                        if step == 1 {
-                            step = 2  // reveal the form
-                        } else {
-                            onContinue() // finish onboarding
+                VStack {
+                    Image(systemName: "homepod.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 180)
+                        .foregroundColor(Color(UIColor.systemBlue))
+
+                    Text("Add Your First")
+                        .fontWeight(.black)
+                        .font(.system(size: 36))
+                    Text("Smart Device")
+                        .fontWeight(.black)
+                        .font(.system(size: 36))
+                        .foregroundColor(Color(UIColor.systemBlue))
+                }
+
+                // 👇 Show form only after step advances
+                if step == 2 {
+                    Form {
+                        Section("Device Name") {
+                            TextField("My Smart Device", text: $deviceName)
+                                .textInputAutocapitalization(.never)
+                                .disableAutocorrection(true)
+                                .keyboardType(.default)
+                        }
+                        Section("Device's IP Address or Hostname") {
+                            TextField("192.168.x.x or mydevice.local", text: $deviceIP)
+                                .textInputAutocapitalization(.never)
+                                .disableAutocorrection(true)
+                                .keyboardType(.URL)
                         }
                     }
-                }) {
-                    Text(step == 1 ? "Continue" : "Finish")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(RoundedRectangle(cornerRadius: 15)
-                            .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
-                            .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
+                    .scrollDisabled(true)
+                    .frame(maxHeight: 200)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                    .animation(.easeInOut, value: step)
+                    .background(Color(UIColor.systemBackground))
                 }
-                .disabled(isValidIP(deviceIP))
-                Button("Skip") {
-                    onSkip()
-                }
-                .foregroundColor(.gray)
-                .font(.headline)
-                .padding()
-                .frame(maxWidth: .infinity)
+
+                Spacer()
             }
-            .padding(.horizontal)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            VStack() {
+                Spacer()
+                VStack() {
+                    Button(action: {
+                        withAnimation {
+                            if step == 1 {
+                                step = 2  // reveal the form
+                            } else {
+                                onContinue() // finish onboarding
+                            }
+                        }
+                    }) {
+                        Text(step == 1 ? "Continue" : "Finish")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(RoundedRectangle(cornerRadius: 15)
+                                .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
+                                .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
+                    }
+                    .disabled(isValidIP(deviceIP))
+                    Button("Skip") {
+                        onSkip()
+                    }
+                    .foregroundColor(.gray)
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                }
+                .padding(.horizontal)
+            }
             .ignoresSafeArea(.keyboard)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     private func isValidIP(_ ip: String) -> Bool {
         if step != 2 { return false }
