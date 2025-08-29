@@ -243,13 +243,13 @@ struct SecondPage: View {
                         TextField("My Smart Device", text: $deviceName)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
-                            .keyboardType(.URL)
+                            .keyboardType(.default)
                     }
                     Section("Device's IP Address or Hostname") {
                         TextField("192.168.x.x or mydevice.local", text: $deviceIP)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
-                            .keyboardType(.default)
+                            .keyboardType(.URL)
                     }
                 }
                 .scrollDisabled(true)
@@ -290,6 +290,7 @@ struct SecondPage: View {
                 .frame(maxWidth: .infinity)
             }
             .padding(.horizontal)
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -462,6 +463,22 @@ struct FourthPage: View {
 
     var body: some View {
         VStack(alignment: .center) {
+            VStack {
+                Image(systemName: "mail.stack")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 180)
+                    .foregroundColor(Color(UIColor.systemBlue))
+
+                Text("Configure Your")
+                    .fontWeight(.black)
+                    .font(.system(size: 36))
+                Text("Entities")
+                    .fontWeight(.black)
+                    .font(.system(size: 36))
+                    .foregroundColor(Color(UIColor.systemBlue))
+            }
+            Spacer()
             Form {
                 ForEach(entityNames, id: \.self) { entity in
                     Section(entity) {
@@ -481,6 +498,7 @@ struct FourthPage: View {
                     }
                 }
             }
+            Spacer()
             Button(action: {
                 if var device = devices[deviceName] {
                     device["entities"] = entityList
@@ -502,7 +520,8 @@ struct FourthPage: View {
                     .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
                         .fill(Color(UIColor.systemBlue)))
                     .padding(.bottom)
-            }            
+            }
+            .ignoresSafeArea(.keyboard, edges: .bottom)            
         }
         .onAppear {
             do {
