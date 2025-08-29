@@ -177,14 +177,14 @@ struct MainView: View {
                         }) {
                             ZStack() {
                                 Circle()
-                                    .fill(Color(UIColor.systemWhite))
+                                    .fill(.white)
                                     .opacity(0.2)
                                     .frame(width: 50, height: 50)
                                 Image(systemName: "ellipsis")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 30, height: 30)
-                                    .foregroundColor(Color(UIColor.systemWhite))
+                                    .foregroundColor(.white)
                             }
                         }
                     }
