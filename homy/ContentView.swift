@@ -124,79 +124,58 @@ struct WelcomeView: View {
     }
 }
 
+struct TileView: View {
+    let title: String
+    let image: String
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack() {
+                Image(systemName: Image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50, height: 50)
+                    .foregroundColor(.white)
+                    .padding()
+                Spacer()
+                Button(action: {
+                    // action
+                }) {
+                    ZStack() {
+                        Circle()
+                            .fill(.white)
+                            .opacity(0.2)
+                            .frame(width: 35, height: 35)
+                        Image(systemName: "ellipsis")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 21, height: 21)
+                            .foregroundColor(.white)
+                    }
+                    .padding()
+                }
+            }
+            Spacer()
+            Text(title)
+                .foregroundColor(.white)
+                .padding()
+                .fontWeight(.black)
+                .font(.system(size: 16))
+        }
+        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+            .fill(Color(UIColor.systemBlue)))
+        .padding()
+
+    }
+}
 
 
 struct MainView: View {
     @Binding var selection: Int
-
+s
     var body: some View {
         TabView(selection: $selection) {
             HStack() {
-                VStack() {
-                    HStack() {
-                        Image(systemName: "house.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 180)
-                            .foregroundColor(.white)
-                            .padding()
-                        Spacer()
-                        Button(action: {
-                            // action
-                        }) {
-                            ZStack() {
-                                Circle()
-                                    .fill(.white)
-                                    .opacity(0.2)
-                                    .frame(width: 50, height: 50)
-                                Image(systemName: "ellipsis")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(.white)
-                            }
-                        }
-                    }
-                    Spacer()
-                    Text("Home")
-                }
-                .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .fill(Color(UIColor.systemBlue)))
-                .padding()
-                VStack() {
-                    HStack() {
-                        Image(systemName: "house.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.white)
-                            .padding()
-                        Spacer()
-                        Button(action: {
-                            // action
-                        }) {
-                            ZStack() {
-                                Circle()
-                                    .fill(.white)
-                                    .opacity(0.2)
-                                    .frame(width: 35, height: 35)
-                                Image(systemName: "ellipsis")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 21, height: 21)
-                                    .foregroundColor(.white)
-                            }
-                            .padding()
-                        }
-                    }
-                    Spacer()
-                    Text("Home")
-                        .foregroundColor(.white)
-                        .padding()
-                }
-                .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .fill(Color(UIColor.systemBlue)))
-                .padding()
             }
             .safeAreaInset(edge: .top, spacing: 0) {
                 Text("Home")
