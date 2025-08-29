@@ -131,10 +131,72 @@ struct MainView: View {
 
     var body: some View {
         TabView(selection: $selection) {
-            VStack {
-                Image(systemName: "globe")
-                Text("Hello World!")
-                    .font(.title)
+            HStack() {
+                VStack() {
+                    HStack() {
+                        Image(systemName: "house.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 180)
+                            .foregroundColor(Color(UIColor.systemWhite))
+                            .padding()
+                        Spacer()
+                        Button(action: {
+                            // action
+                        }) {
+                            ZStack() {
+                                Circle()
+                                    .fill(Color(UIColor.systemWhite))
+                                    .opacity(0.2)
+                                    .frame(width: 50, height: 50)
+                                Image(systemName: "ellipsis")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(Color(UIColor.systemWhite))
+                            }
+                        }
+                    }
+                    Spacer()
+                    Text("Home")
+                }
+                .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    .fill(Color(UIColor.systemBlue)))
+                .padding()
+                VStack() {
+                    HStack() {
+                        Image(systemName: "house.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 180)
+                            .foregroundColor(Color(UIColor.systemWhite))
+                            .padding()
+                        Spacer()
+                        Button(action: {
+                            // action
+                        }) {
+                            ZStack() {
+                                Circle()
+                                    .fill(Color(UIColor.systemWhite))
+                                    .opacity(0.2)
+                                    .frame(width: 50, height: 50)
+                                Image(systemName: "ellipsis")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(Color(UIColor.systemWhite))
+                            }
+                        }
+                    }
+                    Spacer()
+                    Text("Home")
+                }
+                .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    .fill(Color(UIColor.systemBlue)))
+                .padding()
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                Text("Home")
             }
             .tabItem {
                 Image(systemName: "house.fill")
@@ -260,8 +322,7 @@ struct SecondPage: View {
                     .animation(.easeInOut, value: step)
                     .background(Color(UIColor.systemBackground))
                 }
-
-                Spacer()
+                Spacer(minLength: 30)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             VStack() {
