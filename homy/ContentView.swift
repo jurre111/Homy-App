@@ -163,7 +163,7 @@ struct TileView: View {
         }
         .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
             .fill(Color(UIColor.systemBlue)))
-        .frame(height: 110, width: 180)
+        .frame(width: 180, height: 110)
 
     }
 }
