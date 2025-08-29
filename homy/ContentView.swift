@@ -147,7 +147,7 @@ struct TileView: View {
                             .opacity(0.2)
                             .frame(width: 25, height: 25)
                         Image(systemName: "ellipsis")
-                            .font(.largeTitle)
+                            .font(.headline)
                             .frame(width: 15, alignment: .center)
                             .foregroundColor(.white)
                     }
