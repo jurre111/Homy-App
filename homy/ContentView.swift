@@ -134,9 +134,8 @@ struct TileView: View {
                 Image(systemName: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 50, height: 50)
+                    .frame(width: 25, height: 25)
                     .foregroundColor(.white)
-                    .padding()
                 Spacer()
                 Button(action: {
                     // action
@@ -152,20 +151,18 @@ struct TileView: View {
                             .frame(width: 21, height: 21)
                             .foregroundColor(.white)
                     }
-                    .padding()
                 }
             }
             Spacer()
             Text(title)
                 .foregroundColor(.white)
-                .padding()
-                .fontWeight(.black)
+                .fontWeight(.bold)
                 .font(.system(size: 16))
         }
-        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+        .background(RoundedRectangle(cornerRadius: 25, style: .continuous)
             .fill(Color(UIColor.systemBlue)))
-        .padding()
-        .frame(height: 150)
+        .padding(.bottom)
+        .frame(height: 110)
 
     }
 }
@@ -211,9 +208,6 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                     }
                 }
-            }
-            .safeAreaInset(edge: .top, spacing: 0) {
-                Text("Home")
             }
             .tabItem {
                 Image(systemName: "house.fill")
