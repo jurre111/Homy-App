@@ -465,12 +465,19 @@ struct FourthPage: View {
             Form {
                 ForEach(entityNames, id: \.self) { entity in
                     Section(entity) {
-                        TextField("Name", text: $entityList[entity]["name"])
+                        TextField("Name", text: Binding(
+                            get: { entityList[entity]?["name"] ?? "" },
+                            set: { entityList[entity, default: [:]]["name"] = $0 }
+                        ))
                             .keyboardType(.default)
-                        TextField("Unit", text: $entityList[entity]["unit"])
+
+                        TextField("Unit", text: Binding(
+                            get: { entityList[entity]?["unit"] ?? "" },
+                            set: { entityList[entity, default: [:]]["unit"] = $0 }
+                        ))
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
-                            .keyboardType(.default)
+                            .keyboardType(.default)  
                     }
                 }
             }
