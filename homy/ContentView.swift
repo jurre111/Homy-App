@@ -504,7 +504,7 @@ struct FourthPage: View {
         .onAppear {
             do {
                 let loadedData = try Data(contentsOf: devicesJsonUrl)
-                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: [String]],
+                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: [String]]],
                 let entities = loadedDevices[deviceName]?["entities"] as? [String] {
                     entityNames = entities
                     devices = loadedDevices
