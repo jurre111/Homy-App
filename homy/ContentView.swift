@@ -131,7 +131,7 @@ struct TileView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack() {
-                Image(systemName: Image)
+                Image(systemName: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 50, height: 50)
@@ -173,7 +173,7 @@ struct TileView: View {
 
 struct MainView: View {
     @Binding var selection: Int
-s
+
     var body: some View {
         TabView(selection: $selection) {
             ScrollView {
