@@ -217,7 +217,7 @@ struct SecondPage: View {
     @Binding var deviceName: String
 
     var body: some View {
-        ZStack(alignment: .center) {
+        VStack(alignment: .center) {
             Spacer()
 
             VStack {
@@ -291,9 +291,9 @@ struct SecondPage: View {
                 .padding()
                 .frame(maxWidth: .infinity)
             }
-            .ignoresSafeArea(.keyboard)
             .padding(.horizontal)
         }
+        .ignoresSafeArea(.keyboard)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     private func isValidIP(_ ip: String) -> Bool {
