@@ -147,24 +147,23 @@ struct TileView: View {
                             .opacity(0.2)
                             .frame(width: 25, height: 25)
                         Image(systemName: "ellipsis")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .font(.largeTitle)
                             .frame(width: 15, height: 15)
                             .foregroundColor(.white)
                     }
                 }
-                .padding(15)
+                .padding(10)
             }
             Spacer()
             Text(title)
                 .foregroundColor(.white)
-                .fontWeight(.bold)
+                .fontWeight(.medium)
                 .font(.system(size: 16))
-                .padding(5)
+                .padding(10)
         }
         .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
             .fill(Color(UIColor.systemBlue)))
-        .frame(height: 110)
+        .frame(height: 110, width: 180)
 
     }
 }
@@ -178,45 +177,86 @@ struct MainView: View {
             ScrollView {
                 VStack() {
                     HStack() {
+                        Spacer()
                         TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
                         TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
                     }
-                    .padding()
+                    .padding(.bottom)
                     HStack() {
+                        Spacer()
                         TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
                         TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
                     }
-                    .padding()
+                    .padding(.bottom)
                     HStack() {
+                        Spacer()
                         TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
                         TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
                     }
-                    .padding()
+                    .padding(.bottom)
                     HStack() {
+                        Spacer()
                         TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
                         TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
                     }
-                    .padding()
+                    .padding(.bottom)
                     HStack() {
+                        Spacer()
                         TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
                         TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
                     }
-                    .padding()
+                    .padding(.bottom)
                     HStack() {
+                        Spacer()
                         TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
                         TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
                     }
-                    .padding()
+                    .padding(.bottom)
                     HStack() {
+                        Spacer()
                         TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
                         TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
                     }
-                    .padding()
+                    .padding(.bottom)
                     HStack() {
+                        Spacer()
                         TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
                         TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
                     }
-                    .padding()
+                    .padding(.bottom)
+                    HStack() {
+                        Spacer()
+                        TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
+                        TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
+                    }
+                    .padding(.bottom)
+                    HStack() {
+                        Spacer()
+                        TileView(title: "Temperature", image: "thermometer")
+                        Spacer()
+                        TileView(title: "Humidity", image: "drop.fill")
+                        Spacer()
+                    }
+                    .padding(.bottom)
+                    
                 }
             }
             .tabItem {
