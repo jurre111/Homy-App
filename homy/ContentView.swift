@@ -217,7 +217,7 @@ struct SecondPage: View {
     @Binding var deviceName: String
 
     var body: some View {
-        VStack(alignment: .center) {
+        ZStack(alignment: .center) {
             Spacer()
 
             VStack {
@@ -261,37 +261,38 @@ struct SecondPage: View {
 
             Spacer()
 
-            .safeAreaInset(edge: .bottom) {
-                VStack() {
-                    Button(action: {
-                        withAnimation {
-                            if step == 1 {
-                                step = 2  // reveal the form
-                            } else {
-                                onContinue() // finish onboarding
-                            }
+            
+
+            VStack() {
+                Button(action: {
+                    withAnimation {
+                        if step == 1 {
+                            step = 2  // reveal the form
+                        } else {
+                            onContinue() // finish onboarding
                         }
-                    }) {
-                        Text(step == 1 ? "Continue" : "Finish")
-                            .foregroundColor(.white)
-                            .font(.headline)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(RoundedRectangle(cornerRadius: 15)
-                                .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
-                                .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
                     }
-                    .disabled(isValidIP(deviceIP))
-                    Button("Skip") {
-                        onSkip()
-                    }
-                    .foregroundColor(.gray)
-                    .font(.headline)
-                    .padding()
-                    .frame(maxWidth: .infinity)
+                }) {
+                    Text(step == 1 ? "Continue" : "Finish")
+                        .foregroundColor(.white)
+                        .font(.headline)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(RoundedRectangle(cornerRadius: 15)
+                            .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
+                            .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
                 }
-                .padding(.horizontal)
+                .disabled(isValidIP(deviceIP))
+                Button("Skip") {
+                    onSkip()
+                }
+                .foregroundColor(.gray)
+                .font(.headline)
+                .padding()
+                .frame(maxWidth: .infinity)
             }
+            .ignoresSafeArea(.keyboard)
+            .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
