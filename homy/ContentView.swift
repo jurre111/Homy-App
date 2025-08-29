@@ -148,7 +148,7 @@ struct TileView: View {
                             .frame(width: 25, height: 25)
                         Image(systemName: "ellipsis")
                             .font(.largeTitle)
-                            .frame(width: 15, height: 15)
+                            .frame(width: 15, alignment: .center)
                             .foregroundColor(.white)
                     }
                 }
@@ -163,7 +163,7 @@ struct TileView: View {
         }
         .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
             .fill(Color(UIColor.systemBlue)))
-        .frame(width: 180, height: 110)
+        .frame(width: 175, height: 125)
 
     }
 }
@@ -183,7 +183,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     HStack() {
                         Spacer()
                         TileView(title: "Temperature", image: "thermometer")
@@ -191,7 +191,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     HStack() {
                         Spacer()
                         TileView(title: "Temperature", image: "thermometer")
@@ -199,7 +199,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     HStack() {
                         Spacer()
                         TileView(title: "Temperature", image: "thermometer")
@@ -207,7 +207,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     HStack() {
                         Spacer()
                         TileView(title: "Temperature", image: "thermometer")
@@ -215,7 +215,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     HStack() {
                         Spacer()
                         TileView(title: "Temperature", image: "thermometer")
@@ -223,7 +223,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     HStack() {
                         Spacer()
                         TileView(title: "Temperature", image: "thermometer")
@@ -231,7 +231,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     HStack() {
                         Spacer()
                         TileView(title: "Temperature", image: "thermometer")
@@ -239,7 +239,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     HStack() {
                         Spacer()
                         TileView(title: "Temperature", image: "thermometer")
@@ -247,7 +247,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     HStack() {
                         Spacer()
                         TileView(title: "Temperature", image: "thermometer")
@@ -255,7 +255,7 @@ struct MainView: View {
                         TileView(title: "Humidity", image: "drop.fill")
                         Spacer()
                     }
-                    .padding(.bottom)
+                    .padding(.bottom: 10)
                     
                 }
             }
