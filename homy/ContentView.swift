@@ -322,6 +322,7 @@ struct ThirdPage: View {
     @State private var animationIsActive = false
     @State private var connectionStatus = 1
     @State private var timer: Timer? = nil
+    @State private var entitiesFound = false
     @State private var entityAmount: Int = 0
     @Binding var deviceIP: String
     @Binding var deviceName: String
@@ -426,7 +427,7 @@ struct ThirdPage: View {
                 guard jsonFormat else { return }
 
                 if let entities = await parseEntities(from: deviceIP) {
-                    let entitiesFound = true
+                    entitiesFound = true
                     entityAmount = (entities?["amount"] as? Int) ?? 0
                     let entityNames = entities?["entities"]
                     let devices = [
@@ -439,7 +440,7 @@ struct ThirdPage: View {
                     // Save
                     let data = try JSONSerialization.data(withJSONObject: devices, options: [.prettyPrinted])
                     try data.write(to: devicesJsonUrl)
-                } else { let entitiesFound = false }
+                }
 
                 withAnimation(.easeInOut) {
                     connectionStatus = entitiesFound ? 7 : 6
