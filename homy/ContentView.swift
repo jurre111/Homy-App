@@ -165,6 +165,7 @@ struct TileView: View {
         .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
             .fill(Color(UIColor.systemBlue)))
         .padding()
+        .frame(height: 150)
 
     }
 }
@@ -175,7 +176,41 @@ struct MainView: View {
 s
     var body: some View {
         TabView(selection: $selection) {
-            HStack() {
+            ScrollView {
+                VStack() {
+                    HStack() {
+                        TileView(title: "Temperature", image: "thermometer")
+                        TileView(title: "Humidity", image: "drop.fill")
+                    }
+                    HStack() {
+                        TileView(title: "Temperature", image: "thermometer")
+                        TileView(title: "Humidity", image: "drop.fill")
+                    }
+                    HStack() {
+                        TileView(title: "Temperature", image: "thermometer")
+                        TileView(title: "Humidity", image: "drop.fill")
+                    }
+                    HStack() {
+                        TileView(title: "Temperature", image: "thermometer")
+                        TileView(title: "Humidity", image: "drop.fill")
+                    }
+                    HStack() {
+                        TileView(title: "Temperature", image: "thermometer")
+                        TileView(title: "Humidity", image: "drop.fill")
+                    }
+                    HStack() {
+                        TileView(title: "Temperature", image: "thermometer")
+                        TileView(title: "Humidity", image: "drop.fill")
+                    }
+                    HStack() {
+                        TileView(title: "Temperature", image: "thermometer")
+                        TileView(title: "Humidity", image: "drop.fill")
+                    }
+                    HStack() {
+                        TileView(title: "Temperature", image: "thermometer")
+                        TileView(title: "Humidity", image: "drop.fill")
+                    }
+                }
             }
             .safeAreaInset(edge: .top, spacing: 0) {
                 Text("Home")
