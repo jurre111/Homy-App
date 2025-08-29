@@ -450,34 +450,42 @@ struct ThirdPage: View {
     }
 }
 
+struct FormView: View {
+    @State var entityNames: [String] = []
+    @Binding var entityList: [
+        String:[String:String]
+    ] = [:]
+    var body: some View {
+        Form {
+            ForEach(entityNames, id: \.self) { entity in
+                Section(entity) {
+                    TextField("Name", text: $entityList[entity]["name"])
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                        .keyboardType(.default)
+                    TextField("Unit", text: $entityList[entity]["unit"])
+                        .textInputAutocapitalization(.never)
+                        .disableAutocorrection(true)
+                        .keyboardType(.default)
+                }
+            }
+        }
+    }
+}
+
 struct FourthPage: View {
     let onContinue: () -> Void
     @Binding var deviceName: String
     @State var entityNames: [String] = []
+    @State var devices: [String: [String: Any]] = [:]
     @State var entityList: [
         String:[String:String]
     ] = [:]
-    @State var devices: [String: [String: Any]] = [:]
     var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
 
     var body: some View {
         VStack(alignment: .center) {
-            Form {
-                ForEach(entityNames, id: \.self) { entity in
-                    Section(entity) {
-                        TextField("Name", text: $entityList[entity]["name"])
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                            .keyboardType(.URL)
-                        .keyboardType(.default)
-                        TextField("Unit", text: Binding(
-                            get: { entityList[entity]?["unit"] ?? "" },
-                            set: { entityList[entity]?["unit"] = $0 }
-                        ))
-                        .keyboardType(.default)
-                    }
-                }
-            }
+            FormView(entityNames: entityNames)
             Button(action: {
                 if var device = devices[deviceName] {
                     device["entities"] = entityList
