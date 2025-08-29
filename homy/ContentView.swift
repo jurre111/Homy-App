@@ -249,7 +249,7 @@ struct SecondPage: View {
                         TextField("192.168.x.x or mydevice.local", text: $deviceIP)
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
-                            .keyboardType(.URL)
+                            .keyboardType(.default)
                     }
                 }
                 .scrollDisabled(true)
