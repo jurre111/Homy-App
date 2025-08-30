@@ -245,9 +245,9 @@ struct EntityView: View {
 
     var body: some View {
         NavigationStack {
-            VStack() {
-                Spacer()
-            }
+//            VStack() {
+//                Spacer()
+//            }
             .navigationBarTitle(entityName, displayMode: .inline)
 //            .toolbar {
 //                ToolbarItem(placement: .principal) {
