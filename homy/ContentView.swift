@@ -300,7 +300,7 @@ struct EntityView: View {
                     }
                 }
             }
-            .toolbarBackground(.thinMaterial, for: .bottomBar)
+            .toolbarBackground(.regularMaterial, for: .bottomBar)
             .toolbarBackground(.visible, for: .bottomBar)
         }
     }
