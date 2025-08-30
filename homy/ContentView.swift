@@ -164,7 +164,7 @@ struct TileView: View {
                 .font(.system(size: 18))
                 .padding(10)
         }
-        .aspectRatio(14/10, contentMode: .fill)
+        .aspectRatio(10/7, contentMode: .fill)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
