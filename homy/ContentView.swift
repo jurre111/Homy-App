@@ -240,6 +240,7 @@ struct MainView: View {
 
 struct InputView: View {
     @Binding var entityIcon: String
+    @State private var text: String = ""
 
     var body: some View {
         HStack() {
@@ -252,7 +253,7 @@ struct InputView: View {
                 )
                 .foregroundColor(.blue)
                 .padding(.leading, 10)
-            TextField("Entity Name", text: .constant(""))
+            TextField("Entity Name", text: $text)
                 .fixedSize(horizontal: true, vertical: false)
                 .background(
                     RoundedRectangle(cornerRadius: 5, style: .continuous)
@@ -262,6 +263,7 @@ struct InputView: View {
                 )
                 .padding(.leading, 10)
         }
+        .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(
@@ -279,10 +281,8 @@ struct EntityView: View {
     var body: some View {
         NavigationStack {
             ScrollView() {
-                Form {
-                    Section() {
-                        InputView(entityIcon: $entityIcon)
-                    }
+                VStack {
+                    InputView(entityIcon: $entityIcon)
                 }
                 .padding(.horizontal)
             }
