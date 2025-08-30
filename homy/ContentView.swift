@@ -243,31 +243,35 @@ struct InputView: View {
     @State private var text: String = ""
 
     var body: some View {
-        HStack() {
+        HStack(alignment: .leading) {
             Image(systemName: entityIcon)
+                .font(.system(size: 12, weight: .bold))
                 .background(
-                    RoundedRectangle(cornerRadius: 5, style: .continuous)
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(
                         Color.blue.opacity(0.2)
-                    )
+                        )
+                        .aspectRatio(1 /1 contentMode: .fit)
                 )
                 .foregroundColor(.blue)
-                .padding(.leading, 10)
+                .padding(15)
             TextField("Entity Name", text: $text)
+                .font(.system(size: 12))
                 .fixedSize(horizontal: true, vertical: false)
                 .background(
-                    RoundedRectangle(cornerRadius: 5, style: .continuous)
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(
                         Color.blue.opacity(0.2)
                     )
                 )
-                .padding(.leading, 10)
+                .padding(15)
+                .foregroundColor(.blue)
         }
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(
-                    Color.gray.opacity(0.4)
+                    Color(UIColor.secondarySystemBackground)
                 )
         )                         
     }
