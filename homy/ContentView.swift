@@ -153,7 +153,7 @@ struct TileView: View {
                     }
                 }
             }
-            .padding(10)
+            .padding(12)
             Spacer()
             Text(title)
                 .foregroundColor(.white)
@@ -173,7 +173,7 @@ struct TileView: View {
                     )
                 )
         )
-        .padding(EdgeInsets(top: 5, leading: position == "left" ? 10: 5, bottom: 5, trailing: position == "right" ? 10: 5))
+        .padding(EdgeInsets(top: 5, leading: position == "left" ? 0 : 5, bottom: 5, trailing: position == "right" ? 0 : 5))
     }
 }
 
@@ -192,6 +192,7 @@ struct MainView: View {
                     }
                     
                 }
+                .padding(.horizontal)
             }
             .tabItem {
                 Image(systemName: "house.fill")
