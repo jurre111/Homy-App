@@ -258,6 +258,7 @@ struct InputView: View {
             TextField("Entity Name", text: $text)
                 .font(.system(size: 12))
                 .fixedSize(horizontal: true, vertical: false)
+                .padding(6)
                 .background(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(
