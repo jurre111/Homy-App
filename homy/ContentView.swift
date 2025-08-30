@@ -274,9 +274,9 @@ struct EntityView: View {
                                 Circle()
                                     .fill(.white)
                                     .opacity(0.2)
-                                    .frame(width: 20, height: 20)
+                                    .frame(width: 17, height: 17)
                                 Image(systemName: "chevron.down")
-                                    .font(.system(size: 10, weight: .bold))
+                                    .font(.system(size: 7, weight: .bold))
                                     .foregroundColor(.white)
                                     .opacity(0.5)
                             }
