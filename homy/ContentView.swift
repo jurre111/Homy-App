@@ -290,11 +290,13 @@ struct EntityView: View {
                     }) {
                         Image(systemName: "xmark")
                     }
+                    Spacer()
                     Button(action: {
                         showingEntity = false
                     }) {
                         Image(systemName: "trash")
                     }
+                    Spacer()
                     Button(action: {
                         showingEntity = false
                     }) {
@@ -302,6 +304,7 @@ struct EntityView: View {
                     }
                 }
             }
+            .toolbarBackground(.visible, for: .navigationBar)
         }
     }
 }
