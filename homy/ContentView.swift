@@ -194,9 +194,9 @@ struct MainView: View {
                 ScrollView {
                     VStack() {
                         HStack() {
-                            TileView(title: "Temperature", image: "thermometer", position: "left", showingEntity: $showingEntity)
+                            TileView(title: "Temperature", image: "thermometer", position: "left", showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
 
-                            TileView(title: "Humidity", image: "drop.fill", position: "right", showingEntity: $showingEntity)
+                            TileView(title: "Humidity", image: "drop.fill", position: "right", showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
                         }
                         
                     }
@@ -217,7 +217,7 @@ struct MainView: View {
                 .tag(1)
         }
         .fullScreenCover(isPresented: $showingEntity) {
-            EntityView(showingEntity: $showingEntity, entityName: $entityName)
+            EntityView(showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
         }
     }
 }
