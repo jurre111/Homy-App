@@ -253,7 +253,7 @@ struct InputView: View {
                     )
                     .foregroundColor(.blue)
                     .padding(.leading, 10)
-                TextField("Entity Name")
+                TextField("Entity Name", text: .constant(""))
                     .fixedSize(horizontal: true, vertical: false)
                     .background(
                         RoundedRectangle(cornerRadius: 5, style: .continuous)
