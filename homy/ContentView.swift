@@ -161,15 +161,8 @@ struct TileView: View {
                 .font(.system(size: 18))
                 .padding(10)
         }
-        .aspectRatio(contentMode: .fill)
-        .frame(
-            minWidth: 0,
-            maxWidth: .infinity,   // ✅ CGFloat.infinity
-            minHeight: 0,
-            maxHeight: .infinity   // ✅ CGFloat.infinity
-        )
-        .aspectRatio(14 / 10, contentMode: ContentMode.fit) // ✅ ContentMode.fit
-        .clipShape(Rectangle()) // ✅ Rectangle() instead of .rect
+        .aspectRatio(14/10, contentMode: .fill)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(
