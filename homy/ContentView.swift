@@ -284,23 +284,23 @@ struct EntityView: View {
                     Button(action: {
                         showingEntity = false
                     }) {
-                        Image(systemName: "xmark")
+                        Image(systemName: "xmark.circle")
                     }
                     Spacer()
                     Button(action: {
                         showingEntity = false
                     }) {
-                        Image(systemName: "trash")
+                        Image(systemName: "trash.circle")
                     }
                     Spacer()
                     Button(action: {
                         showingEntity = false
                     }) {
-                        Image(systemName: "pencil")
+                        Image(systemName: "checkmark.circle")
                     }
                 }
             }
-            .toolbarBackground(.ultraThickMaterial, for: .bottomBar)
+            .toolbarBackground(.ultraThinMaterial, for: .bottomBar)
             .toolbarBackground(.visible, for: .bottomBar)
         }
     }
