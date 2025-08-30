@@ -246,6 +246,7 @@ struct InputView: View {
         HStack() {
             Image(systemName: entityIcon)
                 .font(.system(size: 12, weight: .bold))
+                .padding(6)
                 .background(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(
