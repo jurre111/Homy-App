@@ -127,12 +127,11 @@ struct WelcomeView: View {
 struct TileView: View {
     let title: String
     let image: String
-    let paddingLeading: Int
     let paddingTrailing: Int
 
     var body: some View {
         VStack(alignment: .leading) {
-            HStack(allignment: .center) {
+            HStack(alignment: .center) {
                 Image(systemName: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
