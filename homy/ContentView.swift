@@ -127,7 +127,7 @@ struct WelcomeView: View {
 struct TileView: View {
     let title: String
     let image: String
-    let paddingTrailing: Float
+    let paddingTrailing: Double
 
     var body: some View {
         VStack(alignment: .leading) {
