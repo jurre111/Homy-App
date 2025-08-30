@@ -249,29 +249,29 @@ struct EntityView: View {
                 Spacer()
             }
             .toolbar {
-//                ToolbarItem(placement: .principal) {
-//                    HStack(alignment: .center) {
-//                        Image(systemName: entityIcon)
-//                            .font(.system(size: 18, weight: .bold))
-//                        Button(action: {
-//                            // do nothing
-//                        }) {
-//                            Text(entityName)
-//                                .font(.system(size: 18, weight: .medium))
-//                                .foregroundColor(.white)
-//                            ZStack() {
-//                                Circle()
-//                                    .fill(.white)
-//                                    .opacity(0.2)
-//                                    .frame(width: 20, height: 20)
-//                                Image(systemName: "chevron.down")
-//                                    .font(.system(size: 10, weight: .bold))
-//                                    .foregroundColor(.white)
-//                                    .opacity(0.8)
-//                            }
-//                        }
-//                    }
-//                }
+                ToolbarItem(placement: .principal) {
+                    HStack(alignment: .center) {
+                        Image(systemName: entityIcon)
+                            .font(.system(size: 18, weight: .bold))
+                        Button(action: {
+                            // do nothing
+                        }) {
+                            Text(entityName)
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundColor(.white)
+                            ZStack() {
+                                Circle()
+                                    .fill(.white)
+                                    .opacity(0.2)
+                                    .frame(width: 20, height: 20)
+                                Image(systemName: "chevron.down")
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .opacity(0.8)
+                            }
+                        }
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showingEntity = false
@@ -281,6 +281,8 @@ struct EntityView: View {
                     }
                 }
             }
+            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
         }
     }
 }
