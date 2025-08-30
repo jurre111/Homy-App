@@ -127,7 +127,7 @@ struct WelcomeView: View {
 struct TileView: View {
     let title: String
     let image: String
-    let paddingTrailing: Double
+    let position: String
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -175,7 +175,7 @@ struct TileView: View {
                     )
                 )
         )
-        .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: paddingTrailing))
+        .padding(EdgeInsets(top: 5, leading: position == "left" ? 10: 5, bottom: 5, trailing: position == "right" ? 10: 5))
     }
 }
 
