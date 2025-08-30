@@ -136,7 +136,7 @@ struct TileView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 27, height: 27)
                     .foregroundColor(.white)
-                    .padding(EdgeInsets(top: 15, leading: 10))
+                    .padding(EdgeInsets(.top: 15, .leading: 10))
                 Spacer()
                 Button(action: {
                     // action
@@ -161,18 +161,25 @@ struct TileView: View {
                 .font(.system(size: 18))
                 .padding(10)
         }
-        .resizable()
         .aspectRatio(contentMode: .fill)
         .frame(
             minWidth: 0,
-            maxWidth: .infinity,
+            maxWidth: .infinity,   // ✅ CGFloat.infinity
             minHeight: 0,
-            maxHeight: .infinity
+            maxHeight: .infinity   // ✅ CGFloat.infinity
         )
-        .aspectRatio(14 / 10, contentMode: .fit)
-        .clipShape(.rect)
-        .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
-            .fill(LinearGradient(colors: [Color(hex: 0x5083c7), Color(hex: 0x406aa3)], startPoint: .topLeading, endPoint: .bottomTrailing)))
+        .aspectRatio(14 / 10, contentMode: ContentMode.fit) // ✅ ContentMode.fit
+        .clipShape(Rectangle()) // ✅ Rectangle() instead of .rect
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(
+                    LinearGradient(
+                        colors: [Color(hex: 0x5083c7), Color(hex: 0x406aa3)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+        )
         .padding(10)
     }
 }
