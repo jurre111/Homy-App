@@ -242,29 +242,32 @@ struct InputView: View {
     @Binding var entityIcon: String
 
     var body: some View {
-        Section() {
-            HStack() {
-                Image(systemName: entityIcon)
-                    .background(
-                        RoundedRectangle(cornerRadius: 5, style: .continuous)
-                            .fill(
-                            Color.blue.opacity(0.2)
-                        )
+        HStack() {
+            Image(systemName: entityIcon)
+                .background(
+                    RoundedRectangle(cornerRadius: 5, style: .continuous)
+                        .fill(
+                        Color.blue.opacity(0.2)
                     )
-                    .foregroundColor(.blue)
-                    .padding(.leading, 10)
-                TextField("Entity Name", text: .constant(""))
-                    .fixedSize(horizontal: true, vertical: false)
-                    .background(
-                        RoundedRectangle(cornerRadius: 5, style: .continuous)
-                            .fill(
-                            Color.blue.opacity(0.2)
-                        )
+                )
+                .foregroundColor(.blue)
+                .padding(.leading, 10)
+            TextField("Entity Name", text: .constant(""))
+                .fixedSize(horizontal: true, vertical: false)
+                .background(
+                    RoundedRectangle(cornerRadius: 5, style: .continuous)
+                        .fill(
+                        Color.blue.opacity(0.2)
                     )
-                    .padding(.leading, 10)
-            }
-            Toggle("Use default entity name")                            
+                )
+                .padding(.leading, 10)
         }
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(
+                    Color.gray.opacity(0.4)
+                )
+        )                         
     }
 }
 
@@ -278,7 +281,9 @@ struct EntityView: View {
             ScrollView() {
                 VStack() {
                     Form {
-                        InputView(entityIcon: $entityIcon)
+                        Section() {
+                            InputView(entityIcon: $entityIcon)
+                        }
                     }
                 }
                 .padding(.horizontal)
