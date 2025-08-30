@@ -128,7 +128,7 @@ struct TileView: View {
     let title: String
     let image: String
     let position: String
-    @Binding var showingEntity: Bool
+    @Binding var showingEntity: Bool = false
 
     var body: some View {
         VStack(alignment: .leading) {
