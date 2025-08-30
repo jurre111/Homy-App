@@ -188,9 +188,9 @@ struct MainView: View {
             ScrollView {
                 VStack() {
                     HStack() {
-                        TileView(title: "Temperature", image: "thermometer", paddingTrailing: 0)
+                        TileView(title: "Temperature", image: "thermometer", position: "left")
 
-                        TileView(title: "Humidity", image: "drop.fill", paddingTrailing: 10)
+                        TileView(title: "Humidity", image: "drop.fill", position: "right")
                     }
                     
                 }
