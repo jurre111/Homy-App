@@ -245,10 +245,6 @@ struct EntityView: View {
 
     var body: some View {
         NavigationStack {
-            VStack() {
-                
-            }
-            .ignoresSafeArea()
             ScrollView() {
                 
             }
@@ -304,6 +300,7 @@ struct EntityView: View {
                     }
                 }
             }
+            .toolbarBackground(.thinMaterial, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
     }
