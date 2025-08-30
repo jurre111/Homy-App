@@ -252,7 +252,18 @@ struct EntityView: View {
                 ToolbarItem(placement: .principal) {
                     HStack(alignment: .center) {
                         Image(systemName: entityIcon)
-                            .font(.system(size: 18, weight: .bold))
+                            .font(.system(size: 12, weight: .bold))
+                            .background(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [Color(hex: 0x5083c7), Color(hex: 0x406aa3)],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                    .frame(width: 20, height: 20)
+                            )
                         Button(action: {
                             // do nothing
                         }) {
