@@ -284,17 +284,17 @@ struct EntityView: View {
                     Button(action: {
                         showingEntity = false
                     }) {
-                        image(systemName: "xmark")
+                        Image(systemName: "xmark")
                     }
                     Button(action: {
                         showingEntity = false
                     }) {
-                        image(systemName: "slash")
+                        Image(systemName: "slash")
                     }
                     Button(action: {
                         showingEntity = false
                     }) {
-                        image(systemName: "pencil")
+                        Image(systemName: "pencil")
                     }
                 }
             }
