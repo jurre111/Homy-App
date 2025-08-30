@@ -238,6 +238,36 @@ struct MainView: View {
     }
 }
 
+struct InputView: View {
+    @Binding var entityIcon: String
+
+    var body: some View {
+        Section() {
+            HStack() {
+                Image(systemName: entityIcon)
+                    .background(
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .fill(
+                            Color.blue.opacity(0.2)
+                        )
+                    )
+                    .foregroundColor(.blue)
+                    .padding(.leading, 10)
+                TextField("Entity Name")
+                    .fixedSize(horizontal: true, vertical: false)
+                    .background(
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .fill(
+                            Color.blue.opacity(0.2)
+                        )
+                    )
+                    .padding(.leading, 10)
+            }
+            Toggle("Use default entity name")                            
+        }
+    }
+}
+
 struct EntityView: View {
     @Binding var showingEntity: Bool
     @Binding var entityName: String
@@ -248,30 +278,7 @@ struct EntityView: View {
             ScrollView() {
                 VStack() {
                     Form {
-                        Section() {
-                            HStack() {
-                                Image(systemName: entityIcon)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 5, style: .continuous)
-                                            .fill(
-                                            Color.blue.opacity(0.2)
-                                        )
-                                    )
-                                    .foregroundColor(.blue)
-                                    .padding(.leading, 10)
-                                TextField("Entity Name")
-                                    .fixedSize(horizontal: true, vertical: false)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 5, style: .continuous)
-                                            .fill(
-                                            Color.blue.opacity(0.2)
-                                        )
-                                    )
-                                    .padding(.leading, 10)
-
-                            }
-                            Toggle("Use default entity name")                            
-                        }
+                        InputView(entityIcon: $entityIcon)
                     }
                 }
                 .padding(.horizontal)
