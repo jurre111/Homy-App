@@ -210,14 +210,14 @@ struct MainView: View {
                 }
                 .tag(1)
         }
-        .fullScreenCover(isPresented: $showingWelcome) {
-            EntityView(showingWelcome: $showingWelcome)
+        .fullScreenCover(isPresented: $showingEntity) {
+            EntityView(showingEntity: $showingEntity)
         }
     }
 }
 
 struct EntityView: View {
-    @Binding var showingWelcome: Bool
+    @Binding var showingEtity: Bool
 
     var body: some View {
         NavigationStack {
@@ -228,7 +228,7 @@ struct EntityView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        showingWelcome = false
+                        showingEntity = false
                     }) {
                         Text("Done")
                             .font(.system(size: 18, weight: .bold))
