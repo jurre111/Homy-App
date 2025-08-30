@@ -128,7 +128,7 @@ struct TileView: View {
     let title: String
     let image: String
     let position: String
-    @Binding var showingEntity: Bool = false
+    @Binding var showingEntity: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -188,9 +188,9 @@ struct MainView: View {
                 ScrollView {
                     VStack() {
                         HStack() {
-                            TileView(title: "Temperature", image: "thermometer", position: "left")
+                            TileView(title: "Temperature", image: "thermometer", position: "left", showingEntity: $showingEntity)
 
-                            TileView(title: "Humidity", image: "drop.fill", position: "right")
+                            TileView(title: "Humidity", image: "drop.fill", position: "right", showingEntity: $showingEntity)
                         }
                         
                     }
