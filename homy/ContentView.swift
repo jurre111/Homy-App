@@ -248,7 +248,6 @@ struct EntityView: View {
 //            VStack() {
 //                Spacer()
 //            }
-            .navigationBarTitle(entityName, displayMode: .inline)
 //            .toolbar {
 //                ToolbarItem(placement: .principal) {
 //                    HStack(alignment: .center) {
@@ -283,6 +282,7 @@ struct EntityView: View {
 //                }
 //            }
         }
+        .navigationBarTitle(entityName, displayMode: .inline)
     }
 }
 
