@@ -262,7 +262,7 @@ struct EntityView: View {
                                             endPoint: .bottomTrailing
                                         )
                                     )
-                                    .frame(width: 30, height: 30)
+                                    .frame(width: 26, height: 26)
                             )
                         Button(action: {
                             // do nothing
@@ -312,7 +312,10 @@ struct EntityView: View {
                     }
                 }
             }
-            .toolbarBackground(.ultraThinMaterial, for: .bottomBar)
+            .toolbarBackground(
+                Color.white.opacity(0.1), 
+                for: .bottomBar
+            )
             .toolbarBackground(.visible, for: .bottomBar)
         }
     }
