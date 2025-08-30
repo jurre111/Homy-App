@@ -254,7 +254,7 @@ struct EntityView: View {
                         Image(systemName: entityIcon)
                             .font(.system(size: 12, weight: .bold))
                             .background(
-                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                RoundedRectangle(cornerRadius: 3, style: .continuous)
                                     .fill(
                                         LinearGradient(
                                             colors: [Color(hex: 0x5083c7), Color(hex: 0x406aa3)],
@@ -262,7 +262,7 @@ struct EntityView: View {
                                             endPoint: .bottomTrailing
                                         )
                                     )
-                                    .frame(width: 20, height: 20)
+                                    .frame(width: 30, height: 30)
                             )
                         Button(action: {
                             // do nothing
