@@ -137,8 +137,6 @@ struct TileView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 27, height: 27)
                     .foregroundColor(.white)
-                    .padding(.top, 15)
-                    .padding(.leading, 10)
                 Spacer()
                 Button(action: {
                     // action
@@ -154,8 +152,8 @@ struct TileView: View {
                             .foregroundColor(.white)
                     }
                 }
-                .padding(10)
             }
+            .padding(10)
             Spacer()
             Text(title)
                 .foregroundColor(.white)
