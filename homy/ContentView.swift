@@ -243,7 +243,7 @@ struct InputView: View {
     @State private var text: String = ""
 
     var body: some View {
-        HStack(alignment: .leading) {
+        HStack() {
             Image(systemName: entityIcon)
                 .font(.system(size: 12, weight: .bold))
                 .background(
@@ -266,6 +266,7 @@ struct InputView: View {
                 )
                 .padding(15)
                 .foregroundColor(.blue)
+            Spacer()
         }
         .frame(maxWidth: .infinity)
         .background(
