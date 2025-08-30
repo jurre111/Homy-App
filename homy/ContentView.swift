@@ -279,11 +279,9 @@ struct EntityView: View {
     var body: some View {
         NavigationStack {
             ScrollView() {
-                VStack() {
-                    Form {
-                        Section() {
-                            InputView(entityIcon: $entityIcon)
-                        }
+                Form {
+                    Section() {
+                        InputView(entityIcon: $entityIcon)
                     }
                 }
                 .padding(.horizontal)
