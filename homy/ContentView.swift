@@ -248,26 +248,26 @@ struct InputView: View {
                 .font(.system(size: 12, weight: .bold))
                 .padding(6)
                 .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    RoundedRectangle(cornerRadius: 7, style: .continuous)
                         .fill(
                         Color.blue.opacity(0.2)
                         )
                         .aspectRatio(1 / 1, contentMode: .fit)
                 )
                 .foregroundColor(.blue)
-                .padding(15)
+                .padding(10)
             TextField("Entity Name", text: $text)
                 .font(.system(size: 12))
+                .foregroundColor(.blue)
                 .fixedSize(horizontal: true, vertical: false)
                 .padding(6)
                 .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    RoundedRectangle(cornerRadius: 7, style: .continuous)
                         .fill(
                         Color.blue.opacity(0.2)
                     )
                 )
-                .padding(15)
-                .foregroundColor(.blue)
+                .padding(10)
             Spacer()
         }
         .frame(maxWidth: .infinity)
