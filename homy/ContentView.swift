@@ -259,7 +259,7 @@ struct EntityView: View {
                             Text(entityName)
                                 .font(.system(size: 18, weight: .medium))
                                 .foregroundColor(.white)
-                            ZStack() {
+                            ZStack(alignment: .center) {
                                 Circle()
                                     .fill(.white)
                                     .opacity(0.2)
@@ -267,7 +267,7 @@ struct EntityView: View {
                                 Image(systemName: "chevron.down")
                                     .font(.system(size: 10, weight: .bold))
                                     .foregroundColor(.white)
-                                    .opacity(0.8)
+                                    .opacity(0.5)
                             }
                         }
                     }
