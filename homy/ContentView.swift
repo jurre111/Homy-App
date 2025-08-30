@@ -246,7 +246,35 @@ struct EntityView: View {
     var body: some View {
         NavigationStack {
             ScrollView() {
-                
+                VStack() {
+                    Form {
+                        Section() {
+                            HStack() {
+                                Image(systemName: entityIcon)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                            .fill(
+                                            Color.blue.opacity(0.2)
+                                        )
+                                    )
+                                    .foregroundColor(.blue)
+                                    .padding(.leading, 10)
+                                TextField("Entity Name")
+                                    .fixedSize(horizontal: true, vertical: false)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                            .fill(
+                                            Color.blue.opacity(0.2)
+                                        )
+                                    )
+                                    .padding(.leading, 10)
+
+                            }
+                            Toggle("Use default entity name")                            
+                        }
+                    }
+                }
+                .padding(.horizontal)
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
