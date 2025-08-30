@@ -136,7 +136,7 @@ struct TileView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 27, height: 27)
                     .foregroundColor(.white)
-                    .padding(10)
+                    .padding(EdgeInsets(top: 15, leading: 10))
                 Spacer()
                 Button(action: {
                     // action
@@ -158,13 +158,22 @@ struct TileView: View {
             Text(title)
                 .foregroundColor(.white)
                 .fontWeight(.medium)
-                .font(.system(size: 16))
+                .font(.system(size: 18))
                 .padding(10)
         }
+        .resizable()
+        .aspectRatio(contentMode: .fill)
+        .frame(
+            minWidth: 0,
+            maxWidth: .infinity,
+            minHeight: 0,
+            maxHeight: .infinity
+        )
+        .aspectRatio(14 / 10, contentMode: .fit)
+        .clipShape(.rect)
         .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
-            .fill(Color(UIColor.systemBlue)))
-        .frame(width: 175, height: 125)
-
+            .fill(LinearGradient(colors: [Color(hex: 0x5083c7), Color(hex: 0x406aa3)], startPoint: .topLeading, endPoint: .bottomTrailing)))
+        .padding(10)
     }
 }
 
@@ -177,85 +186,10 @@ struct MainView: View {
             ScrollView {
                 VStack() {
                     HStack() {
-                        Spacer()
                         TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
+
                         TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
                     }
-                    .padding(.bottom, 10)
-                    HStack() {
-                        Spacer()
-                        TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
-                        TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
-                    HStack() {
-                        Spacer()
-                        TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
-                        TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
-                    HStack() {
-                        Spacer()
-                        TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
-                        TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
-                    HStack() {
-                        Spacer()
-                        TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
-                        TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
-                    HStack() {
-                        Spacer()
-                        TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
-                        TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
-                    HStack() {
-                        Spacer()
-                        TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
-                        TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
-                    HStack() {
-                        Spacer()
-                        TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
-                        TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
-                    HStack() {
-                        Spacer()
-                        TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
-                        TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
-                    HStack() {
-                        Spacer()
-                        TileView(title: "Temperature", image: "thermometer")
-                        Spacer()
-                        TileView(title: "Humidity", image: "drop.fill")
-                        Spacer()
-                    }
-                    .padding(.bottom, 10)
                     
                 }
             }
@@ -797,6 +731,15 @@ func parseEntities(from urlString: String) async -> [String]? {
     } catch {
         print("❌ Failed to parse JSON: \(error)")
         return nil
+    }
+}
+
+extension Color {
+    init(hex: Int, opacity: Double = 1.0) {
+        let red = Double((hex & 0xff0000) >> 16) / 255.0
+        let green = Double((hex & 0xff00) >> 8) / 255.0
+        let blue = Double((hex & 0xff) >> 0) / 255.0
+        self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
     }
 }
 
