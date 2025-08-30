@@ -183,20 +183,18 @@ struct MainView: View {
 
     var body: some View {
         TabView(selection: $selection) {
-            NavigationView {
-                ScrollView {
-                    VStack() {
-                        HStack() {
-                            TileView(title: "Temperature", image: "thermometer", position: "left")
+            ScrollView {
+                VStack() {
+                    HStack() {
+                        TileView(title: "Temperature", image: "thermometer", position: "left")
 
-                            TileView(title: "Humidity", image: "drop.fill", position: "right")
-                        }
-                        
+                        TileView(title: "Humidity", image: "drop.fill", position: "right")
                     }
-                    .padding(.horizontal)
+                    
                 }
+                .navigationTitle("Home")
+                .padding(.horizontal)
             }
-            .navigationTitle("Home")
             .tabItem {
                 Image(systemName: "house.fill")
                 Text("Home")
