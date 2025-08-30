@@ -128,6 +128,7 @@ struct TileView: View {
     let title: String
     let image: String
     let position: String
+    @Binding var showingEntity: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -139,7 +140,7 @@ struct TileView: View {
                     .foregroundColor(.white)
                 Spacer()
                 Button(action: {
-                    // action
+                    showingEntity = true
                 }) {
                     ZStack() {
                         Circle()
@@ -179,6 +180,7 @@ struct TileView: View {
 
 struct MainView: View {
     @Binding var selection: Int
+    @State private var showingEntity = false
 
     var body: some View {
         TabView(selection: $selection) {
@@ -207,6 +209,32 @@ struct MainView: View {
                     Text("Settings")
                 }
                 .tag(1)
+        }
+        .fullScreenCover(isPresented: $showingWelcome) {
+            EntityView(showingWelcome: $showingWelcome)
+        }
+    }
+}
+
+struct EntityView: View {
+    @Binding var showingWelcome: Bool
+
+    var body: some View {
+        NavigationStack {
+            VStack() {
+                Spacer()
+            }
+            .navigationTitle("EntityName")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showingWelcome = false
+                    }) {
+                        Text("Done")
+                            .font(.system(size: 18, weight: .bold))
+                    }
+                }
+            }
         }
     }
 }
