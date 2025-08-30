@@ -203,6 +203,22 @@ struct MainView: View {
                     .padding(.horizontal)
                 }
                 .navigationTitle("Home")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        HStack(alignment: .center) {
+                            Button(action: {
+                                
+                            }) {
+                                Text("Select")
+                            }
+                            Button(action: {
+                                
+                            }) {
+                                Image(systemName: "plus")
+                            }
+                        }
+                    }
+                }
             }
             .tabItem {
                 Image(systemName: "house.fill")
@@ -241,15 +257,16 @@ struct EntityView: View {
                             // do nothing
                         }) {
                             Text(entityName)
-                                .font(.system(size: 18, weight: .bold))
+                                .font(.system(size: 18))
                             ZStack() {
                                 Circle()
                                     .fill(.white)
                                     .opacity(0.2)
-                                    .frame(width: 15, height: 15)
+                                    .frame(width: 20, height: 20)
                                 Image(systemName: "chevron.down")
                                     .font(.system(size: 10, weight: .bold))
                                     .foregroundColor(.white)
+                                    .opacity(0.8)
                             }
                         }
                     }
