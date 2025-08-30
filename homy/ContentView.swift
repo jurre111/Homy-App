@@ -254,7 +254,7 @@ struct EntityView: View {
                         Image(systemName: entityIcon)
                             .font(.system(size: 12, weight: .bold))
                             .background(
-                                RoundedRectangle(cornerRadius: 3, style: .continuous)
+                                RoundedRectangle(cornerRadius: 7, style: .continuous)
                                     .fill(
                                         LinearGradient(
                                             colors: [Color(hex: 0x5083c7), Color(hex: 0x406aa3)],
@@ -276,9 +276,10 @@ struct EntityView: View {
                                     .opacity(0.2)
                                     .frame(width: 17, height: 17)
                                 Image(systemName: "chevron.down")
-                                    .font(.system(size: 7, weight: .bold))
+                                    .font(.system(size: 8, weight: .bold))
                                     .foregroundColor(.white)
-                                    .opacity(0.5)
+                                    .opacity(0.6)
+                                    .padding(.top, 2)
                             }
                         }
                     }
