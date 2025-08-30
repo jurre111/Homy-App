@@ -127,10 +127,12 @@ struct WelcomeView: View {
 struct TileView: View {
     let title: String
     let image: String
+    let paddingLeading: Int
+    let paddingTrailing: Int
 
     var body: some View {
         VStack(alignment: .leading) {
-            HStack() {
+            HStack(allignment: .center) {
                 Image(systemName: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -146,10 +148,10 @@ struct TileView: View {
                         Circle()
                             .fill(.white)
                             .opacity(0.2)
-                            .frame(width: 25, height: 25)
+                            .frame(width: 30, height: 30)
                         Image(systemName: "ellipsis")
                             .font(.headline)
-                            .frame(width: 15, alignment: .center)
+                            .frame(width: 18, alignment: .center)
                             .foregroundColor(.white)
                     }
                 }
@@ -174,7 +176,7 @@ struct TileView: View {
                     )
                 )
         )
-        .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 5))
+        .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: paddingTrailing))
     }
 }
 
@@ -187,9 +189,9 @@ struct MainView: View {
             ScrollView {
                 VStack() {
                     HStack() {
-                        TileView(title: "Temperature", image: "thermometer")
+                        TileView(title: "Temperature", image: "thermometer", paddingTrailing: 0)
 
-                        TileView(title: "Humidity", image: "drop.fill")
+                        TileView(title: "Humidity", image: "drop.fill", paddingTrailing: 10)
                     }
                     
                 }
