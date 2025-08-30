@@ -145,10 +145,9 @@ struct TileView: View {
                         Circle()
                             .fill(.white)
                             .opacity(0.2)
-                            .frame(width: 30, height: 30)
+                            .frame(width: 28, height: 28)
                         Image(systemName: "ellipsis")
-                            .font(.headline)
-                            .frame(width: 18, alignment: .center)
+                            .font(.system(size: 18, weight: .bold))
                             .foregroundColor(.white)
                     }
                 }
