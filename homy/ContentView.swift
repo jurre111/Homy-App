@@ -245,6 +245,10 @@ struct EntityView: View {
 
     var body: some View {
         NavigationStack {
+            VStack() {
+                
+            }
+            .ignoresSafeArea()
             ScrollView() {
                 
             }
@@ -289,7 +293,7 @@ struct EntityView: View {
                     Button(action: {
                         showingEntity = false
                     }) {
-                        Image(systemName: "slash")
+                        Image(systemName: "trash")
                     }
                     Button(action: {
                         showingEntity = false
@@ -298,8 +302,6 @@ struct EntityView: View {
                     }
                 }
             }
-            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
         }
     }
 }
