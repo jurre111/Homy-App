@@ -139,21 +139,21 @@ struct TileView: View {
                     .padding(.top, 15)
                     .padding(.leading, 10)
                 Spacer()
-                Button(action: {
-                    // action
-                }) {
-                    ZStack() {
-                        Circle()
-                            .fill(.white)
-                            .opacity(0.2)
-                            .frame(width: 25, height: 25)
-                        Image(systemName: "ellipsis")
-                            .font(.headline)
-                            .frame(width: 15, alignment: .center)
-                            .foregroundColor(.white)
-                    }
-                }
-                .padding(10)
+//                Button(action: {
+//                    // action
+//                }) {
+//                    ZStack() {
+//                        Circle()
+//                            .fill(.white)
+//                            .opacity(0.2)
+//                            .frame(width: 25, height: 25)
+//                        Image(systemName: "ellipsis")
+//                            .font(.headline)
+//                            .frame(width: 15, alignment: .center)
+//                            .foregroundColor(.white)
+//                    }
+//                }
+//                .padding(10)
             }
             Spacer()
             Text(title)
