@@ -217,7 +217,7 @@ struct MainView: View {
 }
 
 struct EntityView: View {
-    @Binding var showingEtity: Bool
+    @Binding var showingEntity: Bool
 
     var body: some View {
         NavigationStack {
