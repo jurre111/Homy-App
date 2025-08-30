@@ -251,7 +251,7 @@ struct InputView: View {
                         .fill(
                         Color.blue.opacity(0.2)
                         )
-                        .aspectRatio(1 /1 contentMode: .fit)
+                        .aspectRatio(1 / 1, contentMode: .fit)
                 )
                 .foregroundColor(.blue)
                 .padding(15)
