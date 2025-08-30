@@ -129,6 +129,8 @@ struct TileView: View {
     let image: String
     let position: String
     @Binding var showingEntity: Bool
+    @Binding var entityName: String
+    @Binding var entityIcon: String
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -140,6 +142,8 @@ struct TileView: View {
                     .foregroundColor(.white)
                 Spacer()
                 Button(action: {
+                    entityIcon = image
+                    entityName = title
                     showingEntity = true
                 }) {
                     ZStack() {
@@ -181,6 +185,8 @@ struct TileView: View {
 struct MainView: View {
     @Binding var selection: Int
     @State private var showingEntity = false
+    @State private var entityName: String = ""
+    @State private var entityIcon: String = ""
 
     var body: some View {
         TabView(selection: $selection) {
@@ -211,21 +217,43 @@ struct MainView: View {
                 .tag(1)
         }
         .fullScreenCover(isPresented: $showingEntity) {
-            EntityView(showingEntity: $showingEntity)
+            EntityView(showingEntity: $showingEntity, entityName: $entityName)
         }
     }
 }
 
 struct EntityView: View {
     @Binding var showingEntity: Bool
+    @Binding var entityName: String
+    @Binding var entityIcon: String
 
     var body: some View {
         NavigationStack {
             VStack() {
                 Spacer()
             }
-            .navigationTitle("EntityName")
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HStack(alignment: .center) {
+                        Image(systemName: entityIcon)
+                            .font(.system(size: 18, weight: .bold))
+                        Button(action: {
+                            // do nothing
+                        }) {
+                            Text(entityName)
+                                .font(.system(size: 18, weight: .bold))
+                            ZStack() {
+                                Circle()
+                                    .fill(.white)
+                                    .opacity(0.2)
+                                    .frame(width: 15, height: 15)
+                                Image(systemName: "chevron.down")
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundColor(.white)
+                            }
+                        }
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showingEntity = false
