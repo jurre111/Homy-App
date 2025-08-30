@@ -137,7 +137,7 @@ struct TileView: View {
                     .frame(width: 27, height: 27)
                     .foregroundColor(.white)
                     .padding(.top, 15)
-                    .padding(.leading: 10)
+                    .padding(.leading, 10)
                 Spacer()
                 Button(action: {
                     // action
