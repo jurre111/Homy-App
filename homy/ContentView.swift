@@ -244,7 +244,7 @@ struct EntityView: View {
     @Binding var entityIcon: String
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView() {
                 HStack() {
                     TileView(title: "Temperature", image: "thermometer", position: "left", showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
