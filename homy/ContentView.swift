@@ -244,10 +244,11 @@ struct EntityView: View {
     @Binding var entityIcon: String
 
     var body: some View {
-        NavigationStack {
-//            VStack() {
-//                Spacer()
-//            }
+        NavigationView {
+            VStack() {
+                Spacer()
+            }
+            .navigationBarTitle(entityName, displayMode: .inline)
 //            .toolbar {
 //                ToolbarItem(placement: .principal) {
 //                    HStack(alignment: .center) {
@@ -282,7 +283,6 @@ struct EntityView: View {
 //                }
 //            }
         }
-        .navigationBarTitle(entityName, displayMode: .inline)
     }
 }
 
