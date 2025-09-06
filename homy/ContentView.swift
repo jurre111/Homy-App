@@ -192,7 +192,7 @@ struct MainView: View {
                     "name": "Temperature", 
                     "unit": "C",
                     "icon": "thermometer"
-                ]
+                ],
                 "humidity": [
                     "name": "Humidity", 
                     "unit": "%",
@@ -275,7 +275,7 @@ struct InputView: View {
             TextField("Entity Name", text: $text)
                 .font(.system(size: 12))
                 .foregroundColor(.blue)
-                .fixedSize(horizontal: truse, vertical: false)
+                .fixedSize(horizontal: true, vertical: false)
                 .padding(6)
                 .background(
                     RoundedRectangle(cornerRadius: 7, style: .continuous)
@@ -663,8 +663,8 @@ struct ThirdPage: View {
 
                 guard jsonFormat else { return }
 
-                if let entities = await parseEntities(from: deviceIP) {
-                    ForEach(entities, id: \.self) { entity in
+                if let entities = Array(await parseEntities(from: deviceIP)) {
+                    for entity in entities {
                         let url = getURL("\(deviceName)/entities/\(entity).json")
                         let entity = [
                             "name": "",
@@ -745,9 +745,9 @@ struct FourthPage: View {
             Spacer()
             Button(action: {
                 do {
-                    ForEach(Array(entityList), id: \.key) { entity in
-                        let url = getURL("\(deviceName)/entities/\(entity.key).json")
-                        let data = try JSONSerialization.data(withJSONObject: entity.value, options: [.prettyPrinted])
+                    for (key, value) in Array(entityList) {
+                        let url = getURL("\(deviceName)/entities/\(key).json")
+                        let data = try JSONSerialization.data(withJSONObject: value, options: [.prettyPrinted])
                         try data.write(to: url)
                         onContinue()
                     }
@@ -775,7 +775,7 @@ struct FourthPage: View {
 //                let entities = loadedDevices[deviceName]?["entities"] as? [String] {
 //                    entityNames = entities
 //                    devices = loadedDevices
-                }
+//                }
             } catch {
                 print("❌ Failed to load devices.json: \(error)")
             }
