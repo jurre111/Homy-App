@@ -127,7 +127,6 @@ struct WelcomeView: View {
 struct TileView: View {
     let title: String
     let image: String
-    let position: String
     @Binding var showingEntity: Bool
     @Binding var entityName: String
     @Binding var entityIcon: String
@@ -177,7 +176,6 @@ struct TileView: View {
                     )
                 )
         )
-        .padding(EdgeInsets(top: 5, leading: position == "left" ? 0 : 5, bottom: 5, trailing: position == "right" ? 0 : 5))
     }
 }
 
@@ -187,18 +185,36 @@ struct MainView: View {
     @State private var showingEntity = false
     @State private var entityName: String = ""
     @State private var entityIcon: String = ""
+    let data = [
+        "Device_1": [
+            "entities": [
+                "temperature": [
+                    "name": "Temperature", 
+                    "unit": "C",
+                    "icon": "thermometer"
+                ]
+                "humidity": [
+                    "name": "Humidity", 
+                    "unit": "%",
+                    "icon": "drop.fill"
+                ]
+            ]
+            "ip": "192.168.1.1",
+        ]
+    ]
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
 
     var body: some View {
         TabView(selection: $selection) {
             NavigationStack {
                 ScrollView {
-                    VStack() {
-                        HStack() {
-                            TileView(title: "Temperature", image: "thermometer", position: "left", showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
-
-                            TileView(title: "Humidity", image: "drop.fill", position: "right", showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
+                    LazyVGrid(columns: columns, spacing: 15) {
+                        ForEach(data["Device_1"]["entities"], id: \.self) { entity in
+                            TileView(title: entity["name"], image: entity["icon"], showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
                         }
-                        
                     }
                     .padding(.horizontal)
                 }
@@ -259,7 +275,7 @@ struct InputView: View {
             TextField("Entity Name", text: $text)
                 .font(.system(size: 12))
                 .foregroundColor(.blue)
-                .fixedSize(horizontal: true, vertical: false)
+                .fixedSize(horizontal: truse, vertical: false)
                 .padding(6)
                 .background(
                     RoundedRectangle(cornerRadius: 7, style: .continuous)
@@ -648,18 +664,18 @@ struct ThirdPage: View {
                 guard jsonFormat else { return }
 
                 if let entities = await parseEntities(from: deviceIP) {
+                    ForEach(entities, id: \.self) { entity in
+                        let url = getURL("\(deviceName)/entities/\(entity).json")
+                        let entity = [
+                            "name": "",
+                            "unit": "",
+                            "icon": ""
+                        ]
+                        let data = try JSONSerialization.data(withJSONObject: entity, options: [.prettyPrinted])
+                        try data.write(to: url)
+                    }
                     entitiesFound = true
                     entityAmount = entities.count
-                    let devices = [
-                        deviceName: [
-                            "ip": [deviceIP],
-                            "entities": entities
-                        ]
-                    ]
-
-                    // Save
-                    let data = try JSONSerialization.data(withJSONObject: devices, options: [.prettyPrinted])
-                    try data.write(to: devicesJsonUrl)
                 }
 
                 withAnimation(.easeInOut) {
@@ -715,19 +731,26 @@ struct FourthPage: View {
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
                             .keyboardType(.default)  
+
+                        TextField("Icon", text: Binding(
+                            get: { entityList[entity]?["icon"] ?? "" },
+                            set: { entityList[entity, default: [:]]["icon"] = $0 }
+                        ))
+                            .textInputAutocapitalization(.never)
+                            .disableAutocorrection(true)
+                            .keyboardType(.default) 
                     }
                 }
             }
             Spacer()
             Button(action: {
-                if var device = devices[deviceName] {
-                    device["entities"] = entityList
-                    devices[deviceName] = device
-                }
                 do {
-                    let data = try JSONSerialization.data(withJSONObject: devices, options: [.prettyPrinted])
-                    try data.write(to: devicesJsonUrl)
-                    onContinue()
+                    ForEach(Array(entityList), id: \.key) { entity in
+                        let url = getURL("\(deviceName)/entities/\(entity.key).json")
+                        let data = try JSONSerialization.data(withJSONObject: entity.value, options: [.prettyPrinted])
+                        try data.write(to: url)
+                        onContinue()
+                    }
                 } catch {
                     print("❌ Failed to save devices.json: \(error)")
                 }
@@ -745,11 +768,13 @@ struct FourthPage: View {
         }
         .onAppear {
             do {
-                let loadedData = try Data(contentsOf: devicesJsonUrl)
-                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: [String]]],
-                let entities = loadedDevices[deviceName]?["entities"] as? [String] {
-                    entityNames = entities
-                    devices = loadedDevices
+                let url = getURL("\(deviceName)/entities/")
+                let entityNames = listFiles(in: url, includeExtension: false)
+//                let loadedData = try Data(contentsOf: devicesJsonUrl)
+//                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: [String]]],
+//                let entities = loadedDevices[deviceName]?["entities"] as? [String] {
+//                    entityNames = entities
+//                    devices = loadedDevices
                 }
             } catch {
                 print("❌ Failed to load devices.json: \(error)")
@@ -808,6 +833,24 @@ extension AnyTransition {
         )
     }
 }
+
+func getURL(urlEnd: String) -> URL? {
+    return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(urlEnd)
+
+    
+}
+
+func listFiles(in url: URL, includeExtension: Bool = true) -> [String] {
+    let fileManager = FileManager.default
+    do {
+        let urls = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
+        return includeExtension ? urls.map { $0.lastPathComponent } : urls.map { $0.deletingPathExtension().lastPathComponent }// just the file names
+    } catch {
+        print("⚠️ Error reading folder \(url): \(error)")
+        return []
+    }
+}
+
 
 
 /// Tries to connect to a URL/IP and returns true if reachable, false otherwise
