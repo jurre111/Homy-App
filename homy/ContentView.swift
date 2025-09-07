@@ -235,13 +235,13 @@ struct MainView: View {
         }
         .onAppear {
             do {
-                let baseURL = getURL("")
+                let baseURL = getURL(urlEnd: "")
                 let devices = listFiles(in: baseURL)
                 for device in devices {
-                    let subURL = getURL("\(device)/entities/")
+                    let subURL = getURL(urlEnd: "\(device)/entities/")
                     let entities = listFiles(in: subURL)
                     for entity in entities {
-                        let entityURL = getURL("\(device)/entities/\(entity)")
+                        let entityURL = getURL(urlEnd: "\(device)/entities/\(entity)")
                         let data = try Data(contentsOf: entityURL)
                         let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
                         let name = json["name"] as! String
@@ -669,7 +669,7 @@ struct ThirdPage: View {
 
                 if let entities = await parseEntities(from: deviceIP) {
                     for entity in entities {
-                        let url = getURL("\(deviceName)/entities/\(entity).json")
+                        let url = getURL(urlEnd: "\(deviceName)/entities/\(entity).json")
                         let entity = [
                             "name": "",
                             "unit": "",
@@ -750,7 +750,7 @@ struct FourthPage: View {
             Button(action: {
                 do {
                     for (key, value) in Array(entityList) {
-                        let url = getURL("\(deviceName)/entities/\(key).json")
+                        let url = getURL(urlEnd: "\(deviceName)/entities/\(key).json")
                         let data = try JSONSerialization.data(withJSONObject: value, options: [.prettyPrinted])
                         try data.write(to: url)
                         onContinue()
@@ -772,7 +772,7 @@ struct FourthPage: View {
         }
         .onAppear {
             do {
-                let url = getURL("\(deviceName)/entities/")
+                let url = getURL(urlEnd: "\(deviceName)/entities/")
                 let entityNames = listFiles(in: url, includeExtension: false)
 //                let loadedData = try Data(contentsOf: devicesJsonUrl)
 //                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: [String]]],
