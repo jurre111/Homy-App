@@ -688,12 +688,15 @@ struct ThirdPage: View {
 
                 if let entities = await parseEntities(from: deviceIP) {
                     Task.detached(priority: .background) {
+                        let dirURL = getURL(urlEnd: "\(deviceName)/entities/")
+                        try? FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: true)
                         for entity in entities {
-                            let url = getURL(urlEnd: "\(deviceName)/entities/\(entity).json")
+                            let fileURL = dirURL.appendingPathComponent("\(entity).json")
                             let entityData = ["name":"", "unit":"", "icon":""]
                             let data = try JSONSerialization.data(withJSONObject: entityData, options: [.prettyPrinted])
-                            try data.write(to: url)
+                            try data.write(to: fileURL)
                         }
+
                     }
                     entitiesFound = true
                     entityAmount = entities.count
