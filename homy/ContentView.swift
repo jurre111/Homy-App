@@ -253,24 +253,26 @@ struct EntitiesView: View {
             .onAppear {
                 do {
                     let baseURL = getURL(urlEnd: "")
-                    let devices = listFiles(in: baseURL)
-                    for device in devices {
-                        let subURL = getURL(urlEnd: "\(device)/entities/")
-                        let entities = listFiles(in: subURL)
-                        for entity in entities {
-                            let entityURL = getURL(urlEnd: "\(device)/entities/\(entity)")
-                            let data = try Data(contentsOf: entityURL)
-                            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
-                            let name = json["name"] as! String
-                            let unit = json["unit"] as! String
-                            let icon = json["icon"] as! String
-                            data[data.count] = [name, unit, icon]
+                    if let devices = listFiles(in: baseURL) {
+                        for device in devices {
+                            if let subURL = getURL(urlEnd: "\(device)/entities/") {
+                                let entities = listFiles(in: subURL)
+                                for entity in entities {
+                                    if let entityURL = getURL(urlEnd: "\(device)/entities/\(entity)") {
+                                        let data = try Data(contentsOf: entityURL)
+                                        let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
+                                        let name = json["name"] as! String
+                                        let unit = json["unit"] as! String
+                                        let icon = json["icon"] as! String
+                                        data[data.count] = [name, unit, icon]
+                                    }
+                                }
+                            }
                         }
                     }
                     pageLoaded = true
                 } catch {
                     print("collecting etntities failed!?")
-                }
                 }
             }
         }
@@ -862,8 +864,6 @@ extension AnyTransition {
 
 func getURL(urlEnd: String) -> URL? {
     return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(urlEnd)
-
-    
 }
 
 func listFiles(in url: URL, includeExtension: Bool = true) -> [String] {
