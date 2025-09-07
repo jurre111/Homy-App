@@ -179,48 +179,16 @@ struct TileView: View {
     }
 }
 
-
 struct MainView: View {
     @Binding var selection: Int
-    @State private var showingEntity = false
-    @State private var entityName: String = ""
-    @State private var entityIcon: String = ""
-    @State private var data: [[String]] = [[]]
-
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-
     var body: some View {
         TabView(selection: $selection) {
             NavigationStack {
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 15) {
-                        ForEach(data, id: \.self) { entity in
-                            TileView(title: entity[0], image: entity[2], showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
-                        }
-                    }
-                    .padding(.horizontal)
-                }
-                .navigationTitle("Home")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        HStack(alignment: .center) {
-                            Button(action: {
-                                
-                            }) {
-                                Text("Select")
-                            }
-                            Button(action: {
-                                
-                            }) {
-                                Image(systemName: "plus")
-                            }
-                        }
-                    }
+                NavigationLink("Entities") {
+                    EntitiesView()
                 }
             }
+            .navigationTitle("Home")
             .tabItem {
                 Image(systemName: "house.fill")
                 Text("Home")
@@ -232,6 +200,49 @@ struct MainView: View {
                     Text("Settings")
                 }
                 .tag(1)
+        }
+    }
+}
+
+
+struct EntitiesView: View {
+    @State private var showingEntity = false
+    @State private var entityName: String = ""
+    @State private var entityIcon: String = ""
+    @State private var data: [[String]] = [[]]
+
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 15) {
+                    ForEach(data, id: \.self) { entity in
+                        TileView(title: entity[0], image: entity[2], showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
+                    }
+                }
+                .padding(.horizontal)
+            }
+            .navigationTitle("Home")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    HStack(alignment: .center) {
+                        Button(action: {
+                            
+                        }) {
+                            Text("Select")
+                        }
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
+            }
         }
         .onAppear {
             do {
