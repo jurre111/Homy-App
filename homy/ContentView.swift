@@ -687,15 +687,13 @@ struct ThirdPage: View {
                 guard jsonFormat else { return }
 
                 if let entities = await parseEntities(from: deviceIP) {
-                    for entity in entities {
-                        let url = getURL(urlEnd: "\(deviceName)/entities/\(entity).json")
-                        let entity = [
-                            "name": "",
-                            "unit": "",
-                            "icon": ""
-                        ]
-                        let data = try JSONSerialization.data(withJSONObject: entity, options: [.prettyPrinted])
-                        try data.write(to: url)
+                    Task.detached(priority: .background) {
+                        for entity in entities {
+                            let url = getURL(urlEnd: "\(deviceName)/entities/\(entity).json")
+                            let entityData = ["name":"", "unit":"", "icon":""]
+                            let data = try JSONSerialization.data(withJSONObject: entityData, options: [.prettyPrinted])
+                            try data.write(to: url)
+                        }
                     }
                     entitiesFound = true
                     entityAmount = entities.count
