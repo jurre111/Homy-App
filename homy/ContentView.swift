@@ -253,21 +253,18 @@ struct EntitiesView: View {
             .onAppear {
                 do {
                     let baseURL = getURL(urlEnd: "")
-                    if let devices = listFiles(in: baseURL) {
-                        for device in devices {
-                            if let subURL = getURL(urlEnd: "\(device)/entities/") {
-                                let entities = listFiles(in: subURL)
-                                for entity in entities {
-                                    if let entityURL = getURL(urlEnd: "\(device)/entities/\(entity)") {
-                                        let data = try Data(contentsOf: entityURL)
-                                        let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
-                                        let name = json["name"] as! String
-                                        let unit = json["unit"] as! String
-                                        let icon = json["icon"] as! String
-                                        data[data.count] = [name, unit, icon]
-                                    }
-                                }
-                            }
+                    let devices = listFiles(in: baseURL)
+                    for device in devices {
+                        let subURL = getURL(urlEnd: "\(device)/entities/")
+                        let entities = listFiles(in: subURL)
+                        for entity in entities {
+                            let entityURL = getURL(urlEnd: "\(device)/entities/\(entity)")
+                            let data = try Data(contentsOf: entityURL)
+                            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
+                            let name = json["name"] as! String
+                            let unit = json["unit"] as! String
+                            let icon = json["icon"] as! String
+                            data[data.count] = [name, unit, icon]
                         }
                     }
                     pageLoaded = true
@@ -862,7 +859,7 @@ extension AnyTransition {
     }
 }
 
-func getURL(urlEnd: String) -> URL? {
+func getURL(urlEnd: String) -> URL {
     return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(urlEnd)
 }
 
