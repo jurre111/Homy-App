@@ -210,6 +210,7 @@ struct EntitiesView: View {
     @State private var entityName: String = ""
     @State private var entityIcon: String = ""
     @State private var data: [[String]] = [[]]
+    @State private var pageLoaded = false
 
     let columns = [
         GridItem(.flexible()),
@@ -219,12 +220,18 @@ struct EntitiesView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 15) {
-                    ForEach(data, id: \.self) { entity in
-                        TileView(title: entity[0], image: entity[2], showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
+                if pageLoaded {
+                    LazyVGrid(columns: columns, spacing: 15) {
+                        ForEach(data, id: \.self) { entity in
+                            TileView(title: entity[0], image: entity[2], showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
+                        }
                     }
+                    .padding(.horizontal)
+                } else {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
                 }
-                .padding(.horizontal)
             }
             .navigationTitle("Home")
             .toolbar {
@@ -243,23 +250,27 @@ struct EntitiesView: View {
                     }
                 }
             }
-        }
-        .onAppear {
-            do {
-                let baseURL = getURL(urlEnd: "")
-                let devices = listFiles(in: baseURL)
-                for device in devices {
-                    let subURL = getURL(urlEnd: "\(device)/entities/")
-                    let entities = listFiles(in: subURL)
-                    for entity in entities {
-                        let entityURL = getURL(urlEnd: "\(device)/entities/\(entity)")
-                        let data = try Data(contentsOf: entityURL)
-                        let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
-                        let name = json["name"] as! String
-                        let unit = json["unit"] as! String
-                        let icon = json["icon"] as! String
-                        data[data.count] = [name, unit, icon]
+            .onAppear {
+                do {
+                    let baseURL = getURL(urlEnd: "")
+                    let devices = listFiles(in: baseURL)
+                    for device in devices {
+                        let subURL = getURL(urlEnd: "\(device)/entities/")
+                        let entities = listFiles(in: subURL)
+                        for entity in entities {
+                            let entityURL = getURL(urlEnd: "\(device)/entities/\(entity)")
+                            let data = try Data(contentsOf: entityURL)
+                            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
+                            let name = json["name"] as! String
+                            let unit = json["unit"] as! String
+                            let icon = json["icon"] as! String
+                            data[data.count] = [name, unit, icon]
+                        }
                     }
+                    pageLoaded = true
+                } catch {
+                    print("collecting etntities failed!?")
+                }
                 }
             }
         }
