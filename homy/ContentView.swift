@@ -184,9 +184,7 @@ struct MainView: View {
     var body: some View {
         TabView(selection: $selection) {
             NavigationStack {
-                NavigationLink("Entities") {
-                    EntitiesView()
-                }
+                NavigationLink("Entities", destination: EntitiesView())
             }
             .navigationTitle("Home")
             .tabItem {
@@ -209,7 +207,7 @@ struct EntitiesView: View {
     @State private var showingEntity = false
     @State private var entityName: String = ""
     @State private var entityIcon: String = ""
-    @State private var database: [[String]] = [[]]
+    @State private var database: [[String]] = []
     @State private var pageLoaded = false
 
     let columns = [
@@ -264,7 +262,7 @@ struct EntitiesView: View {
                             let name = json["name"] as! String
                             let unit = json["unit"] as! String
                             let icon = json["icon"] as! String
-                            database[database.count] = [name, unit, icon]
+                            database.append([name, unit, icon])
                         }
                     }
                     pageLoaded = true
