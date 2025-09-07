@@ -209,7 +209,7 @@ struct EntitiesView: View {
     @State private var showingEntity = false
     @State private var entityName: String = ""
     @State private var entityIcon: String = ""
-    @State private var data: [[String]] = [[]]
+    @State private var database: [[String]] = [[]]
     @State private var pageLoaded = false
 
     let columns = [
@@ -264,7 +264,7 @@ struct EntitiesView: View {
                             let name = json["name"] as! String
                             let unit = json["unit"] as! String
                             let icon = json["icon"] as! String
-                            data[data.count] = [name, unit, icon]
+                            database[database.count] = [name, unit, icon]
                         }
                     }
                     pageLoaded = true
@@ -794,7 +794,7 @@ struct FourthPage: View {
         .onAppear {
             do {
                 let url = getURL(urlEnd: "\(deviceName)/entities/")
-                let entityNames = listFiles(in: url, includeExtension: false)
+                entityNames = listFiles(in: url, includeExtension: false)
 //                let loadedData = try Data(contentsOf: devicesJsonUrl)
 //                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: [String]]],
 //                let entities = loadedDevices[deviceName]?["entities"] as? [String] {
