@@ -222,7 +222,7 @@ struct EntitiesView: View {
             ScrollView {
                 if pageLoaded {
                     LazyVGrid(columns: columns, spacing: 15) {
-                        ForEach(data, id: \.self) { entity in
+                        ForEach(database, id: \.self) { entity in
                             TileView(title: entity[0], image: entity[2], showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
                         }
                     }
