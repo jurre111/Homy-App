@@ -185,23 +185,8 @@ struct MainView: View {
     @State private var showingEntity = false
     @State private var entityName: String = ""
     @State private var entityIcon: String = ""
-    let data = [
-        "Device_1": [
-            "entities": [
-                "temperature": [
-                    "name": "Temperature", 
-                    "unit": "C",
-                    "icon": "thermometer"
-                ],
-                "humidity": [
-                    "name": "Humidity", 
-                    "unit": "%",
-                    "icon": "drop.fill"
-                ]
-            ]
-            "ip": "192.168.1.1",
-        ]
-    ]
+    @State private var data: [[String]] = [[]]
+
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -212,8 +197,8 @@ struct MainView: View {
             NavigationStack {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 15) {
-                        ForEach(data["Device_1"]["entities"], id: \.self) { entity in
-                            TileView(title: entity["name"], image: entity["icon"], showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
+                        ForEach(data, id: \.self) { entity in
+                            TileView(title: entity[0], image: entity[2], showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
                         }
                     }
                     .padding(.horizontal)
@@ -247,6 +232,25 @@ struct MainView: View {
                     Text("Settings")
                 }
                 .tag(1)
+        }
+        .onAppear {
+            do {
+                let baseURL = getURL("")
+                let devices = listFiles(in: url)
+                for device in devices {
+                    let subURL = getURL("\(device)/entities/")
+                    let entities = listFiles(in: subURL)
+                    for entity in entities {
+                        entityURL = getURL("\(device)/entities/\(entity)")
+                        let data = try Data(contentsOf: entityURL)
+                        let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
+                        let name = json["name"] as! String
+                        let unit = json["unit"] as! String
+                        let icon = json["icon"] as! String
+                    }
+                    data[data.count] = [name, unit, icon]
+                }
+            }
         }
         .fullScreenCover(isPresented: $showingEntity) {
             EntityView(showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
