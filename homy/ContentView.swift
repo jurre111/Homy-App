@@ -236,19 +236,19 @@ struct MainView: View {
         .onAppear {
             do {
                 let baseURL = getURL("")
-                let devices = listFiles(in: url)
+                let devices = listFiles(in: baseURL)
                 for device in devices {
                     let subURL = getURL("\(device)/entities/")
                     let entities = listFiles(in: subURL)
                     for entity in entities {
-                        entityURL = getURL("\(device)/entities/\(entity)")
+                        let entityURL = getURL("\(device)/entities/\(entity)")
                         let data = try Data(contentsOf: entityURL)
                         let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
                         let name = json["name"] as! String
                         let unit = json["unit"] as! String
                         let icon = json["icon"] as! String
+                        data[data.count] = [name, unit, icon]
                     }
-                    data[data.count] = [name, unit, icon]
                 }
             }
         }
@@ -667,7 +667,7 @@ struct ThirdPage: View {
 
                 guard jsonFormat else { return }
 
-                if let entities = Array(await parseEntities(from: deviceIP)) {
+                if let entities = await parseEntities(from: deviceIP) {
                     for entity in entities {
                         let url = getURL("\(deviceName)/entities/\(entity).json")
                         let entity = [
