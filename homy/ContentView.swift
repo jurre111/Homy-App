@@ -564,10 +564,10 @@ struct SecondPage: View {
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(RoundedRectangle(cornerRadius: 15)
-                                .fill(isValidIP(deviceIP) ? Color(UIColor.systemBlue) : Color(UIColor.systemGray2)))
+                                .fill(isValidIP(deviceIP) || step == 2 ? Color(UIColor.systemBlue) : Color(UIColor.systemGray2)))
                                 .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
                     }
-                    .disabled(!isValidIP(deviceIP) || deviceName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(!isValidIP(deviceIP) || deviceName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && step == 2)
                     Button("Skip") {
                         onSkip()
                     }
