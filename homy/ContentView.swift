@@ -689,11 +689,13 @@ struct ThirdPage: View {
         }
         .padding(.horizontal)
         .onAppear {
-            guard let device = devices.first else { return }
             timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
                 animationIsActive.toggle()
             }
             Task {
+                while devices.first == nil {
+                    try? await Task.sleep(nanoseconds: 200_000_000) // 0.2s
+                }
                 if let device = devices.first {
                     let reachable = await canConnect(to: device.ip)
 
