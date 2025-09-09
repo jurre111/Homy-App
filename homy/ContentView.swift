@@ -546,7 +546,18 @@ struct SecondPage: View {
                                 context.insert(device)
                                 do {
                                     try context.save()
-                                    onContinue() // finish onboarding
+
+                                    // ✅ Validation: check if device is really in context/query
+                                    let fetchRequest = Device.fetchRequest()
+                                    fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Device.date, ascending: false)]
+                                    let savedDevices = try context.fetch(fetchRequest)
+
+                                    if savedDevices.contains(where: { $0.ip == deviceIP }) {
+                                        onContinue() // only proceed if saved
+                                    } else {
+                                        print("❌ Device not found after save")
+                                    }
+
                                 } catch {
                                     print("❌ Failed to save device: \(error)")
                                 }
