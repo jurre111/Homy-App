@@ -550,6 +550,7 @@ struct SecondPage: View {
                                     context.insert(device)
                                     do {
                                         try context.save()
+                                        print("✅ Device saved successfully")
                                         onContinue()
                                     } catch {
                                         print("❌ Failed to save device: \(error)")
@@ -564,10 +565,11 @@ struct SecondPage: View {
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(RoundedRectangle(cornerRadius: 15)
-                                .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
+                                .fill(isValidIP(deviceIP) || step == 1 ? 
+                                    Color(UIColor.systemBlue) : Color(UIColor.systemGray2)))
                                 .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
                     }
-                    .disabled(isValidIP(deviceIP))
+                    .disabled((!isValidIP(deviceIP) || deviceName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) && step == 2)
                     Button("Skip") {
                         onSkip()
                     }
@@ -582,24 +584,26 @@ struct SecondPage: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
-    private func isValidIP(_ ip: String) -> Bool { 
-        if step != 2 { return false } 
-        if ip.count > 6 { 
-            if ip.contains(".local") { 
-                return false 
-            } else if ip.filter({ $0 == "." }).count == 3 { 
-                let parts = ip.components(separatedBy: ".") 
-                for part in parts { 
-                    if part.count > 0 { 
-                        continue 
-                    } else { 
-                        return true 
-                    } 
-                } 
-                return false 
-            } 
-        } 
-        return true 
+    private func isValidIP(_ ip: String) -> Bool {
+        if step != 2 { return false }
+        
+        let trimmed = ip.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty { return false }
+        
+        // Allow .local hostnames (e.g., mydevice.local)
+        if trimmed.hasSuffix(".local") {
+            let name = trimmed.dropLast(6) // remove .local
+            return !name.isEmpty && !name.contains(" ")
+        }
+        
+        // Validate IPv4 address
+        let parts = trimmed.components(separatedBy: ".")
+        guard parts.count == 4 else { return false }
+        
+        return parts.allSatisfy { part in
+            guard let num = Int(part) else { return false }
+            return (0...255).contains(num)
+        }
     }
 }
 
