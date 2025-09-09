@@ -728,7 +728,6 @@ struct ThirdPage: View {
 
 struct FourthPage: View {
     let onContinue: () -> Void
-    @Binding var deviceName: String
     @State var entityList: [String:[String:String]] = [:]
     @Query(sort: [SortDescriptor(\Device.date, order: .reverse)])
     var devices: [Device]
