@@ -603,8 +603,7 @@ struct ThirdPage: View {
     @State private var timer: Timer? = nil
     @State private var entitiesFound = false
     @State private var entityAmount: Int = 0
-    @Query(sort: [SortDescriptor(\Device.date, order: .reverse)])
-    var devices: [Device]
+    @Query var devices: [Device]
 
     var body: some View {
         VStack(alignment: .center) {
