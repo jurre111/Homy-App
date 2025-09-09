@@ -540,21 +540,29 @@ struct SecondPage: View {
                 Spacer()
                 VStack() {
                     Button(action: {
-                        withAnimation {
+                        Task {
                             if step == 1 {
-                                step = 2  // reveal the form
-                            } else {
-                                // Only save when inputs look valid
-                                if isValidIP(deviceIP) && !deviceName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                                    let device = Device(name: deviceName, ip: deviceIP)
+                                withAnimation {
+                                    step = 2  // reveal the form
+                                }
+                            } else if step == 2 {
+                                let device = Device(name: deviceName, ip: deviceIP)
+                                // Ensure save happens on the main actor and complete before continuing
+                                await MainActor.run {
                                     context.insert(device)
                                     do {
                                         try context.save()
-                                        print("✅ Device saved successfully")
-                                        onContinue()
+                                        print("✅ Device saved: \(device.name) @ \(device.ip)")
                                     } catch {
                                         print("❌ Failed to save device: \(error)")
                                     }
+                                }
+
+                                // allow SwiftData a short moment to publish the change to @Query observers
+                                try? await Task.sleep(nanoseconds: 200_000_000) // 0.2s
+
+                                withAnimation {
+                                    onContinue()
                                 }
                             }
                         }
@@ -565,11 +573,10 @@ struct SecondPage: View {
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(RoundedRectangle(cornerRadius: 15)
-                                .fill(isValidIP(deviceIP) || step == 1 ? 
-                                    Color(UIColor.systemBlue) : Color(UIColor.systemGray2)))
+                                .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
                                 .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
                     }
-                    .disabled((!isValidIP(deviceIP) || deviceName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) && step == 2)
+                    .disabled(isValidIP(deviceIP))
                     Button("Skip") {
                         onSkip()
                     }
@@ -584,26 +591,24 @@ struct SecondPage: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
-    private func isValidIP(_ ip: String) -> Bool {
-        if step != 2 { return false }
-        
-        let trimmed = ip.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty { return false }
-        
-        // Allow .local hostnames (e.g., mydevice.local)
-        if trimmed.hasSuffix(".local") {
-            let name = trimmed.dropLast(6) // remove .local
-            return !name.isEmpty && !name.contains(" ")
-        }
-        
-        // Validate IPv4 address
-        let parts = trimmed.components(separatedBy: ".")
-        guard parts.count == 4 else { return false }
-        
-        return parts.allSatisfy { part in
-            guard let num = Int(part) else { return false }
-            return (0...255).contains(num)
-        }
+    private func isValidIP(_ ip: String) -> Bool { 
+        if step != 2 { return false } 
+        if ip.count > 6 { 
+            if ip.contains(".local") { 
+                return false 
+            } else if ip.filter({ $0 == "." }).count == 3 { 
+                let parts = ip.components(separatedBy: ".") 
+                for part in parts { 
+                    if part.count > 0 { 
+                        continue 
+                    } else { 
+                        return true 
+                    } 
+                } 
+                return false 
+            } 
+        } 
+        return true 
     }
 }
 
@@ -700,52 +705,53 @@ struct ThirdPage: View {
             timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
                 animationIsActive.toggle()
             }
+            
             Task {
-                while devices.first == nil {
-                    try? await Task.sleep(nanoseconds: 200_000_000) // 0.2s
+                // Give SwiftData a moment to populate the devices array
+                try? await Task.sleep(nanoseconds: 500_000_000)
+                print("👀 Looking for devices, count: \(devices.count)")
+                
+                guard let device = devices.first else {
+                    print("❌ No device found in SwiftData")
+                    withAnimation(.easeInOut) {
+                        connectionStatus = 4 // Connection failed
+                    }
+                    return
                 }
-                if let device = devices.first {
-                    let reachable = await canConnect(to: device.ip)
-
-                    withAnimation(.easeInOut) {
-                        connectionStatus = reachable ? 2 : 4
-                    }
-
-                    guard reachable else { return }
-
-                    let jsonFormat = await isJSONFormat(urlString: device.ip)
-
-                    withAnimation(.easeInOut) {
-                        connectionStatus = jsonFormat ? 3 : 5
-                    }
-
-                    guard jsonFormat else { return }
-
-                    if let entities = await parseEntities(from: device.ip) {
-                        // Insert entities into the modelContext on the main actor so @Query sees them
-                        await MainActor.run {
-                            for entityName in entities {
-                                let entity = Entity(internalName: entityName, name: "", unit: "", icon: "")
-                                // establish relationship both ways
-                                entity.device = device
-                                device.entities.append(entity)
-                                context.insert(entity)
-                            }
-                            do {
-                                try context.save()
-                            } catch {
-                                print("❌ Failed to save entities: \(error)")
-                            }
+                print("✅ Found device: \(device.name) at \(device.ip)")
+                let reachable = await canConnect(to: device.ip)
+                withAnimation(.easeInOut) {
+                    connectionStatus = reachable ? 2 : 4
+                }
+                guard reachable else { return }
+                let jsonFormat = await isJSONFormat(urlString: device.ip)
+                withAnimation(.easeInOut) {
+                    connectionStatus = jsonFormat ? 3 : 5
+                }
+                guard jsonFormat else { return }
+                if let entities = await parseEntities(from: device.ip) {
+                    // Insert entities into the modelContext on the main actor so @Query sees them
+                    await MainActor.run {
+                        for entityName in entities {
+                            let entity = Entity(internalName: entityName, name: "", unit: "", icon: "")
+                            // establish relationship both ways
+                            entity.device = device
+                            device.entities.append(entity)
+                            context.insert(entity)
                         }
-
-                        entitiesFound = true
-                        entityAmount = entities.count
+                        do {
+                            try context.save()
+                        } catch {
+                            print("❌ Failed to save entities: \(error)")
+                        }
                     }
-
-                    withAnimation(.easeInOut) {
-                        connectionStatus = entitiesFound ? 7 : 6
-                    }
+                    entitiesFound = true
+                    entityAmount = entities.count
                 }
+                withAnimation(.easeInOut) {
+                    connectionStatus = entitiesFound ? 7 : 6
+                }
+                
             } 
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
