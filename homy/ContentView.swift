@@ -564,10 +564,10 @@ struct SecondPage: View {
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(RoundedRectangle(cornerRadius: 15)
-                                .fill(isValidIP(deviceIP) || step == 1 ? Color(UIColor.systemBlue) : Color(UIColor.systemGray2)))
+                                .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
                                 .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
                     }
-                    .disabled((!isValidIP(deviceIP) || deviceName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) && step == 2)
+                    .disabled(isValidIP(deviceIP))
                     Button("Skip") {
                         onSkip()
                     }
@@ -582,35 +582,26 @@ struct SecondPage: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
-    private func isValidIP(_ ip: String) -> Bool {
-        if step != 2 { return false }
-        let trimmed = ip.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty { return false }
-
-        // allow .local hostnames (e.g. mydevice.local)
-        if trimmed.hasSuffix(".local") {
-            return true
-        }
-
-        // validate IPv4 dotted quad
-        let parts = trimmed.components(separatedBy: ".")
-        if parts.count == 4 {
-            for part in parts {
-                if let n = Int(part), n >= 0 && n <= 255 {
-                    continue
-                } else {
-                    return false
-                }
-            }
-            return true
-        }
-
-        // fallback: accept if it looks like a hostname without spaces
-        let invalidChars = CharacterSet.whitespacesAndNewlines
-        return trimmed.rangeOfCharacter(from: invalidChars) == nil
+    private func isValidIP(_ ip: String) -> Bool { 
+        if step != 2 { return false } 
+        if ip.count > 6 { 
+            if ip.contains(".local") { 
+                return false 
+            } else if ip.filter({ $0 == "." }).count == 3 { 
+                let parts = ip.components(separatedBy: ".") 
+                for part in parts { 
+                    if part.count > 0 { 
+                        continue 
+                    } else { 
+                        return true 
+                    } 
+                } 
+                return false 
+            } 
+        } 
+        return true 
     }
 }
-
 
 struct ThirdPage: View {
     let onContinue: () -> Void
