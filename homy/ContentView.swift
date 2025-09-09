@@ -1,5 +1,6 @@
 import SwiftUI
 import Foundation
+import SwiftData
 
 struct ContentView: View {
     @AppStorage("WelcomeScreenShown") private var welcomeScreenShown = false
@@ -25,6 +26,40 @@ struct ContentView: View {
     }
 }
 
+@Model
+class Device {
+    var name: String
+    var ip: String
+    var date: Date
+    var entities: [Entity]   // collection of entities
+
+    init(name: String, ip: String, date: Date = Date()) {
+        self.name = name
+        self.ip = ip
+        self.date = date
+        self.entities = []   // start with no entities
+    }
+}
+
+@Model
+class Entity {
+    var internalName: String
+    var name: String
+    var unit: String
+    var icon: String
+    var device: Device?      // back-reference (optional)
+
+    init(internalName: String, name: String, unit: String, icon: String) {
+        self.internalName = internalName
+        self.name = name
+        self.unit = unit
+        self.icon = icon
+    }
+}
+
+
+
+
 enum WelcomeTab {
     case first
     case second
@@ -39,8 +74,6 @@ struct WelcomeView: View {
     @State private var step: WelcomeTab = .first
     @State private var secondPageStep = 1
     @State private var goingBack = false // track if we are going back
-    @State private var deviceIP: String = ""
-    @State private var deviceName: String = ""
 
     var body: some View {
         VStack {
@@ -68,8 +101,6 @@ struct WelcomeView: View {
                         }
                     },
                     step: $secondPageStep,
-                    deviceIP: $deviceIP,
-                    deviceName: $deviceName
                 )
                 .transition(.goForth)
 
@@ -94,8 +125,6 @@ struct WelcomeView: View {
                             step = .done
                         }
                     },
-                    deviceIP: $deviceIP,
-                    deviceName: $deviceName
                 )
                 .transition(.goForth)
 
@@ -107,7 +136,6 @@ struct WelcomeView: View {
                             step = .done
                         }
                     },
-                    deviceName: $deviceName
                 )
                 .transition(.goForth)
 
@@ -185,8 +213,8 @@ struct MainView: View {
         TabView(selection: $selection) {
             NavigationStack {
                 NavigationLink("Entities", destination: EntitiesView())
+                .navigationTitle("Home")
             }
-            .navigationTitle("Home")
             .tabItem {
                 Image(systemName: "house.fill")
                 Text("Home")
@@ -207,8 +235,9 @@ struct EntitiesView: View {
     @State private var showingEntity = false
     @State private var entityName: String = ""
     @State private var entityIcon: String = ""
-    @State private var database: [[String]] = []
+    @Query(sort: \.date, order: .reverse) var devices: [Device]
     @State private var pageLoaded = false
+    @State private var addDevice = false
 
     let columns = [
         GridItem(.flexible()),
@@ -220,8 +249,9 @@ struct EntitiesView: View {
             ScrollView {
                 if pageLoaded {
                     LazyVGrid(columns: columns, spacing: 15) {
-                        ForEach(database, id: \.self) { entity in
-                            TileView(title: entity[0], image: entity[2], showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
+                        let allEntities = devices.flatMap { $0.entities }
+                        ForEach(allEntities, id: \.internalName) { entity in
+                            TileView(title: entity.name, image: entity.icon, showingEntity: $showingEntity, entityName: $entityName, entityIcon: $entityIcon)
                         }
                     }
                     .padding(.horizontal)
@@ -231,7 +261,7 @@ struct EntitiesView: View {
                     Spacer()
                 }
             }
-            .navigationTitle("Home")
+            .navigationTitle("Entities")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack(alignment: .center) {
@@ -241,33 +271,19 @@ struct EntitiesView: View {
                             Text("Select")
                         }
                         Button(action: {
-                            
+                            addDevice = true
                         }) {
                             Image(systemName: "plus")
                         }
                     }
                 }
             }
+            .sheet(isPresented: $addDevice) {
+                SecondPage()
+            }
             .onAppear {
                 do {
-                    let baseURL = getURL(urlEnd: "")
-                    let devices = listFiles(in: baseURL)
-                    for device in devices {
-                        let subURL = getURL(urlEnd: "\(device)/entities/")
-                        let entities = listFiles(in: subURL)
-                        for entity in entities {
-                            let entityURL = getURL(urlEnd: "\(device)/entities/\(entity)")
-                            let data = try Data(contentsOf: entityURL)
-                            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
-                            let name = json["name"] as! String
-                            let unit = json["unit"] as! String
-                            let icon = json["icon"] as! String
-                            database.append([name, unit, icon])
-                        }
-                    }
                     pageLoaded = true
-                } catch {
-                    print("collecting etntities failed!?")
                 }
             }
         }
@@ -467,8 +483,10 @@ struct SecondPage: View {
     let onContinue: () -> Void
     let onSkip: () -> Void
     @Binding var step: Int
-    @Binding var deviceIP: String
-    @Binding var deviceName: String
+    @State private var deviceIP: String = ""
+    @State private var deviceName: String = ""
+    @Environment(\.modelContext) private var context
+
 
     var body: some View {
         ZStack(alignment: .center) {
@@ -525,6 +543,8 @@ struct SecondPage: View {
                             if step == 1 {
                                 step = 2  // reveal the form
                             } else {
+                                let device = Device(name: deviceName, ip: deviceIP)
+                                context.insert(device)
                                 onContinue() // finish onboarding
                             }
                         }
@@ -584,9 +604,7 @@ struct ThirdPage: View {
     @State private var timer: Timer? = nil
     @State private var entitiesFound = false
     @State private var entityAmount: Int = 0
-    @Binding var deviceIP: String
-    @Binding var deviceName: String
-    let devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
+    @Query(sort: \.date, order: .forward) var devices: [Device]
 
     var body: some View {
         VStack(alignment: .center) {
@@ -670,40 +688,37 @@ struct ThirdPage: View {
                 animationIsActive.toggle()
             }
             Task {
-                let reachable = await canConnect(to: deviceIP)
+                if let device = devices.first {
+                    let reachable = await canConnect(to: device.ip)
 
-                withAnimation(.easeInOut) {
-                    connectionStatus = reachable ? 2 : 4
-                }
-
-                guard reachable else { return }
-
-                let jsonFormat = await isJSONFormat(urlString: deviceIP)
-
-                withAnimation(.easeInOut) {
-                    connectionStatus = jsonFormat ? 3 : 5
-                }
-
-                guard jsonFormat else { return }
-
-                if let entities = await parseEntities(from: deviceIP) {
-                    Task.detached(priority: .background) {
-                        let dirURL = getURL(urlEnd: "\(deviceName)/entities/")
-                        try? FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: true)
-                        for entity in entities {
-                            let fileURL = dirURL.appendingPathComponent("\(entity).json")
-                            let entityData = ["name":"", "unit":"", "icon":""]
-                            let data = try JSONSerialization.data(withJSONObject: entityData, options: [.prettyPrinted])
-                            try data.write(to: fileURL)
-                        }
-
+                    withAnimation(.easeInOut) {
+                        connectionStatus = reachable ? 2 : 4
                     }
-                    entitiesFound = true
-                    entityAmount = entities.count
-                }
 
-                withAnimation(.easeInOut) {
-                    connectionStatus = entitiesFound ? 7 : 6
+                    guard reachable else { return }
+
+                    let jsonFormat = await isJSONFormat(urlString: device.ip)
+
+                    withAnimation(.easeInOut) {
+                        connectionStatus = jsonFormat ? 3 : 5
+                    }
+
+                    guard jsonFormat else { return }
+
+                    if let entities = await parseEntities(from: device.ip) {
+                        Task.detached(priority: .background) {
+                            for entityName in entities {
+                                let entity = Entity(internalName: entityName, name: "", unit: "", icon: "")
+                                device.entities.append(entity)
+                            }
+                        }
+                        entitiesFound = true
+                        entityAmount = entities.count
+                    }
+
+                    withAnimation(.easeInOut) {
+                        connectionStatus = entitiesFound ? 7 : 6
+                    }
                 }
             } 
         }
@@ -714,12 +729,8 @@ struct ThirdPage: View {
 struct FourthPage: View {
     let onContinue: () -> Void
     @Binding var deviceName: String
-    @State var entityNames: [String] = []
-    @State var entityList: [
-        String:[String:String]
-    ] = [:]
-    @State var devices: [String: [String: Any]] = [:]
-    var devicesJsonUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("devices.json")
+    @State var entityList: [String:[String:String]] = [:]
+    @Query(sort: \.date, order: .forward) var devices: [Device]
 
     var body: some View {
         VStack(alignment: .center) {
@@ -740,17 +751,17 @@ struct FourthPage: View {
             }
             Spacer()
             Form {
-                ForEach(entityNames, id: \.self) { entity in
+                ForEach(Array(entityList.keys).sorted(), id: \.self) { entity in
                     Section(entity) {
                         TextField("Name", text: Binding(
                             get: { entityList[entity]?["name"] ?? "" },
-                            set: { entityList[entity, default: [:]]["name"] = $0 }
+                            set: { entityList[entity]?["name"] = $0 }
                         ))
                             .keyboardType(.default)
 
                         TextField("Unit", text: Binding(
                             get: { entityList[entity]?["unit"] ?? "" },
-                            set: { entityList[entity, default: [:]]["unit"] = $0 }
+                            set: { entityList[entity]?["unit"] = $0 }
                         ))
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
@@ -758,7 +769,7 @@ struct FourthPage: View {
 
                         TextField("Icon", text: Binding(
                             get: { entityList[entity]?["icon"] ?? "" },
-                            set: { entityList[entity, default: [:]]["icon"] = $0 }
+                            set: { entityList[entity]?["icon"] = $0 }
                         ))
                             .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
@@ -769,12 +780,14 @@ struct FourthPage: View {
             Spacer()
             Button(action: {
                 do {
-                    for (key, value) in Array(entityList) {
-                        let url = getURL(urlEnd: "\(deviceName)/entities/\(key).json")
-                        let data = try JSONSerialization.data(withJSONObject: value, options: [.prettyPrinted])
-                        try data.write(to: url)
-                        onContinue()
+                    if let device = devices.first {
+                        for entity in device.entities {
+                            entity.name = entityList[entity.internalName]?["name"] ?? ""
+                            entity.unit = entityList[entity.internalName]?["unit"] ?? ""
+                            entity.icon = entityList[entity.internalName]?["icon"] ?? ""
+                        }
                     }
+                    onContinue()
                 } catch {
                     print("❌ Failed to save devices.json: \(error)")
                 }
@@ -792,14 +805,15 @@ struct FourthPage: View {
         }
         .onAppear {
             do {
-                let url = getURL(urlEnd: "\(deviceName)/entities/")
-                entityNames = listFiles(in: url, includeExtension: false)
-//                let loadedData = try Data(contentsOf: devicesJsonUrl)
-//                if let loadedDevices = try JSONSerialization.jsonObject(with: loadedData) as? [String: [String: [String]]],
-//                let entities = loadedDevices[deviceName]?["entities"] as? [String] {
-//                    entityNames = entities
-//                    devices = loadedDevices
-//                }
+                if let device = devices.first {
+                    for entity in device.entities {
+                        entityList[entity.internalName] = [
+                            "name": entity.name,
+                            "unit": entity.unit,
+                            "icon": entity.icon
+                        ]
+                    }
+                }
             } catch {
                 print("❌ Failed to load devices.json: \(error)")
             }
@@ -858,20 +872,7 @@ extension AnyTransition {
     }
 }
 
-func getURL(urlEnd: String) -> URL {
-    return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(urlEnd)
-}
 
-func listFiles(in url: URL, includeExtension: Bool = true) -> [String] {
-    let fileManager = FileManager.default
-    do {
-        let urls = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
-        return includeExtension ? urls.map { $0.lastPathComponent } : urls.map { $0.deletingPathExtension().lastPathComponent }// just the file names
-    } catch {
-        print("⚠️ Error reading folder \(url): \(error)")
-        return []
-    }
-}
 
 
 
