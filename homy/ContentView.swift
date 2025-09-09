@@ -31,13 +31,14 @@ class Device {
     var name: String
     var ip: String
     var date: Date
+    @Relationship
     var entities: [Entity]   // collection of entities
 
     init(name: String, ip: String, date: Date = Date()) {
         self.name = name
         self.ip = ip
         self.date = date
-        self.entities = []   // start with no entities
+    self.entities = []   // start with no entities
     }
 }
 
@@ -47,6 +48,7 @@ class Entity {
     var name: String
     var unit: String
     var icon: String
+    @Relationship
     var device: Device?      // back-reference (optional)
 
     init(internalName: String, name: String, unit: String, icon: String) {
@@ -542,26 +544,17 @@ struct SecondPage: View {
                             if step == 1 {
                                 step = 2  // reveal the form
                             } else {
-                                let device = Device(name: deviceName, ip: deviceIP)
-                                context.insert(device)
-                                do {
-                                    try context.save()
-
-                                    // ✅ Validation: check if device is really in context/query
-                                    let fetchRequest = Device.fetchRequest()
-                                    fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Device.date, ascending: false)]
-                                    let savedDevices = try context.fetch(fetchRequest)
-
-                                    if savedDevices.contains(where: { $0.ip == deviceIP }) {
-                                        onContinue() // only proceed if saved
-                                    } else {
-                                        print("❌ Device not found after save")
+                                // Only save when inputs look valid
+                                if isValidIP(deviceIP) && !deviceName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                                    let device = Device(name: deviceName, ip: deviceIP)
+                                    context.insert(device)
+                                    do {
+                                        try context.save()
+                                        onContinue()
+                                    } catch {
+                                        print("❌ Failed to save device: \(error)")
                                     }
-
-                                } catch {
-                                    print("❌ Failed to save device: \(error)")
                                 }
-                                
                             }
                         }
                     }) {
@@ -571,10 +564,10 @@ struct SecondPage: View {
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(RoundedRectangle(cornerRadius: 15)
-                                .fill(isValidIP(deviceIP) ? Color(UIColor.systemGray2) : Color(UIColor.systemBlue)))
+                                .fill(isValidIP(deviceIP) ? Color(UIColor.systemBlue) : Color(UIColor.systemGray2)))
                                 .animation(.easeInOut(duration: 0.3), value: isValidIP(deviceIP))
                     }
-                    .disabled(isValidIP(deviceIP))
+                    .disabled(!isValidIP(deviceIP) || deviceName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     Button("Skip") {
                         onSkip()
                     }
@@ -591,22 +584,30 @@ struct SecondPage: View {
     }
     private func isValidIP(_ ip: String) -> Bool {
         if step != 2 { return false }
-        if ip.count > 6 {
-            if ip.contains(".local") {
-                return false
-            } else if ip.filter({ $0 == "." }).count == 3 {
-                let parts = ip.components(separatedBy: ".")
-                for part in parts {
-                    if part.count > 0 {
-                        continue
-                    } else {
-                        return true
-                    }
-                }
-                return false
-            }
+        let trimmed = ip.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty { return false }
+
+        // allow .local hostnames (e.g. mydevice.local)
+        if trimmed.hasSuffix(".local") {
+            return true
         }
-        return true
+
+        // validate IPv4 dotted quad
+        let parts = trimmed.components(separatedBy: ".")
+        if parts.count == 4 {
+            for part in parts {
+                if let n = Int(part), n >= 0 && n <= 255 {
+                    continue
+                } else {
+                    return false
+                }
+            }
+            return true
+        }
+
+        // fallback: accept if it looks like a hostname without spaces
+        let invalidChars = CharacterSet.whitespacesAndNewlines
+        return trimmed.rangeOfCharacter(from: invalidChars) == nil
     }
 }
 
@@ -621,6 +622,7 @@ struct ThirdPage: View {
     @State private var entitiesFound = false
     @State private var entityAmount: Int = 0
     @Query var devices: [Device]
+    @Environment(\.modelContext) private var context
 
     var body: some View {
         VStack(alignment: .center) {
@@ -725,12 +727,22 @@ struct ThirdPage: View {
                     guard jsonFormat else { return }
 
                     if let entities = await parseEntities(from: device.ip) {
-                        Task.detached(priority: .background) {
+                        // Insert entities into the modelContext on the main actor so @Query sees them
+                        await MainActor.run {
                             for entityName in entities {
                                 let entity = Entity(internalName: entityName, name: "", unit: "", icon: "")
+                                // establish relationship both ways
+                                entity.device = device
                                 device.entities.append(entity)
+                                context.insert(entity)
+                            }
+                            do {
+                                try context.save()
+                            } catch {
+                                print("❌ Failed to save entities: \(error)")
                             }
                         }
+
                         entitiesFound = true
                         entityAmount = entities.count
                     }
