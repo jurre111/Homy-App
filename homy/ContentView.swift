@@ -100,7 +100,7 @@ struct WelcomeView: View {
                             step = .done
                         }
                     },
-                    step: $secondPageStep,
+                    step: $secondPageStep
                 )
                 .transition(.goForth)
 
@@ -124,7 +124,7 @@ struct WelcomeView: View {
                             goingBack = false
                             step = .done
                         }
-                    },
+                    }
                 )
                 .transition(.goForth)
 
@@ -235,7 +235,9 @@ struct EntitiesView: View {
     @State private var showingEntity = false
     @State private var entityName: String = ""
     @State private var entityIcon: String = ""
-    @Query(sort: \.date, order: .reverse) var devices: [Device]
+    @Query(sort: [SortDescriptor(\Device.date, order: .reverse)])
+    var devices: [Device]
+
     @State private var pageLoaded = false
     @State private var addDevice = false
 
@@ -278,8 +280,6 @@ struct EntitiesView: View {
                     }
                 }
             }
-            .sheet(isPresented: $addDevice) {
-                SecondPage()
             }
             .onAppear {
                 do {
