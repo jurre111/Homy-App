@@ -684,6 +684,7 @@ struct ThirdPage: View {
         }
         .padding(.horizontal)
         .onAppear {
+            guard let device = devices.first else { return }
             timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
                 animationIsActive.toggle()
             }
