@@ -542,7 +542,6 @@ struct SecondPage: View {
                             if step == 1 {
                                 step = 2  // reveal the form
                             } else {
-                                Task
                                 let device = Device(name: deviceName, ip: deviceIP)
                                 context.insert(device)
                                 do {
