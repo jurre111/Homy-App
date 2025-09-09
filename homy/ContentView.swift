@@ -135,7 +135,7 @@ struct WelcomeView: View {
                             goingBack = false
                             step = .done
                         }
-                    },
+                    }
                 )
                 .transition(.goForth)
 
@@ -279,7 +279,6 @@ struct EntitiesView: View {
                         }
                     }
                 }
-            }
             }
             .onAppear {
                 do {
@@ -604,7 +603,8 @@ struct ThirdPage: View {
     @State private var timer: Timer? = nil
     @State private var entitiesFound = false
     @State private var entityAmount: Int = 0
-    @Query(sort: \.date, order: .forward) var devices: [Device]
+    @Query(sort: [SortDescriptor(\Device.date, order: .reverse)])
+    var devices: [Device]
 
     var body: some View {
         VStack(alignment: .center) {
@@ -730,7 +730,8 @@ struct FourthPage: View {
     let onContinue: () -> Void
     @Binding var deviceName: String
     @State var entityList: [String:[String:String]] = [:]
-    @Query(sort: \.date, order: .forward) var devices: [Device]
+    @Query(sort: [SortDescriptor(\Device.date, order: .reverse)])
+    var devices: [Device]
 
     var body: some View {
         VStack(alignment: .center) {
