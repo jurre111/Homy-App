@@ -1011,7 +1011,7 @@ extension Color {
 
 
 
-func clearDatabase() {
+func clearDatabase(context: ModelContext) {
     do {
         // Delete all Devices
         let allDevices = try context.fetch(FetchDescriptor<Device>())
