@@ -6,6 +6,7 @@ struct ContentView: View {
     @AppStorage("WelcomeScreenShown") private var welcomeScreenShown = false
     @State private var selectedTab = 0
     @State private var showingWelcome = false
+    @Environment(\.modelContext) private var context
 
     var body: some View {
         ZStack {
@@ -13,7 +14,6 @@ struct ContentView: View {
         }
         .onAppear {
             if !welcomeScreenShown {
-                @Environment(\.modelContext) private var context
                 clearDatabase(context: context)
                 var transaction = Transaction()
                 transaction.disablesAnimations = true
