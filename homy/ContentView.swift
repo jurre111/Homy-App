@@ -13,6 +13,8 @@ struct ContentView: View {
         }
         .onAppear {
             if !welcomeScreenShown {
+                @Environment(\.modelContext) private var context
+                clearDatabase(context: context)
                 var transaction = Transaction()
                 transaction.disablesAnimations = true
                 withTransaction(transaction) {
@@ -214,7 +216,12 @@ struct MainView: View {
     var body: some View {
         TabView(selection: $selection) {
             NavigationStack {
-                NavigationLink("Entities", destination: EntitiesView())
+                List() {
+                    NavigationLink("Entities") {
+                        EntitiesView()
+                    }
+                }
+                Spacer()
                 .navigationTitle("Home")
             }
             .tabItem {
@@ -297,6 +304,7 @@ struct EntitiesView: View {
 struct InputView: View {
     @Binding var entityIcon: String
     @State private var text: String = ""
+    @Binding var entityName: String
 
     var body: some View {
         HStack() {
@@ -312,7 +320,7 @@ struct InputView: View {
                 )
                 .foregroundColor(.blue)
                 .padding(10)
-            TextField("Entity Name", text: $text)
+            TextField(entityName, text: $text)
                 .font(.system(size: 12))
                 .foregroundColor(.blue)
                 .fixedSize(horizontal: true, vertical: false)
@@ -345,7 +353,8 @@ struct EntityView: View {
         NavigationStack {
             ScrollView() {
                 VStack {
-                    InputView(entityIcon: $entityIcon)
+                    InputView(entityIcon: $entityIcon, entityName: $entityName)
+                        .padding(.top)
                 }
                 .padding(.horizontal)
             }
@@ -999,6 +1008,29 @@ extension Color {
     }
 }
 
+
+
+
+func clearDatabase() {
+    do {
+        // Delete all Devices
+        let allDevices = try context.fetch(FetchDescriptor<Device>())
+        for device in allDevices {
+            context.delete(device)
+        }
+        
+        // Delete all Entities
+        let allEntities = try context.fetch(FetchDescriptor<Entity>())
+        for entity in allEntities {
+            context.delete(entity)
+        }
+        
+        try context.save()
+        print("✅ Database cleared")
+    } catch {
+        print("❌ Failed to clear database: \(error)")
+    }
+}
 
 
 
